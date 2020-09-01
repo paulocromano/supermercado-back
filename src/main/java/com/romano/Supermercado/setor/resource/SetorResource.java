@@ -19,7 +19,7 @@ import com.romano.Supermercado.setor.service.SetorService;
  */
 //@CrossOrigin
 @RestController
-@RequestMapping("/setor")
+@RequestMapping(value = "/setor")
 public class SetorResource {
 	
 	@Autowired

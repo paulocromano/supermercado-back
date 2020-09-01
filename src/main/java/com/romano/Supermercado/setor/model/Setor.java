@@ -28,7 +28,7 @@ public class Setor {
 	@Size(min = 3, max = 40, message = "O campo nome deve ter entre 3 a 40 caracteres!")
 	private String nome;
 	
-	
+ 	
 	public Setor() {
 		
 	}

@@ -61,7 +61,7 @@ public class Produto {
 	private String observacoes;
 	
 	@ManyToOne
-	@JoinColumn(name = "setor_id")
+	@JoinColumn(name = "id_setor")
 	private Setor setor;
 	
 	
