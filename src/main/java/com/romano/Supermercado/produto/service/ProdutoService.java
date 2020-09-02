@@ -22,6 +22,10 @@ public class ProdutoService {
 	private ProdutoRepository produtoRepository;
 	
 	
+	/**
+	 * Método responsável por listar todos os Produtos
+	 * @return ResponseEntity<List<ProdutoDTO>>
+	 */
 	public ResponseEntity<List<ProdutoDTO>> listarTodosProdutos() {
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtoRepository.findAll()));
 	}

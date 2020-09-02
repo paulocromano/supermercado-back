@@ -25,6 +25,11 @@ public class ProdutoResource {
 	private ProdutoService produtoService;
 	
 	
+	/**
+	 * Método responsável por chamar o serviço de listagem de todos os Produtos
+	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição do método
+	 * de listar todos os Setores da classe de Serviço
+	 */
 	@GetMapping("listar-todos")
 	public ResponseEntity<List<ProdutoDTO>> listarTodosProdutos() {
 		return produtoService.listarTodosProdutos();

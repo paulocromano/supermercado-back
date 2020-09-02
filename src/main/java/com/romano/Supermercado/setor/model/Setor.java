@@ -5,9 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 /**
@@ -22,10 +19,7 @@ public class Setor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@NotNull(message = "Nome não informado!")
-	@NotBlank(message = "Nome não pode estar vazio!")
-	@Size(min = 3, max = 40, message = "O campo nome deve ter entre 3 a 40 caracteres!")
+
 	private String nome;
 	
  	
