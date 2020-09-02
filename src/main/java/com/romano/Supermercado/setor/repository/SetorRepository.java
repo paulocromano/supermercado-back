@@ -1,5 +1,7 @@
 package com.romano.Supermercado.setor.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +15,12 @@ import com.romano.Supermercado.setor.model.Setor;
  */
 @Repository
 public interface SetorRepository extends JpaRepository<Setor, Integer> {
+
+	/**
+	 * Método responsável por buscar um Setor por nome
+	 * @param nomeSetor : String
+	 * @return Optional<Setor>
+	 */
+	Optional<Setor> findByNome(String nomeSetor);
 	
 }

@@ -49,9 +49,10 @@ public class SetorResource {
 	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta do método de cadastro de Setor da
 	 * classe de Serviço
+	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	@PostMapping
-	public ResponseEntity<Void> cadastrarSetor(@RequestBody @Valid SetorFORM setorFORM) {
+	public ResponseEntity<Void> cadastrarSetor(@RequestBody @Valid SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
 		return setorService.cadastrarSetor(setorFORM);
 	}
 	

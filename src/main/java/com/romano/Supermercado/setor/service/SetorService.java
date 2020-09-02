@@ -46,12 +46,31 @@ public class SetorService {
 	 * Método responsável por cadastrar um Setor
 	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity<Void> - Resposta da requisição de cadastro de Setor
+	 * @throws SQLIntegrityConstraintViolationException 
 	 */
-	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) {
+	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
 		Setor setor = setorFORM.conveterParaSetor();
+		
+		if (verificaSeNomeNovoSetorJaExiste(setor.getNome())) {
+			throw new SQLIntegrityConstraintViolationException("O nome do Setor informado já existe!");
+		}
+		
 		setorRepository.save(setor);
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o nome do novo Setor já existe
+	 * @param nomeSetor : String
+	 * @return Boolean - Retorna True se já existir um Setor com o nome informado. False
+	 * se não existir
+	 */
+	private Boolean verificaSeNomeNovoSetorJaExiste(String nomeSetor) {
+		Optional<Setor> setor = setorRepository.findByNome(nomeSetor);
+		
+		return (setor.isPresent()) ? true : false;
 	}
 	
 	
@@ -65,9 +84,7 @@ public class SetorService {
 		Optional<Setor> setor = setorRepository.findById(id);
 		
 		if (setor.isPresent()) {			
-			Optional<Produto> produto = produtoRepository.findFirstBySetor_Id(id);
-			
-			if (produto.isPresent()) {
+			if (verificaSeSetorPossuiLigacoesComOutrasEntidades(id)) {
 				throw new SQLIntegrityConstraintViolationException("Não foi possível remover. O Setor possui Produto(s) cadastrado(s)!");
 			}
 			
@@ -78,5 +95,19 @@ public class SetorService {
 		else {
 			throw new ObjectNotFoundException("Setor não encontrado!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o ID do setor a ser removido possui ligações
+	 * com outras Entidades
+	 * @param id : Integer
+	 * @return Boolean - Retorna True se o Setor possuir relacionamentos com outras Entidades. False
+	 * se não existir relacionamento
+	 */
+	private Boolean verificaSeSetorPossuiLigacoesComOutrasEntidades(Integer id) {
+		Optional<Produto> produto = produtoRepository.findFirstBySetor_Id(id);
+		
+		return (produto.isPresent()) ? true : false;
 	}
 }

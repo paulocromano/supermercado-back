@@ -3,7 +3,6 @@ package com.romano.Supermercado.produto.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.setor.model.Setor;
 import com.romano.Supermercado.utils.Converter;
@@ -22,7 +21,8 @@ public class ProdutoDTO {
 	private Double preco;
 	private Double desconto;
 	private Integer estoque;
-	private StatusProduto statusProduto = StatusProduto.ESGOTADO;
+	private Integer estoqueMinimo;
+	private String statusProduto;
 	private String observacoes;
 	private Setor setor;
 	
@@ -35,7 +35,8 @@ public class ProdutoDTO {
 		preco = produto.getPreco();
 		desconto = produto.getDesconto();
 		estoque = produto.getEstoque();
-		statusProduto = produto.getStatusProduto();
+		estoqueMinimo = produto.getEstoqueMinimo();
+		statusProduto = produto.getStatusProduto().getDescricao();
 		observacoes = produto.getObservacoes();
 		setor = produto.getSetor();
 	}
@@ -68,8 +69,12 @@ public class ProdutoDTO {
 	public Integer getEstoque() {
 		return estoque;
 	}
+	
+	public Integer getEstoqueMinimo() {
+		return estoqueMinimo;
+	}
 
-	public StatusProduto getStatusProduto() {
+	public String getStatusProduto() {
 		return statusProduto;
 	}
 
