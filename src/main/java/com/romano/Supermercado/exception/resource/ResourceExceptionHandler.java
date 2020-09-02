@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,13 +28,11 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de quando um Objeto não foi encontrado
 	 * @param error : ObjectNotFoundException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException error, HttpServletRequest request) {
-		
-		StandardError standardError = new StandardError(System.currentTimeMillis(), HttpStatus.NOT_FOUND.value(), error.getMessage(), request.getRequestURI());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+		return erroPersonalizado(error, HttpStatus.NOT_FOUND, error.getMessage(), request);
 	}
 
 	
@@ -41,13 +40,11 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de quando algum dado sofre alguma violação
 	 * @param error : DataIntegrityException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException error, HttpServletRequest request) {
-		
-		StandardError standardError = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Integridade de dados", request.getRequestURI());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, "Integridade de dados", request);
 	}
 	
 	
@@ -55,7 +52,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de atributos que recebem um Argumento Inválido
 	 * @param error : MethodArgumentNotValidException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException error, HttpServletRequest request) {
@@ -75,13 +72,11 @@ public class ResourceExceptionHandler {
 	 * um item que possui ligação com outras tabelas
 	 * @param error : SQLIntegrityConstraintViolationException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
 	public ResponseEntity<StandardError> integrityConstrainViolation(SQLIntegrityConstraintViolationException error, HttpServletRequest request) {
-		
-		StandardError standardError = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), error.getMessage(), request.getRequestURI());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, error.getMessage(), request);
 	}
 	
 	
@@ -89,12 +84,35 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de Argumento Ilegal
 	 * @param error : IllegalArgumentException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException error,  HttpServletRequest request) {
-		
-		StandardError standardError = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), error.getMessage(), request.getRequestURI());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
+		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, error.getMessage(), request);
+	}
+	
+	
+	/**
+	 * Método responsável por tratar o erro ao tentar acessar uma URL inexistente
+	 * @param error : HttpRequestMethodNotSupportedException
+	 * @param request : HttpServletRequest
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 */
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<StandardError> httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException error,  HttpServletRequest request) {
+		return erroPersonalizado(error, HttpStatus.NOT_FOUND, "URL requisitada não encontrada!",  request);
+	}
+	
+	
+	/**
+	 * Método responsável por tratar um erro
+	 * @param error : Exception
+	 * @param request : HttpServletRequest
+	 * @param httpStatus : HttpStatus
+	 * @param messageError : String
+	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 */
+	private ResponseEntity<StandardError> erroPersonalizado(Exception error, HttpStatus httpStatus, String messageError, HttpServletRequest request) {
+		return ResponseEntity.status(httpStatus).body(new StandardError(System.currentTimeMillis(), httpStatus.value(), messageError, request.getRequestURI()));
 	}
 }

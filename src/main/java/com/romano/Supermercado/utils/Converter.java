@@ -24,6 +24,31 @@ public final class Converter {
 	
 	
 	/**
+	 * Método responsável por converter um LocalDate para String <br>
+	 * @param data : LocalDateTime
+	 * @param pattern : String
+	 * @return String - Data convertida
+	 */
+	public static String converterLocalDateParaString(LocalDate data, String pattern) {
+		return DateTimeFormatter.ofPattern(pattern).format(data);
+	}
+	
+	
+	/**
+	 * Método responsável por converter uma data no formato de String para LocalDate <br>
+	 * Pattern da Data: "dd/MM/yyyy"
+	 * @param data : String 
+	 * @return LocalDate - Data convertida
+	 */
+	public static LocalDate converterStringParaLocalDate(String data) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
+		
+		return dataConvertida;
+	}
+	
+	
+	/**
 	 * Método responsável por converter uma data no formato de String para LocalDate
 	 * @param data : String 
 	 * @param pattern : String

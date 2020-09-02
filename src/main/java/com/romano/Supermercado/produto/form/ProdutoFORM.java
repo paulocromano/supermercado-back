@@ -132,7 +132,7 @@ public class ProdutoFORM {
 	 * @return Produto - Produto convertido
 	 */
 	public Produto converterParaProduto() {
-		return new Produto(nome, marca, Converter.converterStringParaLocalDate(dataValidade, "dd/MM/yyyy"), preco, desconto, estoque, 
+		return new Produto(nome, marca, Converter.converterStringParaLocalDate(dataValidade), preco, desconto, estoque, 
 				estoqueMinimo, setarStatusProduto(), observacoes, setor);
 	}
 	
