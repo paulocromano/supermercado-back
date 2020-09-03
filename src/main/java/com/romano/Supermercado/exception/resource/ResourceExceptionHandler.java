@@ -93,6 +93,18 @@ public class ResourceExceptionHandler {
 	
 	
 	/**
+	 * Método responsável por tratar o erro de Objeto Nulo
+	 * @param error : NullPointerException
+	 * @param request : HttpServletRequest
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 */
+	@ExceptionHandler(NullPointerException.class)
+	public ResponseEntity<StandardError> nullPointer(NullPointerException error,  HttpServletRequest request) {
+		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, error.getMessage(), request);
+	}
+	
+	
+	/**
 	 * Método responsável por tratar o erro ao tentar acessar uma URL inexistente
 	 * @param error : HttpRequestMethodNotSupportedException
 	 * @param request : HttpServletRequest

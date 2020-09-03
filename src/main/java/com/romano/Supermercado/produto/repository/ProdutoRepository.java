@@ -1,5 +1,6 @@
 package com.romano.Supermercado.produto.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,21 @@ public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 	 * @return Optional<Produto>
 	 */
 	Optional<Produto> findFirstBySetor_Id(Integer id);
+
+	
+	/**
+	 * Método responsável por buscar os produtos a partir do Setor
+	 * @param nomeSetor : String
+	 * @return List<Produto>
+	 */
+	List<Produto> findBySetor_Nome(String nomeSetor);
+
+
+	/**
+	 * Método responsável por buscar os produtos a partir do Status do Produto
+	 * @param codigo : Integer
+	 * @return List<Produto>
+	 */
+	List<Produto> findByStatusProduto(Integer codigo);
 
 }

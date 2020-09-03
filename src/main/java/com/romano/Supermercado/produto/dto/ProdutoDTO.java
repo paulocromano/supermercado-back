@@ -31,7 +31,7 @@ public class ProdutoDTO {
 		id = produto.getId();
 		nome = produto.getNome();
 		marca = produto.getMarca();
-		dataValidade = Converter.converterLocalDateParaString(produto.getDataValidade());
+		dataValidade = Converter.localDateParaString(produto.getDataValidade());
 		preco = produto.getPreco();
 		desconto = produto.getDesconto();
 		estoque = produto.getEstoque();

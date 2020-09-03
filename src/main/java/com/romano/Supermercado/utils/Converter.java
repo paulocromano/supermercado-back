@@ -18,7 +18,7 @@ public final class Converter {
 	 * @param data : LocalDateTime
 	 * @return String - Data convertida
 	 */
-	public static String converterLocalDateParaString(LocalDate data) {
+	public static String localDateParaString(LocalDate data) {
 		return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(data);
 	}
 	
@@ -29,7 +29,7 @@ public final class Converter {
 	 * @param pattern : String
 	 * @return String - Data convertida
 	 */
-	public static String converterLocalDateParaString(LocalDate data, String pattern) {
+	public static String localDateParaString(LocalDate data, String pattern) {
 		return DateTimeFormatter.ofPattern(pattern).format(data);
 	}
 	
@@ -40,7 +40,7 @@ public final class Converter {
 	 * @param data : String 
 	 * @return LocalDate - Data convertida
 	 */
-	public static LocalDate converterStringParaLocalDate(String data) {
+	public static LocalDate stringParaLocalDate(String data) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
 		
@@ -54,7 +54,7 @@ public final class Converter {
 	 * @param pattern : String
 	 * @return LocalDate - Data convertida
 	 */
-	public static LocalDate converterStringParaLocalDate(String data, String pattern) {
+	public static LocalDate stringParaLocalDate(String data, String pattern) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 		LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
 		
@@ -63,12 +63,26 @@ public final class Converter {
 	
 	
 	/**
-	 * Método responsável por converter um LocalDateTime com a data e horário atual para String
+	 * Método responsável por converter um LocalDateTime com a data e horário atual para String <br>
+	 * Pattern Data e Hora: dd/MM/yyyy HH:mm:ss
 	 * @return String - Data convertida
 	 */
-	public static String converterLocalDateTimeAtualParaString() {
+	public static String localDateTimeAtualParaString() {
 	    LocalDateTime agora = LocalDateTime.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+	    
+	    return formatter.format(agora);
+	}
+	
+	
+	/**
+	 * Método responsável por converter um LocalDateTime com a data e horário atual para String
+	 * @param pattern : String
+	 * @return String - Data convertida
+	 */
+	public static String localDateTimeAtualParaString(String pattern) {
+	    LocalDateTime agora = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 	    
 	    return formatter.format(agora);
 	}
@@ -78,7 +92,7 @@ public final class Converter {
 	 * @param valor : Double
 	 * @return String - Valor convertido com duas casas decimais
 	 */
-	public static String converterDoubleParaDuasCasasDecimaisEmString(Double valor) {		
+	public static String doubleParaDuasCasasDecimaisEmString(Double valor) {		
 		return new DecimalFormat("#.00").format(valor).replace(',', '.');
 	}
 }

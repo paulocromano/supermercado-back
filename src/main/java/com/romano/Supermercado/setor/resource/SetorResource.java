@@ -26,7 +26,7 @@ import com.romano.Supermercado.setor.service.SetorService;
  * Classe responsável por chamar os métodos do Service de Setor
  */
 @RestController
-@RequestMapping(value = "/setor")
+@RequestMapping("/setor")
 public class SetorResource {
 	
 	@Autowired
@@ -35,8 +35,7 @@ public class SetorResource {
 	
 	/**
 	 * Método responsável por chamar o serviço de listagem de todos os Setores
-	 * @return ResponseEntity<List<SetorDTO>> - Retorna a resposta da requisição do método
-	 * de listar todos os Setores da classe de Serviço
+	 * @return ResponseEntity<List<SetorDTO>> - Retorna a resposta da requisição
 	 */
 	@GetMapping("/listar-todos")
 	public ResponseEntity<List<SetorDTO>> listarTodosSetores() {
@@ -47,8 +46,7 @@ public class SetorResource {
 	/**
 	 * Método responsável por chamar o serviço de cadastro de Setor
 	 * @param setorFORM : SetorFORM
-	 * @return ResponseEntity<Void> - Retorna a resposta do método de cadastro de Setor da
-	 * classe de Serviço
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	@PostMapping
@@ -60,8 +58,7 @@ public class SetorResource {
 	/**
 	 * Método responsável por remover um Setor
 	 * @param id : Integer
-	 * @return ResponseEntity<Void> - Retorna a resposta do método de remover um Setor da classe
-	 * de Serviço 
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 * @throws SQLIntegrityConstraintViolationException
 	 */
 	@DeleteMapping("/{id}")

@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
-import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.setor.model.Setor;
 import com.romano.Supermercado.utils.Converter;
@@ -22,12 +21,12 @@ public class ProdutoFORM {
 
 	@NotNull(message = "Nome do Produto não informado!")
 	@NotBlank(message = "Nome do Produto não pode estar vazio!")
-	@Size(min = 3, max = 40, message = "O campo nome deve ter entre 3 a 40 caracteres!")
+	@Size(min = 3, max = 40, message = "O campo nome deve ter entre {min} a {max} caracteres!")
 	private String nome;
 	
 	@NotNull(message = "Nome da Marca não informada!")
 	@NotBlank(message = "Nome da Marca não pode estar vazio!")
-	@Size(max = 30, message = "Nome da Marca excedeu o limite de caracteres!")
+	@Size(max = 30, message = "Nome da Marca excedeu o limite de {max} caracteres!")
 	private String marca;
 	
 	@NotNull(message = "Data de Nascimento não informada!")
@@ -35,30 +34,25 @@ public class ProdutoFORM {
 	private String dataValidade;
 	
 	@NotNull(message = "Preço não informado!")
-	@NotBlank(message = "Preço não pode estar vazio!")
 	@NumberFormat(pattern = "#.##")
 	private Double preco;
 	
 	@NotNull(message = "Desconto não informado!")
-	@NotBlank(message = "Desconto não pode estar vazio!")
 	@NumberFormat(pattern = "#.##")
 	private Double desconto;
 	
 	@NotNull(message = "Estoque não informado!")
-	@NotBlank(message = "Estoque não pode estar vazio!")
-	@Digits(integer = 6, fraction = 0, message = "Tamanho do Estoque excedeu o limite!")
+	@Digits(integer = 6, fraction = 0, message = "Tamanho do Estoque excedeu o limite! ({integer} digitos)")
 	private Integer estoque;
 	
 	@NotNull(message = "Estoque Mínimo não informado!")
-	@NotBlank(message = "Estoque Mínimo não pode estar vazio!")
-	@Digits(integer = 4, fraction = 0, message = "Tamanho do Estoque Mínimo excedeu o limite!")
+	@Digits(integer = 4, fraction = 0, message = "Tamanho do Estoque Mínimo excedeu o limite! ({integer} digitos)")
 	private Integer estoqueMinimo;
 	
-	@Size(max = 100, message = "Observações excedeu o limite de caracteres!")
+	@Size(max = 100, message = "Observações excedeu o limite de {max} caracteres!")
 	private String observacoes;
 	
 	@NotNull(message = "Setor não informado!")
-	@NotBlank(message = "Setor não pode estar vazio!")
 	private Setor setor;
 
 	
@@ -109,6 +103,14 @@ public class ProdutoFORM {
 	public void setEstoque(Integer estoque) {
 		this.estoque = estoque;
 	}
+	
+	public Integer getEstoqueMinimo() {
+		return estoque;
+	}
+
+	public void setEstoqueMinimo(Integer estoqueMinimo) {
+		this.estoqueMinimo = estoqueMinimo;
+	}
 
 	public String getObservacoes() {
 		return observacoes;
@@ -132,23 +134,7 @@ public class ProdutoFORM {
 	 * @return Produto - Produto convertido
 	 */
 	public Produto converterParaProduto() {
-		return new Produto(nome, marca, Converter.converterStringParaLocalDate(dataValidade), preco, desconto, estoque, 
-				estoqueMinimo, setarStatusProduto(), observacoes, setor);
-	}
-	
-	
-	/**
-	 * Método responsável por setar o Status do Produto conforme a quantidade em estoque
-	 * @return StatusProduto
-	 */
-	private StatusProduto setarStatusProduto() {
-		if (estoque == 0) {
-			return StatusProduto.ESGOTADO;
-		}
-		else if (estoque < estoqueMinimo) {
-			return StatusProduto.ESTOQUE_BAIXO;
-		}
-		
-		return StatusProduto.ATIVO;
+		return new Produto(nome, marca, Converter.stringParaLocalDate(dataValidade), Produto.temDesconto(preco, desconto), 
+				desconto, estoque, estoqueMinimo, observacoes, setor);
 	}
 }

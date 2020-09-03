@@ -8,8 +8,9 @@ package com.romano.Supermercado.produto.enums;
  */
 public enum StatusProduto {
 	ATIVO(1, "Ativo"),
-	ESTOQUE_BAIXO(2, "Estoque Baixo"),
-	ESGOTADO(3, "Esgotado");
+	INATIVO(2, "Inativo"),
+	ESTOQUE_BAIXO(3, "Estoque Baixo"),
+	ESGOTADO(4, "Esgotado");
 	
 	private Integer codigo;
 	private String descricao;

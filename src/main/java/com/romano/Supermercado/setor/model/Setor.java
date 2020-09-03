@@ -23,7 +23,7 @@ public class Setor {
 
 	@Column(unique = true)
 	private String nome;
-	
+
  	
 	public Setor() {
 		

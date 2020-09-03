@@ -66,7 +66,7 @@ public class Produto {
 	 * @param setor : Setor
 	 */
 	public Produto(String nome, String marca, LocalDate dataValidade, Double preco, Double desconto, Integer estoque, 
-			Integer estoqueMinimo, StatusProduto statusProduto, String observacoes, Setor setor) {
+			Integer estoqueMinimo, String observacoes, Setor setor) {
 		this.nome = nome;
 		this.marca = marca;
 		this.dataValidade = dataValidade;
@@ -74,7 +74,7 @@ public class Produto {
 		this.desconto = desconto;
 		this.estoque = estoque;
 		this.estoqueMinimo = estoqueMinimo;
-		this.statusProduto = statusProduto.getCodigo();
+		atualizarStatusProduto();
 		this.observacoes = observacoes;
 		this.setor = setor;
 	}
@@ -146,5 +146,37 @@ public class Produto {
 	
 	public Setor getSetor() {
 		return setor;
+	}
+	
+	
+	/**
+	 * Método para atualizar o preço do Produto caso ele tenha desconto
+	 * @param preco : Double
+	 * @param desconto : Double
+	 * @return Double - Preço atualizado caso tenha desconto
+	 */
+	public static Double temDesconto(Double preco, Double desconto) {
+		if (desconto != 0D) {
+			preco -= (preco * desconto) / 100.0D; 
+		}
+		
+		return preco;
+	}
+	
+	/**
+	 * Método responsável por atualizar o Status do Produto conforme a quantidade em estoque
+	 */
+	public void atualizarStatusProduto() {
+		if (estoque == 0) {
+			statusProduto = StatusProduto.ESGOTADO.getCodigo();
+		}
+		
+		else if (estoque < estoqueMinimo) {
+			statusProduto = StatusProduto.ESTOQUE_BAIXO.getCodigo();
+		}
+		
+		else {
+			statusProduto = StatusProduto.ATIVO.getCodigo();
+		}
 	}
 }

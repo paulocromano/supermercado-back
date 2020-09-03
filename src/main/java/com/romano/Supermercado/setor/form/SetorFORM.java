@@ -28,7 +28,7 @@ public class SetorFORM {
 	}
 	
 	
-	public Setor conveterParaSetor() {
+	public Setor converterParaSetor() {
 		return new Setor(nome);
 	}
 }

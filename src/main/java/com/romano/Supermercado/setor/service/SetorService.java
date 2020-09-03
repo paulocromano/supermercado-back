@@ -49,7 +49,7 @@ public class SetorService {
 	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
-		Setor setor = setorFORM.conveterParaSetor();
+		Setor setor = setorFORM.converterParaSetor();
 		
 		if (verificaSeNomeNovoSetorJaExiste(setor.getNome())) {
 			throw new SQLIntegrityConstraintViolationException("O nome do Setor informado já existe!");
