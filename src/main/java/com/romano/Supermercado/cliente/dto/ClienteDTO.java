@@ -1,8 +1,10 @@
 package com.romano.Supermercado.cliente.dto;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.utils.Converter;
 
@@ -16,7 +18,7 @@ public class ClienteDTO {
 	private Long id; 
 	private String nome;
 	private String email;
-	private Integer perfil;
+	private Set<PerfilCliente> perfis;
 	private String senha;
 	private String dataNascimento;
 	private String sexo;
@@ -38,7 +40,7 @@ public class ClienteDTO {
 		id = cliente.getId();
 		nome = cliente.getNome();
 		email = cliente.getEmail();
-		perfil = cliente.getPerfil();
+		perfis = cliente.getPerfis();
 		senha = cliente.getSenha();
 		
 		if (cliente.getDataNascimento() != null) {
@@ -68,9 +70,9 @@ public class ClienteDTO {
 	public String getEmail() {
 		return email;
 	}
-
-	public Integer getPerfil() {
-		return perfil;
+	
+	public Set<PerfilCliente> getPerfisCliente () {
+		return perfis;
 	}
 	
 	public String getSenha() {

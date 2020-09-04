@@ -1,9 +1,15 @@
 package com.romano.Supermercado.cliente.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +38,9 @@ public class Cliente {
 	@Column(unique = true)
 	private String email;
 	
-	private Integer perfil;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "perfil")
+	private Set<Integer> perfis = new HashSet<>();
 	
 	@JsonIgnore
 	private String senha;
@@ -67,7 +75,7 @@ public class Cliente {
 		this.nome = nome;
 		this.sexo = SexoCliente.converterParaEnum(sexo).getSexoAbreviado();
 		this.email = email;
-		this.perfil = PerfilCliente.CLIENTE.getCodigo();
+		adicionaPerfis(PerfilCliente.CLIENTE);
 		this.senha = senha;
 	}
 
@@ -84,8 +92,8 @@ public class Cliente {
 		return email;
 	}
 
-	public Integer getPerfil() {
-		return perfil;
+	public Set<PerfilCliente> getPerfis() {
+		return perfis.stream().map(perfil -> PerfilCliente.converterParaEnum(perfil)).collect(Collectors.toSet());
 	}
 	
 	public String getSenha() {
@@ -140,8 +148,8 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public void setPerfil(Integer perfil) {
-		this.perfil = perfil;
+	public void adicionaPerfis(PerfilCliente perfil) {
+		this.perfis.add(perfil.getCodigo());
 	}
 
 	public void setDataNascimento(LocalDate dataNascimento) {
