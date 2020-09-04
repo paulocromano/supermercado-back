@@ -1,5 +1,6 @@
 package com.romano.Supermercado.produto.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,6 +70,58 @@ public class ProdutoService {
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtoRepository.findByStatusProduto(statusProduto.getCodigo())));
 	}
 	
+	
+	/**
+	 * Método responsável por listar os Produtos com estoque baixo
+	 * @return ResponseEntity<List<ProdutoDTO>>
+	 */
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosComEstoqueBaixo() {
+		List<Produto> produtos = produtoRepository.findAll();
+		produtos.removeIf(produto -> produto.getStatusProduto() != StatusProduto.ESTOQUE_BAIXO);
+		
+		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtos));
+	}
+	
+	
+	/**
+	 * Método responsável por listar os Produtos com os dias até a validade dentro do valor específicado. Caso
+	 * não seja específicado o dia, será verificado a partir do valor padrão 10.
+	 * @param dias : Integer - Dias restantes até a validade do Produto
+	 * @return ResponseEntity<List<ProdutoDTO>>
+	 */
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelosDiasRestantesDaValidade(Integer dias) {
+		if (dias == null) {
+			throw new NullPointerException("A quantidade de dias não pode estar vazia!");
+		}
+		
+		LocalDate dataAtual = LocalDate.now();
+		List<Produto> produtos = produtoRepository.findAll();
+		produtos.removeIf(produto -> verificaDataValidadePelosDiasRestantes(dataAtual, produto.getDataValidade(), dias));
+		
+		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtos));
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se a data de validade do Produto está dentro da
+	 * quantidade de dias informado
+	 * @param dataAtual : LocalDate
+	 * @param dataValidade : LocalDate
+	 * @param dias : Integer
+	 * @return Boolean - True se o Produto estiver dentro do período de dias informado até
+	 * a validade do Produto. False se estiver fora.
+	 */
+	private Boolean verificaDataValidadePelosDiasRestantes(LocalDate dataAtual, LocalDate dataValidade, Integer dias) {
+		if (dataValidade.getYear() == dataAtual.getYear()) {
+			if (dataValidade.getMonthValue() == dataAtual.getMonthValue()) {
+				if ((dataValidade.getDayOfMonth() - dataAtual.getDayOfMonth()) <= dias) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Método responsável por cadastrar um Produto

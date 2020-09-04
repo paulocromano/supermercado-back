@@ -38,7 +38,7 @@ public enum StatusProduto {
 	 */
 	public static StatusProduto converterParaEnum(Integer codigo) {
 		if (codigo == null) {
-			return null;
+			throw new NullPointerException("O Status do Produto não pode estar nulo!");
 		}
 		
 		for (StatusProduto statusProdutoAtual : StatusProduto.values()) {

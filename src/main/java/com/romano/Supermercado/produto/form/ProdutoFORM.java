@@ -1,7 +1,7 @@
 package com.romano.Supermercado.produto.form;
 
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -19,17 +19,17 @@ import com.romano.Supermercado.utils.Converter;
  */
 public class ProdutoFORM {
 
-	@NotNull(message = "Nome do Produto não informado!")
-	@NotBlank(message = "Nome do Produto não pode estar vazio!")
+	@NotNull(message = "Campo Produto não informado!")
+	@NotEmpty(message = "O campo Produto não pode estar vazio!")
 	@Size(min = 3, max = 40, message = "O campo nome deve ter entre {min} a {max} caracteres!")
 	private String nome;
 	
-	@NotNull(message = "Nome da Marca não informada!")
-	@NotBlank(message = "Nome da Marca não pode estar vazio!")
+	@NotNull(message = "Campo Marca não informada!")
+	@NotEmpty(message = "O campo Marca não pode estar vazio!")
 	@Size(max = 30, message = "Nome da Marca excedeu o limite de {max} caracteres!")
 	private String marca;
 	
-	@NotNull(message = "Data de Nascimento não informada!")
+	@NotNull(message = "Data de Validade não informada!")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private String dataValidade;
 	
@@ -49,7 +49,7 @@ public class ProdutoFORM {
 	@Digits(integer = 4, fraction = 0, message = "Tamanho do Estoque Mínimo excedeu o limite! ({integer} digitos)")
 	private Integer estoqueMinimo;
 	
-	@Size(max = 100, message = "Observações excedeu o limite de {max} caracteres!")
+	@Size(max = 100, message = "O campo Observações excedeu o limite de {max} caracteres!")
 	private String observacoes;
 	
 	@NotNull(message = "Setor não informado!")

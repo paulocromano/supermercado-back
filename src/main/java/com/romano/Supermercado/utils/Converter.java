@@ -1,6 +1,7 @@
 package com.romano.Supermercado.utils;
 
 import java.text.DecimalFormat;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +20,13 @@ public final class Converter {
 	 * @return String - Data convertida
 	 */
 	public static String localDateParaString(LocalDate data) {
-		return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(data);
+		try {
+			return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(data);
+		}
+		
+		catch (NullPointerException e) {
+			throw new NullPointerException("A data está nula!");
+		}
 	}
 	
 	
@@ -30,7 +37,17 @@ public final class Converter {
 	 * @return String - Data convertida
 	 */
 	public static String localDateParaString(LocalDate data, String pattern) {
-		return DateTimeFormatter.ofPattern(pattern).format(data);
+		try {
+			return DateTimeFormatter.ofPattern(pattern).format(data);
+		}
+		
+		catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("O formato do pattern de data é inválido!");
+		}
+
+		catch (NullPointerException e) {
+			throw new NullPointerException("A data está nula!");
+		}
 	}
 	
 	
@@ -41,10 +58,16 @@ public final class Converter {
 	 * @return LocalDate - Data convertida
 	 */
 	public static LocalDate stringParaLocalDate(String data) {
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
-		
-		return dataConvertida;
+		try {
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
+			
+			return dataConvertida;
+		}
+
+		catch (NullPointerException e) {
+			throw new NullPointerException("A data está nula!");
+		}
 	}
 	
 	
@@ -55,10 +78,20 @@ public final class Converter {
 	 * @return LocalDate - Data convertida
 	 */
 	public static LocalDate stringParaLocalDate(String data, String pattern) {
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-		LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
+		try {
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+			LocalDate dataConvertida = LocalDate.parse(data, dateFormatter);
+			
+			return dataConvertida;
+		}
 		
-		return dataConvertida;
+		catch (DateTimeException e) {
+			throw new DateTimeException("O formato da data não pode ser convertida!");
+		}
+		
+		catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("O formato do pattern de data é inválido!");
+		}
 	}
 	
 	
@@ -81,10 +114,16 @@ public final class Converter {
 	 * @return String - Data convertida
 	 */
 	public static String localDateTimeAtualParaString(String pattern) {
-	    LocalDateTime agora = LocalDateTime.now();
-	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-	    
-	    return formatter.format(agora);
+		try {
+		    LocalDateTime agora = LocalDateTime.now();
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+		    
+		    return formatter.format(agora);
+		}
+		
+		catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("O formato do pattern de data é inválido!");
+		}
 	}
 	
 	/**

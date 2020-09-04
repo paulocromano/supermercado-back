@@ -24,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private static final String[] CAMINHOS_LIBERADOS_GET = {
 			"/produto/**",
-			"/setor/**"
+			"/setor/**",
+			"/cliente/**"
 	};
 
 	
@@ -37,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable();
 		
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET, CAMINHOS_LIBERADOS_GET).permitAll()
+			.antMatchers(CAMINHOS_LIBERADOS_GET).permitAll()
 			.anyRequest().authenticated();
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

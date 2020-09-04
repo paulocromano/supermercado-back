@@ -51,7 +51,7 @@ public class ProdutoResource {
 	 * @param nomeSetor : String
 	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
 	 */
-	@GetMapping("/listar-por-setor={nomeSetor}")
+	@GetMapping("/listar-setor={nomeSetor}")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPorNomeSetor(@PathVariable String nomeSetor) {
 		return produtoService.listarProdutosPorNomeSetor(nomeSetor);
 	}
@@ -62,9 +62,31 @@ public class ProdutoResource {
 	 * @param codigoStatus : Integer
 	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
 	 */
-	@GetMapping("/listar-por-status={codigoStatus}")
+	@GetMapping("/listar-status={codigoStatus}")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPeloStatus(@PathVariable Integer codigoStatus) {
 		return produtoService.listarProdutosPeloStatus(codigoStatus);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de listar os Produtos que estão com estoque baixo
+	 * @return ResponseEntity<List<ProdutoDTO>>
+	 */
+	@GetMapping("/listar-estoque-baixo")
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosComEstoqueBaixo() {
+		return produtoService.listarProdutosComEstoqueBaixo();
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de listar os Produtos que estão dentro do período
+	 * de dias até a validade do Produto
+	 * @param dias : Integer
+	 * @return ResponseEntity<List<ProdutoDTO>>
+	 */
+	@GetMapping("/listar-dias-validade={dias}")
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelosDiasRestantesDaValidade(@PathVariable Integer dias) {
+		return produtoService.listarProdutosPelosDiasRestantesDaValidade(dias);
 	}
 	
 	

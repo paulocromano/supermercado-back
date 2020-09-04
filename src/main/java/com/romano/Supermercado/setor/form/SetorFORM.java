@@ -1,6 +1,6 @@
 package com.romano.Supermercado.setor.form;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,8 +14,8 @@ import com.romano.Supermercado.setor.model.Setor;
 public class SetorFORM {
  
 	@NotNull(message = "Nome não informado!")
-	@NotBlank(message = "Nome não pode estar vazio!")
-	@Size(min = 3, max = 40, message = "O campo nome deve ter entre 3 a 40 caracteres!")
+	@NotEmpty(message = "O campo Nome não pode estar vazio!")
+	@Size(min = 3, max = 40, message = "O campo nome deve ter entre {min} a {max} caracteres!")
 	private String nome;
 
 	
