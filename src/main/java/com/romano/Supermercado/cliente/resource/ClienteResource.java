@@ -7,7 +7,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +38,7 @@ public class ClienteResource {
 	 * Método responsável por chamar o serviço de listar todos os Clientes
 	 * @return ResponseEntity<List<ClienteDTO>> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos")
 	public ResponseEntity<List<ClienteDTO>> listarTodosClientes() {
 		return clienteService.listarTodosClientes();
@@ -50,5 +54,17 @@ public class ClienteResource {
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Void> cadastrarCliente(@RequestBody @Valid ClienteFORM clienteFORM) throws SQLIntegrityConstraintViolationException {
 		return clienteService.cadastrarCliente(clienteFORM);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de remoção de Cliente
+	 * @param id : Long
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@DeleteMapping("/remover/{id}")
+	public ResponseEntity<Void> removerCliente(@PathVariable Long id) {
+		return clienteService.removerCliente(id);
 	}
 }

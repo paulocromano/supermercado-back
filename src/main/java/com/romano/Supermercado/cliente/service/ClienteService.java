@@ -70,4 +70,15 @@ public class ClienteService {
 		
 		return (cliente.isPresent()) ? true : false;
 	}
+	
+	
+	/**
+	 * Método responsável por remover um Cliente
+	 * @param id : Long
+	 * @return ResponseEntity<Void>
+	 */
+	public ResponseEntity<Void> removerCliente(Long id) {
+		// TODO
+		return ResponseEntity.ok().build();
+	}
 }

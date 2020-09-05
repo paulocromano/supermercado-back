@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +63,7 @@ public class ProdutoResource {
 	 * @param codigoStatus : Integer
 	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-status={codigoStatus}")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPeloStatus(@PathVariable Integer codigoStatus) {
 		return produtoService.listarProdutosPeloStatus(codigoStatus);
@@ -72,6 +74,7 @@ public class ProdutoResource {
 	 * Método responsável por chamar o serviço de listar os Produtos que estão com estoque baixo
 	 * @return ResponseEntity<List<ProdutoDTO>>
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-estoque-baixo")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosComEstoqueBaixo() {
 		return produtoService.listarProdutosComEstoqueBaixo();
@@ -84,6 +87,7 @@ public class ProdutoResource {
 	 * @param dias : Integer
 	 * @return ResponseEntity<List<ProdutoDTO>>
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-dias-validade={dias}")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelosDiasRestantesDaValidade(@PathVariable Integer dias) {
 		return produtoService.listarProdutosPelosDiasRestantesDaValidade(dias);
@@ -95,6 +99,7 @@ public class ProdutoResource {
 	 * @param produtoFORM : ProdutoFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping("/cadastrar")
 	public ResponseEntity<Void> cadastrarProduto(@RequestBody @Valid ProdutoFORM produtoFORM) {
 		return produtoService.cadastrarProduto(produtoFORM);
@@ -107,6 +112,7 @@ public class ProdutoResource {
 	 * @param atualizarProdutoFORM : AtualizarProdutoFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
 	@PutMapping("/atualizar/{id}")
 	public ResponseEntity<Void> atualizarProduto(@PathVariable Integer id, @RequestBody @Valid AtualizarProdutoFORM atualizarProdutoFORM) {
@@ -119,6 +125,7 @@ public class ProdutoResource {
 	 * @param id : Integer
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/remover/{id}")
 	public ResponseEntity<Void> removerProduto(@PathVariable Integer id) {
 		return produtoService.removerProduto(id);

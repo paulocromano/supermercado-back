@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class SetorResource {
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 * @throws SQLIntegrityConstraintViolationException 
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Void> cadastrarSetor(@RequestBody @Valid SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
 		return setorService.cadastrarSetor(setorFORM);
@@ -61,6 +63,7 @@ public class SetorResource {
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 * @throws SQLIntegrityConstraintViolationException
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) throws SQLIntegrityConstraintViolationException {
 		return setorService.removerSetor(id);

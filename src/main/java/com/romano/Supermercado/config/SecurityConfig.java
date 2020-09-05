@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,8 +21,14 @@ import com.romano.Supermercado.security.JWTAuthorizationFilter;
 import com.romano.Supermercado.security.JWTUtil;
 
 
+/**
+ * 
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * Classe de configuração de segurança da aplicação
+ */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -36,8 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //	};
 	
 	private static final String[] CAMINHOS_LIBERADOS_GET = {
-			//"/produto/**",
-			"/setor/**",
+			"/produto/**",
+			"/setor/**"
+	};
+	
+	private static final String[] CAMINHOS_LIBERADOS_POST = {
 			"/cliente/**"
 	};
 
@@ -51,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable();
 		
 		http.authorizeRequests()
+			.antMatchers(HttpMethod.POST, CAMINHOS_LIBERADOS_POST).permitAll()
 			.antMatchers(HttpMethod.GET, CAMINHOS_LIBERADOS_GET).permitAll()
 			.anyRequest().authenticated();
 		
