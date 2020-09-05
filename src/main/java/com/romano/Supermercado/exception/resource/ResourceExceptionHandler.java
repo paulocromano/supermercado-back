@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 
@@ -115,6 +116,17 @@ public class ResourceExceptionHandler {
 		return erroPersonalizado(error, HttpStatus.NOT_FOUND, "URL requisitada não encontrada!",  request);
 	}
 	
+	
+	/**
+	 * Método responsável por tratar o erro ao dar Acesso Negado
+	 * @param error : HttpRequestMethodNotSupportedException
+	 * @param request : HttpServletRequest
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 */
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException error,  HttpServletRequest request) {
+		return erroPersonalizado(error, HttpStatus.FORBIDDEN, error.getMessage(),  request);
+	}
 	
 	/**
 	 * Método responsável por tratar um erro

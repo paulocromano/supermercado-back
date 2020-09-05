@@ -10,9 +10,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.romano.Supermercado.cliente.dto.ClienteDTO;
+import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
+import com.romano.Supermercado.exception.service.AuthorizationException;
+import com.romano.Supermercado.exception.service.ObjectNotFoundException;
+import com.romano.Supermercado.security.UsuarioSecurity;
+import com.romano.Supermercado.usuario.service.UsuarioService;
 
 
 /**
@@ -38,6 +43,27 @@ public class ClienteService {
 		return ResponseEntity.ok().body(ClienteDTO.converterParaListaClienteDTO(clienteRepository.findAll()));
 	}
 	
+	
+	/**
+	 * Método responsável por buscar o Cliente pelo ID 
+	 * @param id : Long
+	 * @return ResponseEntity<ClienteDTO>
+	 */
+	public ResponseEntity<ClienteDTO> buscarClientePorID(Long id) {
+		UsuarioSecurity usuario = UsuarioService.authenticated();
+		
+		if (usuario == null ||  !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+				
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		
+		if (cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Cliente não encontrado!");
+		}
+		
+		return ResponseEntity.ok().body(new ClienteDTO(cliente.get()));
+	}
 	
 	/**
 	 * Método responsável por cadastrar um novo Cliente

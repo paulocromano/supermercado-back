@@ -41,12 +41,21 @@ public class UsuarioSecurity implements UserDetails {
 		this.id = id;
 		this.email = email;
 		this.senha = senha;
-		this.autorizacoes = perfis.stream().map(perfil -> new SimpleGrantedAuthority(perfil.getDescicao())).collect(Collectors.toList());
+		this.autorizacoes = perfis.stream().map(perfil -> new SimpleGrantedAuthority(perfil.getDescricao())).collect(Collectors.toList());
 	}
 
 
 	public Long getId() {
 		return id;
+	}
+	
+	/**
+	 * Método responsável por verificar se o Usuário tem um perfil válido
+	 * @param perfil : PerfilCliente
+	 * @return Boolean
+	 */
+	public Boolean hasRole(PerfilCliente perfil) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
 	}
 
 	

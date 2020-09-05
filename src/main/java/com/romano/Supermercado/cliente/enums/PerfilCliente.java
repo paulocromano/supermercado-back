@@ -25,7 +25,7 @@ public enum PerfilCliente {
 		return codigo;
 	}
 
-	public String getDescicao() {
+	public String getDescricao() {
 		return descicao;
 	}
 	

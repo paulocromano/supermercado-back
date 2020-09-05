@@ -46,6 +46,17 @@ public class ClienteResource {
 	
 	
 	/**
+	 * Método responsável por chamar o serviço de buscar o Cliente pelo ID
+	 * @param id : Long
+	 * @return ResponseEntity<ClienteDTO> - Retorna a resposta da requisição
+	 */
+	@GetMapping("/buscar-id={id}")
+	public ResponseEntity<ClienteDTO> buscarClientePorID(@PathVariable Long id) {
+		return clienteService.buscarClientePorID(id);
+	}
+	
+	
+	/**
 	 * Método responsável por chamar o serviço de cadastro de Cliente
 	 * @param clienteFORM : ClienteFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
