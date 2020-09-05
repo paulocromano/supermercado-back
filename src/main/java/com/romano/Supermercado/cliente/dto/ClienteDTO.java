@@ -71,7 +71,7 @@ public class ClienteDTO {
 		return email;
 	}
 	
-	public Set<PerfilCliente> getPerfisCliente () {
+	public Set<PerfilCliente> getPerfis() {
 		return perfis;
 	}
 	

@@ -14,7 +14,7 @@ import com.romano.Supermercado.cliente.model.Cliente;
  * Interface responsável por acessar os dados de Cliente no Banco de Dados
  */
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long>{
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
 	/**
 	 * Método responsável por buscar um Cliente pelo email
@@ -22,5 +22,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 	 * @return Optional<Cliente>
 	 */
 	Optional<Cliente> findByEmail(String email);
-
 }
