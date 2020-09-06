@@ -2,6 +2,7 @@ package com.romano.Supermercado.cliente.form;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,6 +26,7 @@ public class AtualizarClienteFORM {
 	
 	@NotEmpty(message = "O campo Telefone não pode estar vazio!")
 	@Size(max = 15, message = "O campo Telefone excedeu o limite de {max} caracteres!")
+	@Pattern(regexp = "(\\(\\d{2}\\)\\s)(\\d{4,5}\\-\\d{4})", message = "Telefone inválido!")
 	private String telefone;
 	
 	@NotNull(message = "Campo Logradouro não informado!")
@@ -53,6 +55,7 @@ public class AtualizarClienteFORM {
 	@NotNull(message = "Campo CEP não informado!")
 	@NotEmpty(message = "O campo CEP não pode estar vazio!")
 	@Size(max = 9, message = "O campo CEP excedeu o limite de {max} caracteres!")
+	@Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP inválido!")
 	private String cep;
 	
 	@NotNull(message = "Campo UF não informado!")

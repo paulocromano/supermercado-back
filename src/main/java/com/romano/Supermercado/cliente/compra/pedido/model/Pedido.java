@@ -15,6 +15,7 @@ import javax.persistence.Table;
 
 import com.romano.Supermercado.cliente.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.cliente.model.Cliente;
+import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
@@ -32,6 +33,9 @@ public class Pedido {
 	@Column(name = "data_hora_pedido")
 	private String dataHora;
 	
+	@Column(name = "preco_total")
+	private Double total;
+	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -40,12 +44,29 @@ public class Pedido {
 	private Set<ItemPedido> itens = new HashSet<>();
 
 	
+	public Pedido() {
+
+	}
+	
+	
+	public Pedido( Cliente cliente, Set<ItemPedido> itens) {
+		this.dataHora = Converter.localDateTimeAtualParaString();
+		this.cliente = cliente;
+		this.itens = itens;
+		total = calculoTotalPedido();
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
 
 	public String getDataHora() {
 		return dataHora;
+	}
+	
+	public Double getTotal() {
+		return total;
 	}
 
 	public Cliente getCliente() {
@@ -55,4 +76,19 @@ public class Pedido {
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}	
+	
+	
+	/**
+	 * Método responsável por calcular o total do Pedido
+	 * @return Double - Total
+	 */
+	private Double calculoTotalPedido() {
+		total = 0D;
+		
+		for (ItemPedido itemAtual : itens) {
+			total += itemAtual.getPreco() * itemAtual.getQuantidade();
+		}
+		
+		return total;
+	}
 }

@@ -76,7 +76,7 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> cadastrarCliente(ClienteFORM clienteFORM) {
-		Cliente cliente = clienteFORM.converterparaCliente(bCryptPasswordEncoder);
+		Cliente cliente = clienteFORM.converterParaCliente(bCryptPasswordEncoder);
 
 		if (verificarSeEmailJaExiste(cliente.getEmail())) {
 			throw new DataIntegrityException("Email indisponível!");
@@ -119,6 +119,27 @@ public class ClienteService {
 	
 	
 	/**
+	 * Método responsável por adicionar permissão a um Cliente
+	 * @param idAdmin : Long
+	 * @param idCliente : Long
+	 * @return ResponseEntity<Void>
+	 */
+	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idAdmin, Long idCliente) {
+		usuarioTemPermissaoParaAdicionarPerfil(idAdmin, idCliente);
+		
+		Cliente cliente = clienteRepository.getOne(idCliente);
+		
+		if (cliente.getPerfis().contains(PerfilCliente.ADMIN)) {
+			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
+		}
+		
+		cliente.adicionarPerfis(PerfilCliente.ADMIN);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
 	 * Método responsável por remover um Cliente
 	 * @param id : Long
 	 * @return ResponseEntity<Void>
@@ -155,12 +176,30 @@ public class ClienteService {
 	private void usuarioTemPermissaoParaAtualizarOsDados(Long id) {
 		UsuarioSecurity usuario = UsuarioService.authenticated();
 		
-		if (id == null) {
-			throw new ObjectNotFoundException("Cliente informado não existe!");
+		if (id == null || !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o Usuário logado tem permissão para
+	 * adicionar um Perfil a outro usuário
+	 * @param idAdmin : Long
+	 * @param idCliente : Long
+	 */
+	private void usuarioTemPermissaoParaAdicionarPerfil(Long idAdmin, Long idCliente) {
+		UsuarioSecurity usuario = UsuarioService.authenticated();
+
+		if (idAdmin == null || idCliente == null && !usuario.hasRole(PerfilCliente.ADMIN)) {
+			throw new AuthorizationException("Acesso negado!");
 		}
 		
-		if (!id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
+		Optional<Cliente> clienteAdministrador =  clienteRepository.findById(idAdmin);
+		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
+		
+		if (clienteAdministrador.isEmpty() || cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Administrador e/ou Cliente não encontrado(s)!");
 		}
 	}
 }

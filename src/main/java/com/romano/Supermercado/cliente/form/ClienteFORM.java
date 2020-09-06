@@ -1,7 +1,9 @@
 package com.romano.Supermercado.cliente.form;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,11 +30,14 @@ public class ClienteFORM {
 	@NotNull(message = "Email informado!")
 	@NotEmpty(message = "O campo Email não pode estar vazio!")
 	@Size(min = 3, max = 40, message = "O campo email deve ter entre {min} a {max} caracteres!")
+	@Email(regexp = "^[-a-zA-Z0-9][-.a-zA-Z0-9]*@[-.a-zA-Z0-9]+(\\.[-.a-zA-Z0-9]+)*\\.(com|edu|info|gov|int|mil|net|org|biz|name|museum|coop|aero|pro|tv|[a-zA-Z]{2})$",
+			message = "Formato de Email inválido!")
 	private String email;
 	
 	@NotNull(message = "Senha não informada!")
 	@NotEmpty(message = "O campo Senha não pode estar vazia!")
 	@Size(min = 6, max = 20, message = "O campo senha deve ter entre {min} a {max} caracteres!")
+	@Pattern(regexp = "((?=.*\\d)(?=.*[A-Z])(?=.*\\W).{6,20})", message = "A senha deve conter caracteres alfanuméricos, um caracter maiúsculo e um caracter especial!")
 	private String senha;
 	
 	
@@ -74,7 +79,7 @@ public class ClienteFORM {
 	 * @param bCryptPasswordEncoder : BCryptPasswordEncoder
 	 * @return Cliente - Cliente convertido
 	 */
-	public Cliente converterparaCliente(BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public Cliente converterParaCliente(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		return new Cliente(nome, sexo, email, bCryptPasswordEncoder.encode(senha));
 	}
 }

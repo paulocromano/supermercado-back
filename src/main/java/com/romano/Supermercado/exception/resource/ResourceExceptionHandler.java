@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -113,6 +114,19 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> authorization(AuthorizationException error,  HttpServletRequest request) {
 		return erroPersonalizado(error, HttpStatus.FORBIDDEN, error.getMessage(),  request);
 	}
+	
+	
+	/**
+	 * Método responsável por tratar o erro ao tentar acessar acessar uma URL não permitida
+	 * @param error : AccessDeniedException
+	 * @param request : HttpServletRequest
+	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 */
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<StandardError> accessDenied(AccessDeniedException error,  HttpServletRequest request) {
+		return erroPersonalizado(error, HttpStatus.FORBIDDEN, "Acesso negado!",  request);
+	}
+	
 	
 	/**
 	 * Método responsável por tratar um erro

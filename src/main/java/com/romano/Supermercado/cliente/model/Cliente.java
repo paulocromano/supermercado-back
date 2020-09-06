@@ -81,7 +81,7 @@ public class Cliente {
 		this.nome = nome;
 		this.sexo = SexoCliente.converterParaEnum(sexo).getSexoAbreviado();
 		this.email = email;
-		adicionaPerfis(PerfilCliente.CLIENTE);
+		adicionarPerfis(PerfilCliente.CLIENTE);
 		this.senha = senha;
 	}
 
@@ -134,7 +134,7 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public void adicionaPerfis(PerfilCliente perfil) {
+	public void adicionarPerfis(PerfilCliente perfil) {
 		this.perfis.add(perfil.getCodigo());
 	}
 
