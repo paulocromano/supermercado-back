@@ -1,7 +1,5 @@
 package com.romano.Supermercado.exception.resource;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -38,14 +36,15 @@ public class ResourceExceptionHandler {
 
 	
 	/**
-	 * Método responsável por tratar o erro de quando algum dado sofre alguma violação
+	 * Método responsável por tratar o erro de quando alguma operação resuçta em violação
+	 * dos dados no banco
 	 * @param error : DataIntegrityException
 	 * @param request : HttpServletRequest
 	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException error, HttpServletRequest request) {
-		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, "Integridade de dados", request);
+		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, error.getMessage(), request);
 	}
 	
 	
@@ -65,19 +64,6 @@ public class ResourceExceptionHandler {
 		}
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
-	}
-	
-	
-	/**
-	 * Método responsável por tratar o erro de Integridade dos Dados do Banco ao tentar remover
-	 * um item que possui ligação com outras tabelas
-	 * @param error : SQLIntegrityConstraintViolationException
-	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
-	 */
-	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-	public ResponseEntity<StandardError> integrityConstrainViolation(SQLIntegrityConstraintViolationException error, HttpServletRequest request) {
-		return erroPersonalizado(error, HttpStatus.BAD_REQUEST, error.getMessage(), request);
 	}
 	
 	

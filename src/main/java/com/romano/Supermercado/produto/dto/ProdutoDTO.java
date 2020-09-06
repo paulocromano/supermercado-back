@@ -20,6 +20,7 @@ public class ProdutoDTO {
 	private String dataValidade;
 	private Double preco;
 	private Double desconto;
+	private Double precoComDesconto;
 	private Integer estoque;
 	private Integer estoqueMinimo;
 	private String statusProduto;
@@ -34,6 +35,7 @@ public class ProdutoDTO {
 		dataValidade = Converter.localDateParaString(produto.getDataValidade());
 		preco = produto.getPreco();
 		desconto = produto.getDesconto();
+		precoComDesconto = temDesconto();
 		estoque = produto.getEstoque();
 		estoqueMinimo = produto.getEstoqueMinimo();
 		statusProduto = produto.getStatusProduto().getDescricao();
@@ -65,6 +67,10 @@ public class ProdutoDTO {
 	public Double getDesconto() {
 		return desconto;
 	}
+	
+	public Double getPrecoComDesconto() {
+		return precoComDesconto;
+	}
 
 	public Integer getEstoque() {
 		return estoque;
@@ -94,5 +100,14 @@ public class ProdutoDTO {
 	 */
 	public static List<ProdutoDTO> converterParaListaProdutoDTO(List<Produto> listaProdutos) {
 		return listaProdutos.stream().map(ProdutoDTO::new).collect(Collectors.toList());
+	}
+	
+	
+	/**
+	 * Método para atualizar o preço do Produto caso ele tenha desconto
+	 * @return Double - Preço atualizado caso tenha desconto
+	 */
+	private Double temDesconto() {
+		return precoComDesconto = (desconto != 0D) ? preco - (preco * desconto) / 100.0D : 0D;
 	}
 }

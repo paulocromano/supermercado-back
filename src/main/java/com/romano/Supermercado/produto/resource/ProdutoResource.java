@@ -100,7 +100,7 @@ public class ProdutoResource {
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@PostMapping("/cadastrar")
+	@PostMapping
 	public ResponseEntity<Void> cadastrarProduto(@RequestBody @Valid ProdutoFORM produtoFORM) {
 		return produtoService.cadastrarProduto(produtoFORM);
 	}
@@ -114,7 +114,7 @@ public class ProdutoResource {
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
-	@PutMapping("/atualizar/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Void> atualizarProduto(@PathVariable Integer id, @RequestBody @Valid AtualizarProdutoFORM atualizarProdutoFORM) {
 		return produtoService.atualizarProduto(id, atualizarProdutoFORM);
 	}
@@ -126,7 +126,7 @@ public class ProdutoResource {
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@DeleteMapping("/remover/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerProduto(@PathVariable Integer id) {
 		return produtoService.removerProduto(id);
 	}

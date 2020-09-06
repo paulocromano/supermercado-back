@@ -147,21 +147,7 @@ public class Produto {
 	public Setor getSetor() {
 		return setor;
 	}
-	
-	
-	/**
-	 * Método para atualizar o preço do Produto caso ele tenha desconto
-	 * @param preco : Double
-	 * @param desconto : Double
-	 * @return Double - Preço atualizado caso tenha desconto
-	 */
-	public static Double temDesconto(Double preco, Double desconto) {
-		if (desconto != 0D) {
-			preco -= (preco * desconto) / 100.0D; 
-		}
-		
-		return preco;
-	}
+
 	
 	/**
 	 * Método responsável por atualizar o Status do Produto conforme a quantidade em estoque

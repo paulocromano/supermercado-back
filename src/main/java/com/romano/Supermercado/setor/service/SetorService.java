@@ -1,6 +1,5 @@
 package com.romano.Supermercado.setor.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
@@ -46,13 +46,12 @@ public class SetorService {
 	 * Método responsável por cadastrar um Setor
 	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity<Void> - Resposta da requisição de cadastro de Setor
-	 * @throws SQLIntegrityConstraintViolationException 
 	 */
-	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
+	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) {
 		Setor setor = setorFORM.converterParaSetor();
 		
 		if (verificaSeNomeNovoSetorJaExiste(setor.getNome())) {
-			throw new SQLIntegrityConstraintViolationException("O nome do Setor informado já existe!");
+			throw new DataIntegrityException("O nome do Setor informado já existe!");
 		}
 		
 		setorRepository.save(setor);
@@ -78,14 +77,13 @@ public class SetorService {
 	 * Método responsável por remover um Setor
 	 * @param id : Integer
 	 * @return ResponseEntity<Void> - Resposta da requisição de remoção de Setor
-	 * @throws SQLIntegrityConstraintViolationException 
 	 */
-	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) throws SQLIntegrityConstraintViolationException {
+	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) {
 		Optional<Setor> setor = setorRepository.findById(id);
 		
 		if (setor.isPresent()) {			
 			if (verificaSeSetorPossuiLigacoesComOutrasEntidades(id)) {
-				throw new SQLIntegrityConstraintViolationException("Não foi possível remover. O Setor possui Produto(s) cadastrado(s)!");
+				throw new DataIntegrityException("Não foi possível remover. O Setor possui Produto(s) cadastrado(s)!");
 			}
 			
 			setorRepository.delete(setor.get());

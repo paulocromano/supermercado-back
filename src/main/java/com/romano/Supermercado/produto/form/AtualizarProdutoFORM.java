@@ -82,7 +82,7 @@ public class AtualizarProdutoFORM {
 	 * @param produto : Produto
 	 */
 	public void atualizarProduto(Produto produto) {
-		produto.setPreco(Produto.temDesconto(preco, desconto));
+		produto.setPreco(preco);
 		produto.setDesconto(desconto);
 		produto.setEstoque(estoque);
 		produto.setEstoqueMinimo(estoqueMinimo);

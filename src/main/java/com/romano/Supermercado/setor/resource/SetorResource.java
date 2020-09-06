@@ -1,6 +1,5 @@
 package com.romano.Supermercado.setor.resource;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -48,11 +47,10 @@ public class SetorResource {
 	 * Método responsável por chamar o serviço de cadastro de Setor
 	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
-	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> cadastrarSetor(@RequestBody @Valid SetorFORM setorFORM) throws SQLIntegrityConstraintViolationException {
+	public ResponseEntity<Void> cadastrarSetor(@RequestBody @Valid SetorFORM setorFORM) {
 		return setorService.cadastrarSetor(setorFORM);
 	}
 	
@@ -61,11 +59,10 @@ public class SetorResource {
 	 * Método responsável por remover um Setor
 	 * @param id : Integer
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
-	 * @throws SQLIntegrityConstraintViolationException
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) throws SQLIntegrityConstraintViolationException {
+	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) {
 		return setorService.removerSetor(id);
 	}
 }

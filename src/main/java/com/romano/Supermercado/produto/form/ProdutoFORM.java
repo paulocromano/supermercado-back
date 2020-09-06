@@ -134,7 +134,6 @@ public class ProdutoFORM {
 	 * @return Produto - Produto convertido
 	 */
 	public Produto converterParaProduto() {
-		return new Produto(nome, marca, Converter.stringParaLocalDate(dataValidade), Produto.temDesconto(preco, desconto), 
-				desconto, estoque, estoqueMinimo, observacoes, setor);
+		return new Produto(nome, marca, Converter.stringParaLocalDate(dataValidade), preco, desconto, estoque, estoqueMinimo, observacoes, setor);
 	}
 }

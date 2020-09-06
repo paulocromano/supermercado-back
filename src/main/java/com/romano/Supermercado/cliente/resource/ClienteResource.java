@@ -1,8 +1,8 @@
 package com.romano.Supermercado.cliente.resource;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romano.Supermercado.cliente.dto.ClienteDTO;
+import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.service.ClienteService;
 
@@ -60,11 +62,23 @@ public class ClienteResource {
 	 * Método responsável por chamar o serviço de cadastro de Cliente
 	 * @param clienteFORM : ClienteFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
-	 * @throws SQLIntegrityConstraintViolationException
 	 */
-	@PostMapping("/cadastrar")
-	public ResponseEntity<Void> cadastrarCliente(@RequestBody @Valid ClienteFORM clienteFORM) throws SQLIntegrityConstraintViolationException {
+	@PostMapping
+	public ResponseEntity<Void> cadastrarCliente(@RequestBody @Valid ClienteFORM clienteFORM) {
 		return clienteService.cadastrarCliente(clienteFORM);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de atualizar um Cliente
+	 * @param id : Long
+	 * @param atualizarClienteFORM : AtualizarClienteFORM
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 */
+	@Transactional
+	@PutMapping
+	public ResponseEntity<Void> atualizarCliente(@PathVariable Long id, @RequestBody AtualizarClienteFORM atualizarClienteFORM) {
+		return clienteService.atualizarCliente(id, atualizarClienteFORM);
 	}
 	
 	
@@ -73,8 +87,7 @@ public class ClienteResource {
 	 * @param id : Long
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@DeleteMapping("/remover/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerCliente(@PathVariable Long id) {
 		return clienteService.removerCliente(id);
 	}
