@@ -1,10 +1,13 @@
 package com.romano.Supermercado.cliente.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,11 +16,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.enums.SexoCliente;
+import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
 
 
 /**
@@ -50,13 +56,13 @@ public class Cliente {
 	
 	private String sexo;
 	private String telefone;
-	private String endereco;
-	private String numero;
-	private String complemento;
-	private String bairro;
-	private String cidade;
-	private String cep;
-	private String uf;
+	
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	
 	public Cliente() {
@@ -112,32 +118,12 @@ public class Cliente {
 		return telefone;
 	}
 
-	public String getEndereco() {
-		return endereco;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public String getUf() {
-		return uf;
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	public void setNome(String nome) {
@@ -164,31 +150,11 @@ public class Cliente {
 		this.telefone = telefone;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void adicionarEndereco(Endereco endereco) {
+		enderecos.add(endereco);
 	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
+	
+	public void adcionarPedido(Pedido pedido) {
+		pedidos.add(pedido);
 	}
 }

@@ -76,7 +76,7 @@ public class ClienteResource {
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@Transactional
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<Void> atualizarCliente(@PathVariable Long id, @RequestBody AtualizarClienteFORM atualizarClienteFORM) {
 		return clienteService.atualizarCliente(id, atualizarClienteFORM);
 	}

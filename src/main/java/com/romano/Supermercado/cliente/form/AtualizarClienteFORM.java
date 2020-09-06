@@ -6,6 +6,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.romano.Supermercado.cliente.localidade.cidade.model.Cidade;
+import com.romano.Supermercado.cliente.localidade.cidade.repository.CidadeRepository;
+import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.utils.Converter;
 
@@ -24,10 +27,10 @@ public class AtualizarClienteFORM {
 	@Size(max = 15, message = "O campo Telefone excedeu o limite de {max} caracteres!")
 	private String telefone;
 	
-	@NotNull(message = "Campo Endereço não informado!")
-	@NotEmpty(message = "O campo Endereço não pode estar vazio!")
+	@NotNull(message = "Campo Logradouro não informado!")
+	@NotEmpty(message = "O campo Logradouro não pode estar vazio!")
 	@Size(min = 3, max = 50, message = "O campo Endereço deve ter entre {min} a {max} caracteres!")
-	private String endereco;
+	private String logradouro;
 	
 	@NotNull(message = "Campo Número não informado!")
 	@NotEmpty(message = "O campo Número não pode estar vazio!")
@@ -37,6 +40,9 @@ public class AtualizarClienteFORM {
 	@NotEmpty(message = "O campo Complemento não pode estar vazio!")
 	@Size(min = 3, max = 40, message = "O campo Complemento deve ter entre {min} a {max} caracteres!")
 	private String complemento;
+	
+	@NotEmpty(message = "O campo Bairro não pode estar vazio!")
+	@Size(min = 3, max = 20, message = "O campo Bairro deve ter entre {min} a {max} caracteres!")
 	private String bairro;
 	
 	@NotNull(message = "Campo Cidade não informado!")
@@ -63,8 +69,8 @@ public class AtualizarClienteFORM {
 		return telefone;
 	}
 
-	public String getEndereco() {
-		return endereco;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
 	public String getNumero() {
@@ -99,8 +105,8 @@ public class AtualizarClienteFORM {
 		this.telefone = telefone;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setEndereco(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
 	public void setNumero(String numero) {
@@ -131,16 +137,14 @@ public class AtualizarClienteFORM {
 	/**
 	 * Método responsável por atualizar o Produto com os novos dados
 	 * @param produto : Produto
+	 * @param cidadeRepository : CidadeRepository
 	 */
-	public void atualizarCliente(Cliente cliente) {
+	public void atualizarCliente(Cliente cliente, CidadeRepository cidadeRepository) {
+		Cidade cidadeCliente = cidadeRepository.findByNome(cidade);
+		Endereco enderecoCliente = new Endereco(logradouro, numero, complemento, bairro, cep, cliente, cidadeCliente);
+		
 		cliente.setDataNascimento(Converter.stringParaLocalDate(dataNascimento));
 		cliente.setTelefone(telefone);
-		cliente.setEndereco(endereco);
-		cliente.setNumero(numero);
-		cliente.setComplemento(complemento);;
-		cliente.setBairro(bairro);
-		cliente.setCidade(cidade);
-		cliente.setCep(cep);
-		cliente.setUf(uf);
+		cliente.adicionarEndereco(enderecoCliente);
 	}
 }

@@ -1,10 +1,13 @@
 package com.romano.Supermercado.cliente.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
+import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.utils.Converter;
 
@@ -23,13 +26,8 @@ public class ClienteDTO {
 	private String dataNascimento;
 	private String sexo;
 	private String telefone;
-	private String endereco;
-	private String numero;
-	private String complemento;
-	private String bairro;
-	private String cidade;
-	private String cep;
-	private String uf;
+	private List<Endereco> enderecos = new ArrayList<>();
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	
 	/**
@@ -49,13 +47,8 @@ public class ClienteDTO {
 		
 		sexo = cliente.getSexo().getSexoPorExtenso();
 		telefone = cliente.getTelefone();
-		endereco = cliente.getEndereco();
-		numero = cliente.getNumero();
-		complemento = cliente.getComplemento();
-		bairro = cliente.getBairro();
-		cidade = cliente.getCidade();
-		cep = cliente.getCep();
-		uf = cliente.getUf();
+		enderecos = cliente.getEnderecos();
+		pedidos = cliente.getPedidos();
 	}
 
 	
@@ -91,32 +84,12 @@ public class ClienteDTO {
 		return telefone;
 	}
 
-	public String getEndereco() {
-		return endereco;
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public String getUf() {
-		return uf;
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	

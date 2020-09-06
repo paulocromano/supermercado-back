@@ -12,6 +12,7 @@ import com.romano.Supermercado.cliente.dto.ClienteDTO;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
+import com.romano.Supermercado.cliente.localidade.cidade.repository.CidadeRepository;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.cliente.repository.PerfilClienteRepository;
@@ -35,6 +36,9 @@ public class ClienteService {
 	
 	@Autowired
 	private PerfilClienteRepository perfilClienteRepository;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -108,7 +112,7 @@ public class ClienteService {
 		usuarioTemPermissaoParaAtualizarOsDados(id);
 		
 		Cliente cliente = clienteRepository.getOne(id);
-		atualizarClienteFORM.atualizarCliente(cliente);
+		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
 		
 		return ResponseEntity.ok().build();
 	}

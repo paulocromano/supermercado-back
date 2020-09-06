@@ -36,7 +36,7 @@ public class ResourceExceptionHandler {
 
 	
 	/**
-	 * Método responsável por tratar o erro de quando alguma operação resuçta em violação
+	 * Método responsável por tratar o erro de quando alguma operação resulta em violação
 	 * dos dados no banco
 	 * @param error : DataIntegrityException
 	 * @param request : HttpServletRequest
