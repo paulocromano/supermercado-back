@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.romano.Supermercado.cliente.enums.PerfilCliente;
+import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -15,8 +17,10 @@ import com.romano.Supermercado.produto.form.AtualizarProdutoFORM;
 import com.romano.Supermercado.produto.form.ProdutoFORM;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
+import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.setor.model.Setor;
 import com.romano.Supermercado.setor.repository.SetorRepository;
+import com.romano.Supermercado.usuario.service.UsuarioService;
 
 
 /**
@@ -176,5 +180,42 @@ public class ProdutoService {
 		produtoRepository.deleteById(id);
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por aumentar ou diminuir o estoque do Produto informado com base na quantidade
+	 * @param idCliente : Long
+	 * @param idProduto : Integer
+	 * @param aumentarEstoque : Boolean
+	 * @param quantidade : Integer
+	 * @return ResponseEntity<Void>
+	 */
+	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Long idCliente, Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
+		usuarioTemPermissao(idCliente);
+		
+		if (quantidade == null) {
+			throw new NullPointerException("Informe uma quantidade válida!");
+		}
+		
+		Produto produto = produtoRepository.getOne(idProduto);
+		
+		if (aumentarEstoque) {
+			produto.somarEstoqueProduto(quantidade);
+		}
+		else {
+			produto.diminuirEstoqueProduto(quantidade);
+		}
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	private void usuarioTemPermissao(Long id) {
+		UsuarioSecurity usuario = UsuarioService.authenticated();
+		
+		if (usuario == null || !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
 	}
 }

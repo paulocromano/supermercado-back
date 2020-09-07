@@ -105,25 +105,18 @@ public class ResourceExceptionHandler {
 	
 	
 	/**
-	 * Método responsável por tratar o erro ao dar Acesso Negado
-	 * @param error : HttpRequestMethodNotSupportedException
+	 * Método responsável por tratar o erro de autorização e acesso negado
+	 * @param error : Exception
 	 * @param request : HttpServletRequest
 	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
 	 */
-	@ExceptionHandler(AuthorizationException.class)
-	public ResponseEntity<StandardError> authorization(AuthorizationException error,  HttpServletRequest request) {
-		return erroPersonalizado(error, HttpStatus.FORBIDDEN, error.getMessage(),  request);
-	}
-	
-	
-	/**
-	 * Método responsável por tratar o erro ao tentar acessar acessar uma URL não permitida
-	 * @param error : AccessDeniedException
-	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
-	 */
-	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<StandardError> accessDenied(AccessDeniedException error,  HttpServletRequest request) {
+	@ExceptionHandler({ AuthorizationException.class, AccessDeniedException.class })
+	public ResponseEntity<StandardError> authorization(Exception error,  HttpServletRequest request) {
+
+		if (error instanceof AuthorizationException) {
+			return erroPersonalizado(error, HttpStatus.FORBIDDEN, error.getMessage(),  request);
+		}
+		
 		return erroPersonalizado(error, HttpStatus.FORBIDDEN, "Acesso negado!",  request);
 	}
 	

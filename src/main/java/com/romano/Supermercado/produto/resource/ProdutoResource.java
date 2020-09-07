@@ -130,4 +130,22 @@ public class ProdutoResource {
 	public ResponseEntity<Void> removerProduto(@PathVariable Integer id) {
 		return produtoService.removerProduto(id);
 	}
+	
+	
+	/**
+	 * Método responosável por chamar o serviço de aumentar ou diminuir o estoque do Produto informado com base na quantidade
+	 * @param idCliente
+	 * @param idProduto
+	 * @param aumentarEstoque
+	 * @param quantidade
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@Transactional
+	@PutMapping("/{idCliente}/{idProduto}/{aumentarEstoque}/{quantidade}")
+	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(@PathVariable Long idCliente, @PathVariable Integer idProduto, @PathVariable Boolean aumentarEstoque, 
+			@PathVariable Integer quantidade) {
+		
+		return produtoService.aumentarOuDiminuirEstoqueProduto(idCliente, idProduto, aumentarEstoque, quantidade);
+	}
 }

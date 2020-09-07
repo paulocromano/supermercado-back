@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.romano.Supermercado.cliente.compra.itemPedido.model.ItemPedido;
+import com.romano.Supermercado.cliente.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.utils.Converter;
 
@@ -31,10 +32,13 @@ public class Pedido {
 	private Integer id;
 	
 	@Column(name = "data_hora_pedido")
-	private String dataHora;
+	private String dataHoraPedidoFinalizado;
 	
 	@Column(name = "preco_total")
 	private Double total;
+	
+	@Column(name = "status_pedido")
+	private Integer statusPedido;
 	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -49,11 +53,14 @@ public class Pedido {
 	}
 	
 	
-	public Pedido( Cliente cliente, Set<ItemPedido> itens) {
-		this.dataHora = Converter.localDateTimeAtualParaString();
+	/**
+	 * Construtor
+	 * @param cliente : Cliente
+	 */
+	public Pedido(Cliente cliente) {
+		statusPedido = StatusPedido.ABERTO.getCodigo();
 		this.cliente = cliente;
-		this.itens = itens;
-		total = calculoTotalPedido();
+		total = 0D;
 	}
 
 
@@ -61,12 +68,16 @@ public class Pedido {
 		return id;
 	}
 
-	public String getDataHora() {
-		return dataHora;
+	public String getDataHoraPedidoFinalizado() {
+		return dataHoraPedidoFinalizado;
 	}
 	
 	public Double getTotal() {
 		return total;
+	}
+	
+	public StatusPedido getStatusPedido() {
+		return StatusPedido.converterParaEnum(statusPedido);
 	}
 
 	public Cliente getCliente() {
@@ -77,18 +88,52 @@ public class Pedido {
 		return itens;
 	}	
 	
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 	
 	/**
-	 * Método responsável por calcular o total do Pedido
-	 * @return Double - Total
+	 * Método responsável por adicionar um Produto ao Pedido e atualizar o valor total
+	 * @param itemPedido : ItemPedido
 	 */
-	private Double calculoTotalPedido() {
-		total = 0D;
-		
-		for (ItemPedido itemAtual : itens) {
-			total += itemAtual.getPreco() * itemAtual.getQuantidade();
-		}
-		
-		return total;
+	public void adicionarItemPedido(ItemPedido itemPedido) {
+		itens.add(itemPedido);
+		total += itemPedido.getPreco() * itemPedido.getQuantidade();
+	}
+	
+	
+	/**
+	 * Método responsável por efetuar as operações quando o Usuário efetivar uma compra
+	 */
+	public void compraFinalizada() {
+		dataHoraPedidoFinalizado = Converter.localDateTimeAtualParaString();
+		statusPedido = StatusPedido.COMPRA_REALIZADA.getCodigo();
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pedido other = (Pedido) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

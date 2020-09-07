@@ -195,7 +195,7 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado!");
 		}
 		
-		Optional<Cliente> clienteAdministrador =  clienteRepository.findById(idAdmin);
+		Optional<Cliente> clienteAdministrador = clienteRepository.findById(idAdmin);
 		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
 		
 		if (clienteAdministrador.isEmpty() || cliente.isEmpty()) {

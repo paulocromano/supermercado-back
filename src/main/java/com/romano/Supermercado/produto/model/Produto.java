@@ -1,6 +1,10 @@
 package com.romano.Supermercado.produto.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.romano.Supermercado.cliente.compra.itemPedido.model.ItemPedido;
+import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
 import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.setor.model.Setor;
 
@@ -47,6 +54,9 @@ public class Produto {
 	@JoinColumn(name = "id_setor")
 	private Setor setor;
 	
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	
 	public Produto() {
 		
@@ -78,7 +88,17 @@ public class Produto {
 		this.observacoes = observacoes;
 		this.setor = setor;
 	}
+	
 
+	public List<Pedido> getPedidos() {
+		List<Pedido> lista = new ArrayList<>();
+		
+		for (ItemPedido itemPedidoAtual : itens) {
+			lista.add(itemPedidoAtual.getPedido());
+		}
+		
+		return lista;
+	}
 
 	public Double getPreco() {
 		return preco;
@@ -147,6 +167,14 @@ public class Produto {
 	public Setor getSetor() {
 		return setor;
 	}
+	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 	
 	/**
@@ -163,6 +191,39 @@ public class Produto {
 		
 		else {
 			statusProduto = StatusProduto.ATIVO.getCodigo();
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por acrescentar no estoque do Produto a quantidade informada
+	 * @param quantidade : Integer
+	 */
+	public void somarEstoqueProduto(Integer quantidade) {
+		if (quantidade < 1) {
+			throw new IllegalArgumentException("A quantidade deve ser maior do que 0!");
+		}
+		estoque += quantidade;
+	}
+	
+	
+	/**
+	 * Método responsável por diminuir no estoque do Produto com base na quantidade informada
+	 * @param quantidade : Integer
+	 */
+	public void diminuirEstoqueProduto(Integer quantidade) {
+		if (quantidade < 1) {
+			throw new IllegalArgumentException("A Quantidade deve ser maior do que 0!");
+		}
+		
+		if (quantidade > estoque) {
+			throw new IllegalArgumentException("Quantidade excedeu o limite de estoque!");
+		}
+		
+		estoque -= quantidade;
+		
+		if (estoque == 0) {
+			statusProduto = StatusProduto.ESGOTADO.getCodigo();
 		}
 	}
 }
