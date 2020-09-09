@@ -7,10 +7,10 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.romano.Supermercado.cliente.localidade.cidade.model.Cidade;
-import com.romano.Supermercado.cliente.localidade.cidade.repository.CidadeRepository;
-import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.cliente.model.Cliente;
+import com.romano.Supermercado.localidade.cidade.model.Cidade;
+import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
+import com.romano.Supermercado.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.utils.Converter;
 
 /**

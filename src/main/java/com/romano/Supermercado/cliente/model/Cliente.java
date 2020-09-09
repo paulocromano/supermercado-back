@@ -20,10 +20,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.enums.SexoCliente;
-import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
+import com.romano.Supermercado.compra.pedido.model.Pedido;
+import com.romano.Supermercado.localidade.endereco.model.Endereco;
 
 
 /**
@@ -57,6 +57,7 @@ public class Cliente {
 	private String sexo;
 	private String telefone;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -154,7 +155,34 @@ public class Cliente {
 		enderecos.add(endereco);
 	}
 	
-	public void adcionarPedido(Pedido pedido) {
+	public void adicionarPedido(Pedido pedido) {
 		pedidos.add(pedido);
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

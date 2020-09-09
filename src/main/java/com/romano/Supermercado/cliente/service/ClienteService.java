@@ -12,13 +12,13 @@ import com.romano.Supermercado.cliente.dto.ClienteDTO;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
-import com.romano.Supermercado.cliente.localidade.cidade.repository.CidadeRepository;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.cliente.repository.PerfilClienteRepository;
 import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
+import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
 import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.usuario.service.UsuarioService;
 

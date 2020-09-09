@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
-import com.romano.Supermercado.cliente.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.cliente.model.Cliente;
+import com.romano.Supermercado.compra.pedido.model.Pedido;
+import com.romano.Supermercado.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.utils.Converter;
 
 /**

@@ -16,8 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.romano.Supermercado.cliente.compra.itemPedido.model.ItemPedido;
-import com.romano.Supermercado.cliente.compra.pedido.model.Pedido;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
+import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.setor.model.Setor;
 
@@ -50,10 +51,12 @@ public class Produto {
 	
 	private String observacoes;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_setor")
 	private Setor setor;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
 	
