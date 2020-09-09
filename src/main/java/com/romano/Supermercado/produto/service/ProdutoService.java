@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.romano.Supermercado.cliente.enums.PerfilCliente;
-import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -17,10 +15,9 @@ import com.romano.Supermercado.produto.form.AtualizarProdutoFORM;
 import com.romano.Supermercado.produto.form.ProdutoFORM;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
-import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.setor.model.Setor;
 import com.romano.Supermercado.setor.repository.SetorRepository;
-import com.romano.Supermercado.usuario.service.UsuarioService;
+import com.romano.Supermercado.utils.PermissaoCliente;
 
 
 /**
@@ -192,7 +189,7 @@ public class ProdutoService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Long idCliente, Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
-		usuarioTemPermissao(idCliente);
+		PermissaoCliente.usuarioTemPermissao(idCliente);
 		
 		if (quantidade == null) {
 			throw new NullPointerException("Informe uma quantidade válida!");
@@ -208,14 +205,5 @@ public class ProdutoService {
 		}
 		
 		return ResponseEntity.ok().build();
-	}
-	
-	
-	private void usuarioTemPermissao(Long id) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-		
-		if (usuario == null || !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
-		}
 	}
 }

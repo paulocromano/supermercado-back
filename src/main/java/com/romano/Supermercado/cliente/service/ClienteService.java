@@ -21,6 +21,7 @@ import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
 import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.usuario.service.UsuarioService;
+import com.romano.Supermercado.utils.PermissaoCliente;
 
 
 /**
@@ -59,7 +60,7 @@ public class ClienteService {
 	 * @return ResponseEntity<ClienteDTO>
 	 */
 	public ResponseEntity<ClienteDTO> buscarClientePorID(Long id) {
-		usuarioTemPermissao(id);
+		PermissaoCliente.usuarioTemPermissao(id);
 				
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		
@@ -109,7 +110,7 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
-		usuarioTemPermissaoParaAtualizarOsDados(id);
+		PermissaoCliente.usuarioIgualAoCliente(id);
 		
 		Cliente cliente = clienteRepository.getOne(id);
 		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
@@ -145,40 +146,12 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> removerCliente(Long id) {
-		usuarioTemPermissao(id);
+		PermissaoCliente.usuarioTemPermissao(id);
 		
 		perfilClienteRepository.deleteById(id);
 		clienteRepository.deleteById(id);
 		
 		return ResponseEntity.ok().build();
-	}
-	
-	
-	/**
-	 * Método responsável por verificar se o Usuário tem permissão
-	 * para efetuar alguma operação de CRUD
-	 * @param id : Long
-	 */
-	private void usuarioTemPermissao(Long id) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-		
-		if (usuario == null || !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
-		}
-	}
-	
-	
-	/**
-	 * Método responsável por verficar se o Usuário logado tem permissão para
-	 * atualizar os dados de cadastro
-	 * @param id : Long
-	 */
-	private void usuarioTemPermissaoParaAtualizarOsDados(Long id) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-		
-		if (id == null || !id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
-		}
 	}
 	
 	

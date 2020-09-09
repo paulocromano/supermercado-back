@@ -24,6 +24,7 @@ import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.usuario.service.UsuarioService;
+import com.romano.Supermercado.utils.PermissaoCliente;
 
 
 /**
@@ -68,7 +69,7 @@ public class PedidoService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> adicionarProdutoAoPedido(Long idCliente, Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
-		usuarioTemPermissao(idCliente);
+		PermissaoCliente.usuarioIgualAoCliente(idCliente);
 		produtoExiste(idProduto);
 		
 		Cliente cliente = clienteRepository.getOne(idCliente);
@@ -129,23 +130,6 @@ public class PedidoService {
 	private void verificaSeQuantidadeRequisitadaEValida(Integer quantidade, Integer estoque) {
 		if (quantidade > estoque) {
 			throw new IllegalArgumentException("Quantidade excedeu o limite de estoque!");
-		}
-	}
-	
-	
-	/**
-	 * Método responsável por verificar se o Usuário está logado para efetuar compras
-	 * @param idCliente
-	 */
-	private void usuarioTemPermissao(Long idCliente) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-		
-		if (idCliente == null) {
-			throw new IllegalArgumentException("É necessário estar logado para realizar compras!");
-		}
-		
-		if (!idCliente.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
 		}
 	}
 	
