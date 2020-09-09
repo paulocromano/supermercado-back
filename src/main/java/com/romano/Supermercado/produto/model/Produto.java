@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -28,6 +29,7 @@ import com.romano.Supermercado.setor.model.Setor;
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
  * Classe Entidade de Produto
  */
+@JsonIgnoreProperties(value = {"dataValidade", "preco", "desconto", "estoque", "estoqueMinimo", "statusProduto", "observacoes"})
 @Entity
 @Table(name = "produto")
 public class Produto {
@@ -93,6 +95,7 @@ public class Produto {
 	}
 	
 
+	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<>();
 		

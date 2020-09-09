@@ -42,5 +42,4 @@ public final class PermissaoCliente {
 			throw new AuthorizationException("Acesso negado!");
 		}
 	}
-	
 }

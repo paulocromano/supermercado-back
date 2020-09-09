@@ -1,6 +1,5 @@
 package com.romano.Supermercado.compra.itemPedido.form;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
@@ -13,11 +12,9 @@ import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 public class ItemPedidoFORM {
 	
 	@NotNull(message = "Campo Preço não informado!")
-	@NotEmpty(message = "O campo Preço não pode estar vazio!")
 	private Double preco;
 	
 	@NotNull(message = "Campo Quantidade não informado!")
-	@NotEmpty(message = "O campo Quantidade não pode estar vazio!")
 	private Integer quantidade;
 
 
@@ -39,7 +36,6 @@ public class ItemPedidoFORM {
 	
 	
 	public void converterParaItemPedido(ItemPedido itemPedido) {
-		System.out.println(quantidade);
 		itemPedido.setPreco(preco);
 		itemPedido.setQuantidade(quantidade);
 	}
