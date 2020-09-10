@@ -11,23 +11,12 @@ import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
  */
 public class ItemPedidoFORM {
 	
-	@NotNull(message = "Campo Preço não informado!")
-	private Double preco;
-	
 	@NotNull(message = "Campo Quantidade não informado!")
 	private Integer quantidade;
 
 
-	public Double getPreco() {
-		return preco;
-	}
-
 	public Integer getQuantidade() {
 		return quantidade;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
 	}
 
 	public void setQuantidade(Integer quantidade) {
@@ -35,8 +24,11 @@ public class ItemPedidoFORM {
 	}
 	
 	
+	/**
+	 * Método responsável por converter os dados de ItemPedidoFORM para ItemPedido
+	 * @param itemPedido : ItemPedido
+	 */
 	public void converterParaItemPedido(ItemPedido itemPedido) {
-		itemPedido.setPreco(preco);
 		itemPedido.setQuantidade(quantidade);
 	}
 }

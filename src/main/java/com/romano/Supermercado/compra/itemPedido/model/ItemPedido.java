@@ -44,6 +44,7 @@ public class ItemPedido implements Serializable {
 	public ItemPedido(Pedido pedido, Produto produto) {
 		id.setPedido(pedido);
 		id.setProduto(produto);
+		preco = produtoTemDesconto(produto);
 	}
 	
 	
@@ -79,6 +80,17 @@ public class ItemPedido implements Serializable {
 
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
+	}
+	
+	
+	/**
+	 * Método para verificar se o Produto tem desconto
+	 * @param produto : Produto
+	 * @return Double - Preço atualizado caso o Produto tenha desconto. Preço original
+	 * caso não tenha
+	 */
+	private Double produtoTemDesconto(Produto produto) {
+		return (produto.getDesconto() != 0) ? produto.getPreco() - (produto.getPreco() * produto.getDesconto() / 100D) : produto.getPreco();
 	}
 
 

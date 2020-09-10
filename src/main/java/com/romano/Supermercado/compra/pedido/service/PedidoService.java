@@ -81,7 +81,7 @@ public class PedidoService {
 				.filter(pedidos -> pedidos.getStatusPedido().equals(StatusPedido.ABERTO));
 		
 		if (optionalPedido.isPresent()) {
-			adicionarItemAoPedido(optionalPedido.get(), produto, itemPedidoFORM);
+			adicionarProdutoAoPedidoExistente(optionalPedido.get(), produto, itemPedidoFORM);
 		}
 		else {
 			adicionarProdutoAoNovoPedido(cliente, produto, itemPedidoFORM);
@@ -101,21 +101,21 @@ public class PedidoService {
 		Pedido pedido = new Pedido(cliente);
 		pedidoRepository.save(pedido);
 		
-		adicionarItemAoPedido(pedido, produto, itemPedidoFORM);
+		adicionarProdutoAoPedidoExistente(pedido, produto, itemPedidoFORM);
 	}
 	
 	
 	/**
-	 * Método responsável por adicionar um Item ao Pedido
+	 * Método responsável por adicionar um Produto ao Pedido existente
 	 * @param pedido : Pedido
 	 * @param produto : Produto
 	 * @param itemPedidoFORM : ItemPedidoFORM
 	 */
-	private void adicionarItemAoPedido(Pedido pedido, Produto produto, ItemPedidoFORM itemPedidoFORM) {
+	private void adicionarProdutoAoPedidoExistente(Pedido pedido, Produto produto, ItemPedidoFORM itemPedidoFORM) {
 		ItemPedido itemPedido = new ItemPedido(pedido, produto);
 		itemPedidoFORM.converterParaItemPedido(itemPedido);
 		
-		verificaSeQuantidadeRequisitadaEValida(itemPedido.getQuantidade(), produto.getEstoque());
+		verificaSeQuantidadeRequisitadaExcedeEstoque(itemPedido.getQuantidade(), produto.getEstoque());
 		
 		pedido.adicionarItemPedido(itemPedido);
 		itemPedidoRepository.save(itemPedido);
@@ -127,10 +127,30 @@ public class PedidoService {
 	 * @param quantidade : Integer
 	 * @param estoque : Integer
 	 */
-	private void verificaSeQuantidadeRequisitadaEValida(Integer quantidade, Integer estoque) {
+	private void verificaSeQuantidadeRequisitadaExcedeEstoque(Integer quantidade, Integer estoque) {
 		if (quantidade > estoque) {
 			throw new IllegalArgumentException("Quantidade excedeu o limite de estoque!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por remover um Produto de um Pedido
+	 * @param idCliente : Long
+	 * @param idPedido : Long
+	 * @param idProduto : Integer
+	 * @return ResponseEntity<Void>
+	 */
+	public ResponseEntity<Void> removerProdutoDePedido(Long idCliente, Long idPedido, Integer idProduto) {
+		PermissaoCliente.usuarioIgualAoCliente(idCliente);
+		produtoExiste(idProduto);
+		
+		Pedido pedido = pedidoExiste(idCliente, idPedido);
+		Produto produto = produtoRepository.getOne(idProduto);
+		
+		pedido.removerItemPedido(produto, itemPedidoRepository);
+		
+		return ResponseEntity.ok().build();
 	}
 	
 	
@@ -167,5 +187,26 @@ public class PedidoService {
 		if (produto.get().getStatusProduto().equals(StatusProduto.ESGOTADO) || produto.get().getStatusProduto().equals(StatusProduto.INATIVO)) {
 			throw new ObjectNotFoundException("Produto Esgotado ou Inativo!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o Pedido existe e se pertence ao mesmo Cliente
+	 * @param idClientePedido : Long
+	 * @param idPedido : Long
+	 * @return Pedido
+	 */
+	private Pedido pedidoExiste(Long idClientePedido, Long idPedido) {
+		Optional<Pedido> pedido = pedidoRepository.findById(idPedido);
+		
+		if (pedido.isEmpty()) {
+			throw new ObjectNotFoundException("Pedido não encontrado!");
+		}
+		
+		if (!pedido.get().getCliente().getId().equals(idClientePedido)) {
+			throw new IllegalArgumentException("Acesso Negado!");
+		}
+		
+		return pedido.get();
 	}
 }

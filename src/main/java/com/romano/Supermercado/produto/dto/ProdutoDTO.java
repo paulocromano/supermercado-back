@@ -108,6 +108,6 @@ public class ProdutoDTO {
 	 * @return Double - Preço atualizado caso tenha desconto
 	 */
 	private Double temDesconto() {
-		return precoComDesconto = (desconto != 0D) ? preco - (preco * desconto) / 100.0D : 0D;
+		return (desconto != 0D) ? preco - (preco * desconto) / 100.0D : 0D;
 	}
 }

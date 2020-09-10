@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -57,4 +58,17 @@ public class PedidoResource {
 		return pedidoService.adicionarProdutoAoPedido(idCliente, idProduto, itemPedidoFORM);
 	}
 	
+	
+	/**
+	 * Método responsável por chamar o serviço de remoção de Produto de um Pedido
+	 * @param idCliente : Long
+	 * @param idPedido : Long
+	 * @param idProduto : Integer
+	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 */
+	@Transactional
+	@DeleteMapping("/{idCliente}/{idPedido}/{idProduto}")
+	public ResponseEntity<Void> removerProdutoDePedido(@PathVariable Long idCliente, @PathVariable Long idPedido, @PathVariable Integer idProduto) {
+		return pedidoService.removerProdutoDePedido(idCliente, idPedido, idProduto);
+	}
 }

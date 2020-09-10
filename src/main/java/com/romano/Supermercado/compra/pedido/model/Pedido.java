@@ -16,8 +16,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
+import com.romano.Supermercado.compra.itemPedido.repository.ItemPedidoRepository;
 import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
+import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.utils.Converter;
 
 /**
@@ -113,6 +115,20 @@ public class Pedido {
 		total += itemPedido.getPreco() * itemPedido.getQuantidade();
 	}
 	
+	
+	/**
+	 * Método responsável por remover um Produto do Pedido e atualizar o valor total
+	 * @param itemPedido : ItemPedido
+	 * @param produtoASerRemovido : Produto
+	 */
+	public void removerItemPedido(Produto produtoASerRemovido, ItemPedidoRepository itemPedidoRepository) {
+		itens.forEach(item -> {
+			if (item.getId().getProduto().equals(produtoASerRemovido)) {
+				total -= item.getPreco();
+				itemPedidoRepository.delete(item);
+			}
+		});
+	}
 	
 	/**
 	 * Método responsável por efetuar as operações quando o Usuário efetivar uma compra

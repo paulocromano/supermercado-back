@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
 	/**
 	 * Método responsável por buscar todos os pedidos de um respectivo Cliente
