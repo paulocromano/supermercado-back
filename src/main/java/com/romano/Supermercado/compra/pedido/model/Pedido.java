@@ -106,6 +106,7 @@ public class Pedido {
 		this.itens = itens;
 	}
 	
+	
 	/**
 	 * Método responsável por adicionar um Produto ao Pedido e atualizar o valor total
 	 * @param itemPedido : ItemPedido
@@ -123,7 +124,7 @@ public class Pedido {
 	 */
 	public void removerItemPedido(Produto produtoASerRemovido, ItemPedidoRepository itemPedidoRepository) {
 		itens.forEach(item -> {
-			if (item.getId().getProduto().equals(produtoASerRemovido)) {
+			if (item.getProduto().equals(produtoASerRemovido)) {
 				total -= item.getPreco();
 				itemPedidoRepository.delete(item);
 			}

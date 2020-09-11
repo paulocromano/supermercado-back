@@ -57,6 +57,7 @@ public class PedidoService {
 		if (listarPedidosPorPermissaoCliente(id)) {
 			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findAll()));
 		}
+	
 		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(id)));
 	}
 	
@@ -148,9 +149,40 @@ public class PedidoService {
 		Pedido pedido = pedidoExiste(idCliente, idPedido);
 		Produto produto = produtoRepository.getOne(idProduto);
 		
+		pedidoContemItemPedido(pedido, produto);
 		pedido.removerItemPedido(produto, itemPedidoRepository);
+		removerPedidoSemItens(pedido);
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o Pedido contém o Item que será removido
+	 * @param pedido : Pedido
+	 * @param produto : Produto
+	 */
+	private void pedidoContemItemPedido(Pedido pedido, Produto produto) {
+		Optional<ItemPedido> itemPedido = pedido
+				.getItens()
+				.stream()
+				.findAny()
+				.filter(item -> item.getProduto().equals(produto)); 
+		
+		if (itemPedido.isEmpty()) {
+			throw new ObjectNotFoundException("Produto informado não existe no Pedido!");
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por remover um Pedido se não possuir Itens
+	 * @param pedido : Pedido
+	 */
+	private void removerPedidoSemItens(Pedido pedido) {
+		if (pedido.getItens().size() - 1 == 0) {
+			pedidoRepository.delete(pedido);
+		}
 	}
 	
 	
