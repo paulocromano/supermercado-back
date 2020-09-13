@@ -175,13 +175,17 @@ public class ProdutoService {
 			throw new NullPointerException("Informe uma quantidade válida!");
 		}
 		
-		Produto produto = produtoRepository.getOne(idProduto);
+		Optional<Produto> produto = produtoRepository.findById(idProduto);
+		
+		if (produto.isEmpty()) {
+			throw new ObjectNotFoundException("Produto informado não existe!");
+		}
 		
 		if (aumentarEstoque) {
-			produto.somarEstoqueProduto(quantidade);
+			produto.get().somarEstoqueProduto(quantidade);
 		}
 		else {
-			produto.diminuirEstoqueProduto(quantidade);
+			produto.get().diminuirEstoqueProduto(quantidade);
 		}
 		
 		return ResponseEntity.ok().build();

@@ -24,6 +24,11 @@ public final class PermissaoCliente {
 		}
 	}
 	
+	
+	/**
+	 * Método responsável por retornar um UsuarioSecurity caso o Usuário seja válido
+	 * @return UsuarioSecurity
+	 */
 	public static final UsuarioSecurity retornaUsuarioValido() {
 		UsuarioSecurity usuario = UsuarioService.authenticated();
 		

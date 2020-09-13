@@ -3,6 +3,7 @@ package com.romano.Supermercado.compra.pedido.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class Pedido {
 	private Endereco enderecoEntrega;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="id.pedido")
+	@OneToMany(mappedBy="id.pedido", cascade = CascadeType.ALL)
 	private Set<ItemPedido> itens = new HashSet<>();
 
 	

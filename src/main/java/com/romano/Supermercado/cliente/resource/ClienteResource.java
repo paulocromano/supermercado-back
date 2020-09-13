@@ -52,7 +52,7 @@ public class ClienteResource {
 	 * @param id : Long
 	 * @return ResponseEntity<ClienteDTO> - Retorna a resposta da requisição
 	 */
-	@GetMapping("/buscar-id={id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> buscarClientePorID(@PathVariable Long id) {
 		return clienteService.buscarClientePorID(id);
 	}
@@ -89,7 +89,7 @@ public class ClienteResource {
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
-	@PutMapping("/{idCliente}")
+	@PutMapping("/adicionar-permissao={idCliente}")
 	public ResponseEntity<Void> adicionarPermissaoParaCliente(@PathVariable Long idCliente) {
 		return clienteService.adicionarPermissaoParaCliente(idCliente);
 	}
@@ -100,6 +100,7 @@ public class ClienteResource {
 	 * @param id : Long
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
+	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerCliente(@PathVariable Long id) {
 		return clienteService.removerCliente(id);

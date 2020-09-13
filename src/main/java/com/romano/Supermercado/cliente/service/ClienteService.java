@@ -14,7 +14,6 @@ import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
-import com.romano.Supermercado.cliente.repository.PerfilClienteRepository;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
@@ -31,9 +30,6 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
-	@Autowired
-	private PerfilClienteRepository perfilClienteRepository;
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -76,34 +72,21 @@ public class ClienteService {
 	public ResponseEntity<Void> cadastrarCliente(ClienteFORM clienteFORM) {
 		Cliente cliente = clienteFORM.converterParaCliente(bCryptPasswordEncoder);
 
-		if (verificarSeEmailJaExiste(cliente.getEmail())) {
+		try {
+			clienteRepository.save(cliente);
+		}
+		catch (RuntimeException e) {
 			throw new DataIntegrityException("Email indisponível!");
 		}
-		
-		clienteRepository.save(cliente);
 		
 		return ResponseEntity.ok().build();
 	}
 	
 	
 	/**
-	 * Método responsável por verificar se o email informado no momento do 
-	 * cadastro já existe
-	 * @param email : String
-	 * @return Boolean - Retorna True se o email informado já existir. False
-	 * se o email for novo
-	 */ 
-	private Boolean verificarSeEmailJaExiste(String email) {
-		Optional<Cliente> cliente = clienteRepository.findByEmail(email);
-		
-		return (cliente.isPresent()) ? true : false;
-	}
-	
-	
-	/**
 	 * Método responsável por atualizar os dados cadastrais de um Cliente
 	 * @param id : Long
-	 * @param atualizarClienteFORM : AtualizarClienteFORM
+	 * @param atualizarClienteFORM : {@link AtualizarClienteFORM}
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
@@ -122,28 +105,11 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idCliente) {
+		PermissaoCliente.usuarioEValido();
 		verificarUsuarioParaDarPermissao(idCliente);
 		
 		Cliente cliente = clienteRepository.getOne(idCliente);
-		
-
-		
 		cliente.adicionarPerfis(PerfilCliente.ADMIN);
-		
-		return ResponseEntity.ok().build();
-	}
-	
-	
-	/**
-	 * Método responsável por remover um Cliente
-	 * @param id : Long
-	 * @return ResponseEntity<Void>
-	 */
-	public ResponseEntity<Void> removerCliente(Long id) {
-		PermissaoCliente.usuarioTemPermissao(id);
-		
-		perfilClienteRepository.deleteById(id);
-		clienteRepository.deleteById(id);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -156,12 +122,32 @@ public class ClienteService {
 	private void verificarUsuarioParaDarPermissao(Long idCliente) {		
 		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
 		
+		if (cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Cliente não encontrado!");
+		}
+		
 		if (cliente.get().getPerfis().contains(PerfilCliente.ADMIN)) {
 			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por remover um Cliente
+	 * @param id : Long
+	 * @return ResponseEntity<Void>
+	 */
+	public ResponseEntity<Void> removerCliente(Long id) {
+		PermissaoCliente.usuarioTemPermissao(id);
+		
+		Optional<Cliente> cliente = clienteRepository.findById(id);
 		
 		if (cliente.isEmpty()) {
 			throw new ObjectNotFoundException("Cliente não encontrado!");
 		}
+		
+		clienteRepository.deleteById(id);
+		
+		return ResponseEntity.ok().build();
 	}
 }
