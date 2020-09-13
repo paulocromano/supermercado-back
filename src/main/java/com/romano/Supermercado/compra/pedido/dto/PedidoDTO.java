@@ -14,7 +14,7 @@ import com.romano.Supermercado.localidade.endereco.model.Endereco;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe DTO de Pedido
+ * Classe DTO de {@link Pedido}
  */
 public class PedidoDTO {
 
@@ -29,7 +29,7 @@ public class PedidoDTO {
 	
 	/**
 	 * Construtor
-	 * @param pedido : Pedido
+	 * @param pedido : {@link Pedido}
 	 */
 	public PedidoDTO(Pedido pedido) {
 		id = pedido.getId();
@@ -72,9 +72,9 @@ public class PedidoDTO {
 	
 	
 	/**
-	 * Método responsável por converter um List de Pedido para PedidoDTO
-	 * @param listaPedidos : List<Pedido>
-	 * @return List<PedidoDTO>
+	 * Método responsável por converter um List de {@link Pedido} para {@link PedidoDTO}
+	 * @param listaPedidos : List de {@link Pedido}
+	 * @return List de {@link PedidoDTO}
 	 */
 	public static List<PedidoDTO> converterParaListaPedidoDTO(List<Pedido> listaPedidos) {
 		return listaPedidos.stream().map(PedidoDTO::new).collect(Collectors.toList());

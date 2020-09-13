@@ -15,7 +15,7 @@ import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
-import com.romano.Supermercado.utils.UsuarioValido;
+import com.romano.Supermercado.utils.VerificarUsuario;
 
 
 /**
@@ -37,8 +37,8 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por listar todos os Clientes
-	 * @return ResponseEntity<List<ClienteDTO>>
+	 * Método responsável por listar todos os {@link Cliente}s
+	 * @return ResponseEntity - List {@link ClienteDTO}
 	 */
 	public ResponseEntity<List<ClienteDTO>> listarTodosClientes() {
 		return ResponseEntity.ok().body(ClienteDTO.converterParaListaClienteDTO(clienteRepository.findAll()));
@@ -46,22 +46,21 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por buscar o Cliente pelo ID 
+	 * Método responsável por buscar o {@link Cliente} pelo ID 
 	 * @param id : Long
-	 * @return ResponseEntity<ClienteDTO>
+	 * @return ResponseEntity - {@link ClienteDTO}
 	 */
 	public ResponseEntity<ClienteDTO> buscarClientePorID(Long id) {
-		UsuarioValido.usuarioTemPermissao(id);
-				
-		Cliente cliente = UsuarioValido.existeUsuario(clienteRepository, id);
+		VerificarUsuario.usuarioTemPermissao(id);
+		Cliente cliente = Cliente.existeCliente(clienteRepository, id);
 		
 		return ResponseEntity.ok().body(new ClienteDTO(cliente));
 	}
 	
 	/**
-	 * Método responsável por cadastrar um novo Cliente
-	 * @param clienteFORM : ClienteFORM
-	 * @return ResponseEntity<Void>
+	 * Método responsável por cadastrar um novo {@link Cliente}
+	 * @param clienteFORM : {@link ClienteFORM}
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> cadastrarCliente(ClienteFORM clienteFORM) {
 		Cliente cliente = clienteFORM.converterParaCliente(bCryptPasswordEncoder);
@@ -78,13 +77,13 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por atualizar os dados cadastrais de um Cliente
+	 * Método responsável por atualizar os dados cadastrais de um {@link Cliente}
 	 * @param id : Long
 	 * @param atualizarClienteFORM : {@link AtualizarClienteFORM}
-	 * @return ResponseEntity<Void>
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
-		UsuarioValido.usuarioEValido();
+		VerificarUsuario.usuarioEValido();
 		
 		Cliente cliente = clienteRepository.getOne(id);
 		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
@@ -94,12 +93,12 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por adicionar permissão a um Cliente
+	 * Método responsável por adicionar permissão a um {@link Cliente}
 	 * @param idCliente : Long
-	 * @return ResponseEntity<Void>
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idCliente) {
-		UsuarioValido.usuarioEValido();
+		VerificarUsuario.usuarioEValido();
 		verificarUsuarioParaDarPermissao(idCliente);
 		
 		Cliente cliente = clienteRepository.getOne(idCliente);
@@ -114,7 +113,7 @@ public class ClienteService {
 	 * @param idCliente : Long
 	 */
 	private void verificarUsuarioParaDarPermissao(Long idCliente) {		
-		Cliente cliente = UsuarioValido.existeUsuario(clienteRepository, idCliente);
+		Cliente cliente = Cliente.existeCliente(clienteRepository, idCliente);
 		
 		if (cliente.getPerfis().contains(PerfilCliente.ADMIN)) {
 			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
@@ -123,13 +122,13 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por remover um Cliente
+	 * Método responsável por remover um {@link Cliente}
 	 * @param id : Long
-	 * @return ResponseEntity<Void>
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> removerCliente(Long id) {
-		UsuarioValido.usuarioTemPermissao(id);
-		UsuarioValido.existeUsuario(clienteRepository, id);
+		VerificarUsuario.usuarioTemPermissao(id);
+		Cliente.existeCliente(clienteRepository, id);
 		
 		clienteRepository.deleteById(id);
 		

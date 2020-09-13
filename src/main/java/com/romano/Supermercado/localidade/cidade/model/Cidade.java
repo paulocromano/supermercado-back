@@ -8,6 +8,12 @@ import javax.persistence.Table;
 
 import com.romano.Supermercado.localidade.estado.model.Estado;
 
+
+/**
+ * 
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * Classe Entidade de {@link Cidade}
+ */
 @Entity
 @Table(name = "cidade")
 public class Cidade {

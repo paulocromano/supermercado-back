@@ -32,7 +32,7 @@ public class ClienteDTO {
 	
 	/**
 	 * Construtor de ClienteDTO
-	 * @param cliente : Cliente
+	 * @param cliente : {@link Cliente}
 	 */
 	public ClienteDTO(Cliente cliente) {
 		id = cliente.getId();
@@ -94,7 +94,7 @@ public class ClienteDTO {
 
 	
 	/**
-	 * Método responsável por converter um List de Cliente para List de ClienteDTO
+	 * Método responsável por converter um List de {@link Cliente} para List de {@link ClienteDTO}
 	 * @param listaClientes : List<Cliente>
 	 * @return : List<ClienteDTO>
 	 */

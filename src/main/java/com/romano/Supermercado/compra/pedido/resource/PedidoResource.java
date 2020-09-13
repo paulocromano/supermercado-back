@@ -15,15 +15,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.compra.itemPedido.form.ItemPedidoFORM;
 import com.romano.Supermercado.compra.pedido.dto.PedidoDTO;
+import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.compra.pedido.service.PedidoService;
+import com.romano.Supermercado.produto.model.Produto;
 
 
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do Service de Pedido
+ * Classe responsável por chamar os métodos do {@link PedidoService}
  */
 @RestController
 @RequestMapping("/pedido")
@@ -34,8 +37,8 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar Pedidos conforme Perfil do Cliente
-	 * @return ResponseEntity<List<PedidoDTO>> - Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de listar Pedidos conforme {@link PerfilCliente}
+	 * @return ResponseEntity - List {@link PedidoDTO} Retorna a resposta da requisição
 	 */
 	@GetMapping("/listar-todos{id}")
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
@@ -43,10 +46,10 @@ public class PedidoResource {
 	}
 	
 	/**
-	 * Método responsável por chamar o serviço de adicionar um Produto ao Pedido
+	 * Método responsável por chamar o serviço de adicionar um {@link Produto} ao {@link Pedido}
 	 * @param idProduto : Integer
-	 * @param itemPedidoFORM : ItemPedidoFORM
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * @param itemPedidoFORM : {@link ItemPedidoFORM}
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@Transactional
 	@PutMapping("/{idProduto}")
@@ -58,10 +61,10 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de remoção de Produto de um Pedido
+	 * Método responsável por chamar o serviço de remoção de {@link Produto} de um {@link Pedido}
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@Transactional
 	@DeleteMapping("/{idPedido}/{idProduto}")

@@ -1,6 +1,5 @@
 package com.romano.Supermercado.produto.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ import com.romano.Supermercado.utils.Converter;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe de Serviço responsável pelas regras de negócios do Produto
+ * Classe de Serviço responsável pelas regras de negócios do {@link Produto}
  */
 @Service
 public class ProdutoService {
@@ -38,8 +37,8 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os Produtos
-	 * @return ResponseEntity<List<ProdutoDTO>>
+	 * Método responsável por listar todos os {@link Produto}s
+	 * @return ResponseEntity - List {@link ProdutoDTO}
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarTodosProdutos() {
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtoRepository.findAll()));
@@ -47,9 +46,9 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os Produtos a partir do Setor informado
+	 * Método responsável por listar todos os {@link Produto}s a partir do {@link Setor} informado
 	 * @param nomeSetor : String
-	 * @return ResponseEntity<List<ProdutoDTO>>
+	 * @return ResponseEntity - List {@link ProdutoDTO}
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPorNomeSetor(String nomeSetor) {
 		Optional<Setor> setorBuscado = setorRepository.findByNome(nomeSetor);
@@ -63,9 +62,9 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os Produtos a partir do Status do Produto
+	 * Método responsável por listar todos os {@link Produto}s a partir do {@link StatusProduto}
 	 * @param codigoStatus : Integer
-	 * @return ResponseEntity<List<ProdutoDTO>>
+	 * @return ResponseEntity - List {@link ProdutoDTO}
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPeloStatus(Integer codigoStatus) {
 		StatusProduto statusProduto = StatusProduto.converterParaEnum(codigoStatus);
@@ -75,10 +74,10 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar os Produtos com os dias até a validade dentro do valor específicado. Caso
+	 * Método responsável por listar os {@link Produto}s com os dias até a validade dentro do valor específicado. Caso
 	 * não seja específicado o dia, será verificado a partir do valor padrão 10.
-	 * @param dias : Integer - Dias restantes até a validade do Produto
-	 * @return ResponseEntity<List<ProdutoDTO>>
+	 * @param dias : Integer - Dias restantes até a validade do {@link Produto}
+	 * @return ResponseEntity - List {@link ProdutoDTO}
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelaDataDaValidade(String data) {
 		if (data == null) {
@@ -109,9 +108,9 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por cadastrar um Produto
-	 * @param produtoFORM : ProdutoFORM
-	 * @return ResponseEntity<Void>
+	 * Método responsável por cadastrar um {@link Produto}
+	 * @param produtoFORM : {@link ProdutoFORM}
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> cadastrarProduto(ProdutoFORM produtoFORM) { 
 		produtoRepository.save(produtoFORM.converterParaProduto());
@@ -121,10 +120,10 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por atualizar as informações de um Produto
+	 * Método responsável por atualizar as informações de um {@link Produto}
 	 * @param id : Integer
-	 * @param atualizarProdutoFORM : AtualizarProdutoFORM
-	 * @return ResponseEntity<Void>
+	 * @param atualizarProdutoFORM : {@link AtualizarProdutoFORM}
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> atualizarProduto(Integer id, AtualizarProdutoFORM atualizarProdutoFORM) {
 		Optional<Produto> produtoBuscado = produtoRepository.findById(id);
@@ -140,10 +139,9 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por remover um Produto
+	 * Método responsável por remover um {@link Produto}
 	 * @param id : Integer
-	 * @return ResponseEntity<Void>
-	 * @throws SQLIntegrityConstraintViolationException 
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> removerProduto(Integer id) {
 		Optional<Produto> produto = produtoRepository.findById(id);
@@ -164,11 +162,11 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por aumentar ou diminuir o estoque do Produto informado com base na quantidade
+	 * Método responsável por aumentar ou diminuir o estoque do {@link Produto} informado com base na quantidade
 	 * @param idProduto : Integer
 	 * @param aumentarEstoque : Boolean
 	 * @param quantidade : Integer
-	 * @return ResponseEntity<Void>
+	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
 		if (quantidade == null) {

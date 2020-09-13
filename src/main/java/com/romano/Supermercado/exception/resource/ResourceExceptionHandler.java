@@ -26,9 +26,9 @@ public class ResourceExceptionHandler {
 	
 	/**
 	 * Método responsável por tratar o erro de quando um Objeto não foi encontrado
-	 * @param error : ObjectNotFoundException
+	 * @param error : {@link ObjectNotFoundException}
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException error, HttpServletRequest request) {
@@ -39,9 +39,9 @@ public class ResourceExceptionHandler {
 	/**
 	 * Método responsável por tratar o erro de quando alguma operação resulta em violação
 	 * dos dados no banco
-	 * @param error : DataIntegrityException
+	 * @param error : {@link DataIntegrityException}
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(DataIntegrityException.class)
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException error, HttpServletRequest request) {
@@ -53,7 +53,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de atributos que recebem um Argumento Inválido
 	 * @param error : MethodArgumentNotValidException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException error, HttpServletRequest request) {
@@ -73,7 +73,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de Argumento Ilegal
 	 * @param error : IllegalArgumentException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<StandardError> illegalArgument(IllegalArgumentException error,  HttpServletRequest request) {
@@ -85,7 +85,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de Objeto Nulo
 	 * @param error : NullPointerException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(NullPointerException.class)
 	public ResponseEntity<StandardError> nullPointer(NullPointerException error,  HttpServletRequest request) {
@@ -97,7 +97,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro ao tentar acessar uma URL inexistente
 	 * @param error : HttpRequestMethodNotSupportedException
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<StandardError> httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException error,  HttpServletRequest request) {
@@ -109,7 +109,7 @@ public class ResourceExceptionHandler {
 	 * Método responsável por tratar o erro de autorização e acesso negado
 	 * @param error : Exception
 	 * @param request : HttpServletRequest
-	 * @return ResponseEntity<StandardError> - Resposta com o erro personalizado
+	 * @return ResponseEntity - {@link StandardError} (Resposta com o erro personalizado)
 	 */
 	@ExceptionHandler({ AuthorizationException.class, AccessDeniedException.class })
 	public ResponseEntity<StandardError> authorization(Exception error,  HttpServletRequest request) {
@@ -128,7 +128,7 @@ public class ResourceExceptionHandler {
 	 * @param request : HttpServletRequest
 	 * @param httpStatus : HttpStatus
 	 * @param messageError : String
-	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
+	 * @return ResponseEntity - {@link StandardError} (Reposta da requisição com o erro tratado)
 	 */
 	private ResponseEntity<StandardError> erroPersonalizado(Exception error, HttpStatus httpStatus, String messageError, HttpServletRequest request) {
 		

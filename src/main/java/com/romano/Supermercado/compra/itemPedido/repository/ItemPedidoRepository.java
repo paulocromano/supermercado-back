@@ -6,6 +6,12 @@ import org.springframework.stereotype.Repository;
 import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.compra.itemPedidoPK.model.ItemPedidoPK;
 
+
+/**
+ * 
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * Interface responsável por acessar os dados de {@link ItemPedido} no Banco de Dados
+ */
 @Repository
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, ItemPedidoPK> {
 

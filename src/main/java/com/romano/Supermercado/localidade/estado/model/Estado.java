@@ -4,6 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+/**
+ * 
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * Classe Entidade de {@link Estado}
+ */
 @Entity
 @Table(name = "estado")
 public class Estado {

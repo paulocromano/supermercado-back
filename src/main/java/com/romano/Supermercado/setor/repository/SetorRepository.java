@@ -11,15 +11,15 @@ import com.romano.Supermercado.setor.model.Setor;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Interface responsável por acessar os dados de Setor no Banco de Dados
+ * Interface responsável por acessar os dados de {@link Setor} no Banco de Dados
  */
 @Repository
 public interface SetorRepository extends JpaRepository<Setor, Integer> {
 
 	/**
-	 * Método responsável por buscar um Setor por nome
+	 * Método responsável por buscar um {@link Setor} por nome
 	 * @param nomeSetor : String
-	 * @return Optional<Setor>
+	 * @return Optional de {@link Setor}
 	 */
 	Optional<Setor> findByNome(String nomeSetor);
 	

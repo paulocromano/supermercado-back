@@ -33,6 +33,12 @@ public class ValidationError extends StandardError {
 		return errors;
 	}
 
+	
+	/**
+	 * Método responsável por adicionar um erro de Validação à lista de erros
+	 * @param fieldName : String
+	 * @param message : String
+	 */
 	public void addError(String fieldName, String message) {
 		errors.add(new FieldMessage(fieldName, message));
 	}

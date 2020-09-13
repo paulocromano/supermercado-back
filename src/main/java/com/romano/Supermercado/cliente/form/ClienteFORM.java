@@ -14,7 +14,7 @@ import com.romano.Supermercado.cliente.model.Cliente;
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
  * Classe responsável por receber os dados inciais de Login para
- * um novo Cliente
+ * um novo {@link Cliente}
  */
 public class ClienteFORM {
 
@@ -75,9 +75,9 @@ public class ClienteFORM {
 	
 	
 	/**
-	 * Método responsável por converter ClienteFORM para Cliente
-	 * @param bCryptPasswordEncoder : BCryptPasswordEncoder
-	 * @return Cliente - Cliente convertido
+	 * Método responsável por converter {@link ClienteFORM} para {@link Cliente}
+	 * @param bCryptPasswordEncoder : {@link BCryptPasswordEncoder}
+	 * @return {@link Cliente} - Cliente convertido
 	 */
 	public Cliente converterParaCliente(BCryptPasswordEncoder bCryptPasswordEncoder) {
 		return new Cliente(nome, sexo, email, bCryptPasswordEncoder.encode(senha));

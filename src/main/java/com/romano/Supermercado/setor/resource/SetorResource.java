@@ -23,7 +23,7 @@ import com.romano.Supermercado.setor.service.SetorService;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do Service de Setor
+ * Classe responsável por chamar os métodos do {@link SetorService}
  */
 @RestController
 @RequestMapping("/setor")
@@ -34,8 +34,8 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listagem de todos os Setores
-	 * @return ResponseEntity<List<SetorDTO>> - Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de listagem de todos os {@link Setor}es
+	 * @return ResponseEntity - List {@link SetorDTO} (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos")
@@ -45,9 +45,9 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de cadastro de Setor
-	 * @param setorFORM : SetorFORM
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de cadastro de {@link Setor}
+	 * @param setorFORM : {@link SetorFORM}
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
@@ -57,9 +57,9 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por remover um Setor
+	 * Método responsável por remover um {@link Setor}
 	 * @param id : Integer
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")

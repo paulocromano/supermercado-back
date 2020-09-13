@@ -9,7 +9,7 @@ import com.romano.Supermercado.setor.model.Setor;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por receber um novo Setor
+ * Classe responsável por receber um novo {@link Setor}
  */
 public class SetorFORM {
  
@@ -28,6 +28,10 @@ public class SetorFORM {
 	}
 	
 	
+	/**
+	 * Método responsável por converter o {@link SetorFORM} para {@link Setor}
+	 * @return {@link Setor}
+	 */
 	public Setor converterParaSetor() {
 		return new Setor(nome);
 	}

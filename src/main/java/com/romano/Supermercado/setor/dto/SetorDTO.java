@@ -8,7 +8,7 @@ import com.romano.Supermercado.setor.model.Setor;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe DTO para recuperar as informações do Setor
+ * Classe DTO para recuperar as informações do {@link Setor}
  */
 public class SetorDTO {
 
@@ -32,9 +32,9 @@ public class SetorDTO {
 	
 	
 	/**
-	 * Método responsável por converter um List de Setor para List de SetorDTO
-	 * @param listaSetor : List<Setor>
-	 * @return List<SetorDTO> - Lista convertida
+	 * Método responsável por converter um List de {@link Setor} para List de {@link SetorDTO}
+	 * @param listaSetor : List de {@link Setor}
+	 * @return List de {@link SetorDTO} - Lista convertida
 	 */
 	public static List<SetorDTO> converterParaListaSetorDTO(List<Setor> listaSetor) {
 		return listaSetor.stream().map(SetorDTO::new).collect(Collectors.toList());

@@ -1,6 +1,5 @@
 package com.romano.Supermercado.produto.resource;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -19,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
+import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.form.AtualizarProdutoFORM;
 import com.romano.Supermercado.produto.form.ProdutoFORM;
+import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.service.ProdutoService;
+import com.romano.Supermercado.setor.model.Setor;
 
 
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do Service de Produto
+ * Classe responsável por chamar os métodos do {@link ProdutoService}
  */
 @RestController
 @RequestMapping("/produto")
@@ -38,8 +40,8 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar todos os Produtos
-	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de listar todos os {@link Produto}s
+	 * @return ResponseEntity - List {@link ProdutoDTO} (Retorna a resposta da requisição)
 	 */
 	@GetMapping("/listar-todos")
 	public ResponseEntity<List<ProdutoDTO>> listarTodosProdutos() {
@@ -48,10 +50,9 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar os Produtos a partir do Setor informado
-	 * ao Setor informado
+	 * Método responsável por chamar o serviço de listar os {@link Produto}s a partir do {@link Setor} informado
 	 * @param nomeSetor : String
-	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
+	 * @return ResponseEntity - List {@link ProdutoDTO} (Retorna a resposta da requisição)
 	 */
 	@GetMapping("/listar-setor={nomeSetor}")
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPorNomeSetor(@PathVariable String nomeSetor) {
@@ -60,9 +61,9 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar os Produtos pelo status
+	 * Método responsável por chamar o serviço de listar os {@link Produto}s pelo {@link StatusProduto}
 	 * @param codigoStatus : Integer
-	 * @return ResponseEntity<List<ProdutoDTO>> - Retorna a resposta da requisição
+	 * @return ResponseEntity - List {@link ProdutoDTO} (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-status={codigoStatus}")
@@ -72,9 +73,10 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar os Produtos que estão dentro da data até a validade do Produto
+	 * Método responsável por chamar o serviço de listar os {@link Produto}s que estão dentro da data 
+	 * até a validade do {@link Produto}
 	 * @param data : String
-	 * @return ResponseEntity<List<ProdutoDTO>>
+	 * @return ResponseEntity - List {@link ProdutoDTO} (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-data-validade={data}")
@@ -84,9 +86,9 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de cadastrar Produto
-	 * @param produtoFORM : ProdutoFORM
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de cadastrar {@link Produto}
+	 * @param produtoFORM : {@link ProdutoFORM}
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
@@ -96,10 +98,10 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de atualização de Produto
+	 * Método responsável por chamar o serviço de atualização de {@link Produto}
 	 * @param id : Integer
-	 * @param atualizarProdutoFORM : AtualizarProdutoFORM
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * @param atualizarProdutoFORM : {@link AtualizarProdutoFORM}
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
@@ -110,10 +112,9 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de remoção de Produto
+	 * Método responsável por chamar o serviço de remoção de {@link Produto}
 	 * @param id : Integer
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
-	 * @throws SQLIntegrityConstraintViolationException 
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
@@ -123,11 +124,11 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responosável por chamar o serviço de aumentar ou diminuir o estoque do Produto informado com base na quantidade
-	 * @param idProduto
-	 * @param aumentarEstoque
-	 * @param quantidade
-	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * Método responosável por chamar o serviço de aumentar ou diminuir o estoque do {@link Produto} informado com base na quantidade
+	 * @param idProduto : Integer
+	 * @param aumentarEstoque : Boolean
+	 * @param quantidade : Integer
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional

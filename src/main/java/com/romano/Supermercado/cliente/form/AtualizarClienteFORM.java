@@ -16,7 +16,7 @@ import com.romano.Supermercado.utils.Converter;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por atualizar as informações de um Cliente
+ * Classe responsável por atualizar as informações de um {@link Cliente}
  */
 public class AtualizarClienteFORM {
 
@@ -138,9 +138,9 @@ public class AtualizarClienteFORM {
 
 
 	/**
-	 * Método responsável por atualizar o Produto com os novos dados
-	 * @param produto : Produto
-	 * @param cidadeRepository : CidadeRepository
+	 * Método responsável por atualizar o {@link Produto} com os novos dados
+	 * @param produto : {@link Produto}
+	 * @param cidadeRepository : {@link CidadeRepository}
 	 */
 	public void atualizarCliente(Cliente cliente, CidadeRepository cidadeRepository) {
 		Cidade cidadeCliente = cidadeRepository.findByNome(cidade);

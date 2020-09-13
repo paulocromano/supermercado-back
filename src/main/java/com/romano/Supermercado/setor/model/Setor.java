@@ -11,7 +11,7 @@ import javax.persistence.Table;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de Setor
+ * Classe Entidade de {@link Setor}
  */
 @Entity
 @Table(name = "setor")

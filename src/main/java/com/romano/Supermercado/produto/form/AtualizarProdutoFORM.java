@@ -12,7 +12,7 @@ import com.romano.Supermercado.produto.model.Produto;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por atualizar as informações de um Produto
+ * Classe responsável por atualizar as informações de um {@link Produto}
  */
 public class AtualizarProdutoFORM {
 
@@ -66,8 +66,8 @@ public class AtualizarProdutoFORM {
 	
 	
 	/**
-	 * Método responsável por atualizar o Produto com os novos dados
-	 * @param produto : Produto
+	 * Método responsável por atualizar o {@link Produto} com os novos dados
+	 * @param produto : {@link Produto}
 	 */
 	public void atualizarProduto(Produto produto) {
 		produto.setPreco(preco);

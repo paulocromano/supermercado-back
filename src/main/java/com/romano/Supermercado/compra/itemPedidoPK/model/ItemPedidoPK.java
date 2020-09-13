@@ -13,8 +13,8 @@ import com.romano.Supermercado.produto.model.Produto;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por armazenar as chaves primárias das Tabelas
- * de Pedido e Produto
+ * Classe responsável por armazenar as chaves primárias das Entidades
+ * de {@link Pedido} e {@link Produto}
  */
 @Embeddable
 public class ItemPedidoPK implements Serializable {

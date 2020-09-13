@@ -26,7 +26,7 @@ import com.romano.Supermercado.utils.Converter;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade responsável pelas informações do Pedido
+ * Classe Entidade responsável pelas informações do {@link Pedido}
  */
 @Entity
 @Table(name = "pedido")
@@ -66,12 +66,12 @@ public class Pedido {
 	
 	/**
 	 * Construtor
-	 * @param cliente : Cliente
+	 * @param cliente : {@link Cliente}
 	 */
 	public Pedido(Cliente cliente) {
 		statusPedido = StatusPedido.ABERTO.getCodigo();
 		this.cliente = cliente;
-		total = 0D;
+		total = 0.0D;
 	}
 
 
@@ -109,8 +109,8 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por adicionar um Produto ao Pedido e atualizar o valor total
-	 * @param itemPedido : ItemPedido
+	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} e atualizar o valor total
+	 * @param itemPedido : {@link ItemPedido}
 	 */
 	public void adicionarItemPedido(ItemPedido itemPedido) {
 		itens.add(itemPedido);
@@ -119,9 +119,9 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por remover um Produto do Pedido e atualizar o valor total
-	 * @param itemPedido : ItemPedido
-	 * @param produtoASerRemovido : Produto
+	 * Método responsável por remover um {@link Produto} do {@link Pedido} e atualizar o valor total
+	 * @param produtoASerRemovido : {@link Produto}
+	 * @param itemPedidoRepository : {@link ItemPedidoRepository}
 	 */
 	public void removerItemPedido(Produto produtoASerRemovido, ItemPedidoRepository itemPedidoRepository) {
 		itens.forEach(item -> {

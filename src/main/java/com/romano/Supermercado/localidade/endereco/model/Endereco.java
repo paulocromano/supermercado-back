@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.localidade.cidade.model.Cidade;
 
+
+/**
+ * 
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * Classe Entidade de {@link Endereco}
+ */
 @Entity
 @Table(name = "endereco")
 public class Endereco {

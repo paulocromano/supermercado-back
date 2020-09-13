@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,14 +23,16 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.enums.SexoCliente;
+import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
+import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
 
 
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de Cliente
+ * Classe Entidade de {@link Cliente}
  */
 @Entity
 @Table(name = "cliente")
@@ -72,7 +75,7 @@ public class Cliente {
 
 
 	/**
-	 * Construtor de Cliente
+	 * Construtor de {@link Cliente}
 	 * @param nome : String
 	 * @param sexo : String
 	 * @param email : String
@@ -157,6 +160,23 @@ public class Cliente {
 	
 	public void adicionarPedido(Pedido pedido) {
 		pedidos.add(pedido);
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o {@link Cliente} existe
+	 * @param clienteRepository : {@link ClienteRepository}
+	 * @param id : Long
+	 * @return {@link Cliente} - Caso o cliente exista
+	 */
+	public static final Cliente existeCliente(ClienteRepository clienteRepository, Long id) {
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		
+		if (cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Cliente não encontrado!");
+		}
+		
+		return cliente.get();
 	}
 
 
