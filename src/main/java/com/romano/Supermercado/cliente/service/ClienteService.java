@@ -1,7 +1,6 @@
 package com.romano.Supermercado.cliente.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +14,8 @@ import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
-import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
-import com.romano.Supermercado.utils.PermissaoCliente;
+import com.romano.Supermercado.utils.UsuarioValido;
 
 
 /**
@@ -53,15 +51,11 @@ public class ClienteService {
 	 * @return ResponseEntity<ClienteDTO>
 	 */
 	public ResponseEntity<ClienteDTO> buscarClientePorID(Long id) {
-		PermissaoCliente.usuarioTemPermissao(id);
+		UsuarioValido.usuarioTemPermissao(id);
 				
-		Optional<Cliente> cliente = clienteRepository.findById(id);
+		Cliente cliente = UsuarioValido.existeUsuario(clienteRepository, id);
 		
-		if (cliente.isEmpty()) {
-			throw new ObjectNotFoundException("Cliente não encontrado!");
-		}
-		
-		return ResponseEntity.ok().body(new ClienteDTO(cliente.get()));
+		return ResponseEntity.ok().body(new ClienteDTO(cliente));
 	}
 	
 	/**
@@ -90,7 +84,7 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
-		PermissaoCliente.usuarioEValido();
+		UsuarioValido.usuarioEValido();
 		
 		Cliente cliente = clienteRepository.getOne(id);
 		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
@@ -105,7 +99,7 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idCliente) {
-		PermissaoCliente.usuarioEValido();
+		UsuarioValido.usuarioEValido();
 		verificarUsuarioParaDarPermissao(idCliente);
 		
 		Cliente cliente = clienteRepository.getOne(idCliente);
@@ -120,13 +114,9 @@ public class ClienteService {
 	 * @param idCliente : Long
 	 */
 	private void verificarUsuarioParaDarPermissao(Long idCliente) {		
-		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
+		Cliente cliente = UsuarioValido.existeUsuario(clienteRepository, idCliente);
 		
-		if (cliente.isEmpty()) {
-			throw new ObjectNotFoundException("Cliente não encontrado!");
-		}
-		
-		if (cliente.get().getPerfis().contains(PerfilCliente.ADMIN)) {
+		if (cliente.getPerfis().contains(PerfilCliente.ADMIN)) {
 			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
 		}
 	}
@@ -138,13 +128,8 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> removerCliente(Long id) {
-		PermissaoCliente.usuarioTemPermissao(id);
-		
-		Optional<Cliente> cliente = clienteRepository.findById(id);
-		
-		if (cliente.isEmpty()) {
-			throw new ObjectNotFoundException("Cliente não encontrado!");
-		}
+		UsuarioValido.usuarioTemPermissao(id);
+		UsuarioValido.existeUsuario(clienteRepository, id);
 		
 		clienteRepository.deleteById(id);
 		

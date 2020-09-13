@@ -1,7 +1,12 @@
 package com.romano.Supermercado.utils;
 
+import java.util.Optional;
+
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
+import com.romano.Supermercado.cliente.model.Cliente;
+import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.exception.service.AuthorizationException;
+import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.usuario.service.UsuarioService;
 
@@ -10,7 +15,7 @@ import com.romano.Supermercado.usuario.service.UsuarioService;
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
  * Classe responsável por verificar se o Cliente tem acesso a uma determinada operação
  */
-public final class PermissaoCliente {
+public final class UsuarioValido {
 
 	
 	/**
@@ -51,5 +56,22 @@ public final class PermissaoCliente {
 		if (usuario == null || !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
 			throw new AuthorizationException("Acesso negado!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o Usuário existe
+	 * @param clienteRepository : {@link ClienteRepository}
+	 * @param id : Long
+	 * @return Cliente - Caso o cliente exista
+	 */
+	public static final Cliente existeUsuario(ClienteRepository clienteRepository, Long id) {
+		Optional<Cliente> cliente = clienteRepository.findById(id);
+		
+		if (cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Cliente não encontrado!");
+		}
+		
+		return cliente.get();
 	}
 }

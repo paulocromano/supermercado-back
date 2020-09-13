@@ -22,7 +22,7 @@ import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.security.UsuarioSecurity;
-import com.romano.Supermercado.utils.PermissaoCliente;
+import com.romano.Supermercado.utils.UsuarioValido;
 
 
 /**
@@ -51,7 +51,7 @@ public class PedidoService {
 	 * @return ResponseEntity<List<PedidoDTO>>
 	 */
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
-		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
+		UsuarioSecurity usuario = UsuarioValido.retornaUsuarioValido();
 		
 		if (usuario.hasRole(PerfilCliente.ADMIN)) {
 			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findAll()));
@@ -68,7 +68,7 @@ public class PedidoService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> adicionarProdutoAoPedido(Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
-		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
+		UsuarioSecurity usuario = UsuarioValido.retornaUsuarioValido();
 		produtoExiste(idProduto);
 		
 		Cliente cliente = clienteRepository.getOne(usuario.getId());
@@ -140,7 +140,7 @@ public class PedidoService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> removerProdutoDePedido(Long idPedido, Integer idProduto) {
-		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
+		UsuarioSecurity usuario = UsuarioValido.retornaUsuarioValido();
 		produtoExiste(idProduto);
 		
 		Cliente cliente = clienteRepository.getOne(usuario.getId());

@@ -100,7 +100,6 @@ public class ClienteResource {
 	 * @param id : Long
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
-	@Transactional
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerCliente(@PathVariable Long id) {
 		return clienteService.removerCliente(id);
