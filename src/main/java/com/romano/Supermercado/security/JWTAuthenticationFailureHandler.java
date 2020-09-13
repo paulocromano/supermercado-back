@@ -33,8 +33,8 @@ public class JWTAuthenticationFailureHandler implements AuthenticationFailureHan
 		
         return "{\"timestamp\": " + date + ", "
         + "\"status\": 401, "
-        + "\"error\": \"Não autorizado\", "
-        + "\"message\": \"Email ou senha inválidos\", "
+        + "\"error\": \"Não autorizado!\", "
+        + "\"message\": \"Email ou senha inválidos!\", "
         + "\"path\": \"/login\"}";
 	}
 }

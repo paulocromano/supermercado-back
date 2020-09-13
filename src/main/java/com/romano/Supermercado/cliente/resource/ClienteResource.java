@@ -84,15 +84,14 @@ public class ClienteResource {
 	
 	/**
 	 * Método responsável por chamar o serviço de adcionar Pefil para um Cliente
-	 * @param idAdmin : Long
 	 * @param idCliente : Long
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
-	@PutMapping("/{idAdmin}/{idCliente}")
-	public ResponseEntity<Void> adicionarPermissaoParaCliente(@PathVariable Long idAdmin, @PathVariable Long idCliente) {
-		return clienteService.adicionarPermissaoParaCliente(idAdmin, idCliente);
+	@PutMapping("/{idCliente}")
+	public ResponseEntity<Void> adicionarPermissaoParaCliente(@PathVariable Long idCliente) {
+		return clienteService.adicionarPermissaoParaCliente(idCliente);
 	}
 	
 	

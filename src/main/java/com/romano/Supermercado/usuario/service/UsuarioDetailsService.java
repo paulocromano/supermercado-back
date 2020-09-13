@@ -36,5 +36,4 @@ public class UsuarioDetailsService implements UserDetailsService {
 		
 		return new UsuarioSecurity(cliente.getId(), cliente.getEmail(), cliente.getSenha(), cliente.getPerfis());
 	}
-
 }

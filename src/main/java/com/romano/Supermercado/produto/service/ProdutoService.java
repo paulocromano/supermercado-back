@@ -89,7 +89,7 @@ public class ProdutoService {
 		verificarSeDataInformadaEValida(dataInformada);
 		
 		List<Produto> produtos = produtoRepository.findAll();
-		produtos.removeIf(produto -> verificarDataValidadePelaDataInformada(produto.getDataValidade(), dataInformada));
+		produtos.removeIf(produto -> dataInformada.isAfter(produto.getDataValidade()));
 		
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtos));
 	}
@@ -103,22 +103,8 @@ public class ProdutoService {
 		LocalDate dataAtual = LocalDate.now();
 		
 		if (dataAtual.isAfter(dataInformada)) {
-			System.out.println("Chegou");
 			throw new IllegalArgumentException("Informe uma Data a partir da Data atual!");
 		}
-	}
-	
-	
-	/**
-	 * Método responsável por verificar se a data de validade do Produto é depois da
-	 * data informada
-	 * @param dataValidade : LocalDate
-	 * @param dataInformada : LocalDate
-	 * @return Boolean - True se o Produto estiver fora da data informada até
-	 * a validade do Produto. False se estiver dentro.
-	 */
-	private Boolean verificarDataValidadePelaDataInformada(LocalDate dataValidade, LocalDate dataInformada) {
-		return (dataInformada.isAfter(dataValidade)) ? true : false;
 	}
 	
 	
@@ -127,11 +113,7 @@ public class ProdutoService {
 	 * @param produtoFORM : ProdutoFORM
 	 * @return ResponseEntity<Void>
 	 */
-	public ResponseEntity<Void> cadastrarProduto(ProdutoFORM produtoFORM) {
-		if (produtoFORM == null) {
-			throw new NullPointerException("É necessário preencher os campos para cadastrar um Produto!");
-		}
- 
+	public ResponseEntity<Void> cadastrarProduto(ProdutoFORM produtoFORM) { 
 		produtoRepository.save(produtoFORM.converterParaProduto());
 
 		return ResponseEntity.ok().build();
@@ -189,7 +171,6 @@ public class ProdutoService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
-		
 		if (quantidade == null) {
 			throw new NullPointerException("Informe uma quantidade válida!");
 		}

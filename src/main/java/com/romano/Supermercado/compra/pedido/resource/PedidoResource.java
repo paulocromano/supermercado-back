@@ -35,40 +35,37 @@ public class PedidoResource {
 	
 	/**
 	 * Método responsável por chamar o serviço de listar Pedidos conforme Perfil do Cliente
-	 * @param id : Long
 	 * @return ResponseEntity<List<PedidoDTO>> - Retorna a resposta da requisição
 	 */
 	@GetMapping("/listar-todos{id}")
-	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(@PathVariable Long id) {
-		return pedidoService.listarTodosPedidos(id);
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
+		return pedidoService.listarTodosPedidos();
 	}
 	
 	/**
 	 * Método responsável por chamar o serviço de adicionar um Produto ao Pedido
-	 * @param idCliente : Long
 	 * @param idProduto : Integer
 	 * @param itemPedidoFORM : ItemPedidoFORM
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@Transactional
-	@PutMapping("/{idCliente}/{idProduto}")
-	public ResponseEntity<Void> adicionarProdutoAoPedido(@PathVariable Long idCliente, @PathVariable Integer idProduto, 
+	@PutMapping("/{idProduto}")
+	public ResponseEntity<Void> adicionarProdutoAoPedido(@PathVariable Integer idProduto, 
 			@RequestBody @Valid ItemPedidoFORM itemPedidoFORM) {
 		
-		return pedidoService.adicionarProdutoAoPedido(idCliente, idProduto, itemPedidoFORM);
+		return pedidoService.adicionarProdutoAoPedido(idProduto, itemPedidoFORM);
 	}
 	
 	
 	/**
 	 * Método responsável por chamar o serviço de remoção de Produto de um Pedido
-	 * @param idCliente : Long
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
 	 */
 	@Transactional
-	@DeleteMapping("/{idCliente}/{idPedido}/{idProduto}")
-	public ResponseEntity<Void> removerProdutoDePedido(@PathVariable Long idCliente, @PathVariable Long idPedido, @PathVariable Integer idProduto) {
-		return pedidoService.removerProdutoDePedido(idCliente, idPedido, idProduto);
+	@DeleteMapping("/{idPedido}/{idProduto}")
+	public ResponseEntity<Void> removerProdutoDePedido(@PathVariable Long idPedido, @PathVariable Integer idProduto) {
+		return pedidoService.removerProdutoDePedido(idPedido, idProduto);
 	}
 }

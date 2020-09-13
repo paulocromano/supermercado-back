@@ -14,19 +14,24 @@ public final class PermissaoCliente {
 
 	
 	/**
-	 * Método responsável por verficar se o Usuário que está logado é realmente o Cliente
-	 * @param id : Long
+	 * Método responsável por verficar se o Usuário está logado
 	 */
-	public static final void usuarioIgualAoCliente(Long id) {
+	public static final void usuarioEValido() {
 		UsuarioSecurity usuario = UsuarioService.authenticated();
 		
-		if (id == null) {
-			throw new IllegalArgumentException("É necessário estar logado para realizar compras!");
+		if (usuario.getId() == null) {
+			throw new IllegalArgumentException("Acesso negado!");
+		}
+	}
+	
+	public static final UsuarioSecurity retornaUsuarioValido() {
+		UsuarioSecurity usuario = UsuarioService.authenticated();
+		
+		if (usuario.getId() == null) {
+			throw new IllegalArgumentException("Acesso negado!");
 		}
 		
-		if (!id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
-		}
+		return usuario;
 	}
 	
 	

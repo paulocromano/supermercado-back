@@ -17,13 +17,11 @@ import com.romano.Supermercado.compra.pedido.dto.PedidoDTO;
 import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.compra.pedido.repository.PedidoRepository;
-import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.security.UsuarioSecurity;
-import com.romano.Supermercado.usuario.service.UsuarioService;
 import com.romano.Supermercado.utils.PermissaoCliente;
 
 
@@ -50,30 +48,30 @@ public class PedidoService {
 	
 	/**
 	 * Método resonsável por listar Pedidos conforme o Perfil do Cliente
-	 * @param id : Long
 	 * @return ResponseEntity<List<PedidoDTO>>
 	 */
-	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(Long id) {
-		if (listarPedidosPorPermissaoCliente(id)) {
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
+		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
+		
+		if (usuario.hasRole(PerfilCliente.ADMIN)) {
 			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findAll()));
 		}
 	
-		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(id)));
+		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(usuario.getId())));
 	}
 	
 	/**
 	 * Método responsável por adicionar um produto ao pedido <br>
 	 * Caso não exista um pedido em Aberto, será criado um novo
-	 * @param idCliente : Long
 	 * @param idProduto : Integer
 	 * @param itemPedidoFORM : ItemPedidoFORM
 	 * @return ResponseEntity<Void>
 	 */
-	public ResponseEntity<Void> adicionarProdutoAoPedido(Long idCliente, Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
-		PermissaoCliente.usuarioIgualAoCliente(idCliente);
+	public ResponseEntity<Void> adicionarProdutoAoPedido(Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
+		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
 		produtoExiste(idProduto);
 		
-		Cliente cliente = clienteRepository.getOne(idCliente);
+		Cliente cliente = clienteRepository.getOne(usuario.getId());
 		Produto produto = produtoRepository.getOne(idProduto);
 		
 		Optional<Pedido> optionalPedido = cliente.getPedidos()
@@ -137,16 +135,16 @@ public class PedidoService {
 	
 	/**
 	 * Método responsável por remover um Produto de um Pedido
-	 * @param idCliente : Long
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
 	 * @return ResponseEntity<Void>
 	 */
-	public ResponseEntity<Void> removerProdutoDePedido(Long idCliente, Long idPedido, Integer idProduto) {
-		PermissaoCliente.usuarioIgualAoCliente(idCliente);
+	public ResponseEntity<Void> removerProdutoDePedido(Long idPedido, Integer idProduto) {
+		UsuarioSecurity usuario = PermissaoCliente.retornaUsuarioValido();
 		produtoExiste(idProduto);
 		
-		Pedido pedido = pedidoExiste(idCliente, idPedido);
+		Cliente cliente = clienteRepository.getOne(usuario.getId());
+		Pedido pedido = pedidoExiste(cliente, idPedido);
 		Produto produto = produtoRepository.getOne(idProduto);
 		
 		pedidoContemItemPedido(pedido, produto);
@@ -184,26 +182,7 @@ public class PedidoService {
 			pedidoRepository.delete(pedido);
 		}
 	}
-	
-	
-	/**
-	 * Método responsável por verificar se o Usuário tem permissão para Listar
-	 * os pedidos de todos os Clientes ou somente os seus respectivos Pedidos
-	 * @param id : Long
-	 * @return Boolean - Retorna True se o Usuário tiver permissão para listar os 
-	 * pedidos de todos os Cliente. False se tiver permissão para listar somente os 
-	 * seus respectivos Pedidos
-	 */
-	private Boolean listarPedidosPorPermissaoCliente(Long id) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-		
-		if (id == null || !usuario.hasRole(PerfilCliente.ADMIN) && !id.equals(usuario.getId())) {
-			throw new AuthorizationException("Acesso negado!");
-		}
-		
-		return (usuario.hasRole(PerfilCliente.ADMIN)) ? true : false;
-	}
-	
+
 	
 	/**
 	 * Método responsável por verificar se o Produto existe e se ele está disponível para compra
@@ -224,18 +203,18 @@ public class PedidoService {
 	
 	/**
 	 * Método responsável por verificar se o Pedido existe e se pertence ao mesmo Cliente
-	 * @param idClientePedido : Long
+	 * @param cliente : Cliente
 	 * @param idPedido : Long
 	 * @return Pedido
 	 */
-	private Pedido pedidoExiste(Long idClientePedido, Long idPedido) {
+	private Pedido pedidoExiste(Cliente cliente, Long idPedido) {
 		Optional<Pedido> pedido = pedidoRepository.findById(idPedido);
 		
 		if (pedido.isEmpty()) {
 			throw new ObjectNotFoundException("Pedido não encontrado!");
 		}
 		
-		if (!pedido.get().getCliente().getId().equals(idClientePedido)) {
+		if (!pedido.get().getCliente().equals(cliente)) {
 			throw new IllegalArgumentException("Acesso Negado!");
 		}
 		

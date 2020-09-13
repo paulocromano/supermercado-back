@@ -15,12 +15,9 @@ import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.cliente.repository.PerfilClienteRepository;
-import com.romano.Supermercado.exception.service.AuthorizationException;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
-import com.romano.Supermercado.security.UsuarioSecurity;
-import com.romano.Supermercado.usuario.service.UsuarioService;
 import com.romano.Supermercado.utils.PermissaoCliente;
 
 
@@ -110,7 +107,7 @@ public class ClienteService {
 	 * @return ResponseEntity<Void>
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
-		PermissaoCliente.usuarioIgualAoCliente(id);
+		PermissaoCliente.usuarioEValido();
 		
 		Cliente cliente = clienteRepository.getOne(id);
 		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
@@ -121,18 +118,15 @@ public class ClienteService {
 	
 	/**
 	 * Método responsável por adicionar permissão a um Cliente
-	 * @param idAdmin : Long
 	 * @param idCliente : Long
 	 * @return ResponseEntity<Void>
 	 */
-	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idAdmin, Long idCliente) {
-		usuarioTemPermissaoParaAdicionarPerfil(idAdmin, idCliente);
+	public ResponseEntity<Void> adicionarPermissaoParaCliente(Long idCliente) {
+		verificarUsuarioParaDarPermissao(idCliente);
 		
 		Cliente cliente = clienteRepository.getOne(idCliente);
 		
-		if (cliente.getPerfis().contains(PerfilCliente.ADMIN)) {
-			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
-		}
+
 		
 		cliente.adicionarPerfis(PerfilCliente.ADMIN);
 		
@@ -156,23 +150,18 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por verificar se o Usuário logado tem permissão para
-	 * adicionar um Perfil a outro usuário
-	 * @param idAdmin : Long
+	 * Método responsável por verificar se o Usuário já possui permissão de ADMIN
 	 * @param idCliente : Long
 	 */
-	private void usuarioTemPermissaoParaAdicionarPerfil(Long idAdmin, Long idCliente) {
-		UsuarioSecurity usuario = UsuarioService.authenticated();
-
-		if (idAdmin == null || idCliente == null && !usuario.hasRole(PerfilCliente.ADMIN)) {
-			throw new AuthorizationException("Acesso negado!");
-		}
-		
-		Optional<Cliente> clienteAdministrador = clienteRepository.findById(idAdmin);
+	private void verificarUsuarioParaDarPermissao(Long idCliente) {		
 		Optional<Cliente> cliente = clienteRepository.findById(idCliente);
 		
-		if (clienteAdministrador.isEmpty() || cliente.isEmpty()) {
-			throw new ObjectNotFoundException("Administrador e/ou Cliente não encontrado(s)!");
+		if (cliente.get().getPerfis().contains(PerfilCliente.ADMIN)) {
+			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
+		}
+		
+		if (cliente.isEmpty()) {
+			throw new ObjectNotFoundException("Cliente não encontrado!");
 		}
 	}
 }
