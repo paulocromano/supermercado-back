@@ -10,6 +10,7 @@ import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
+import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
@@ -20,7 +21,7 @@ public class PedidoDTO {
 
 	private Long id;
 	private String dataHoraPedidoFinalizado;
-	private Double total;
+	private String total;
 	private StatusPedido statusPedido;
 	private Cliente cliente;
 	private Endereco enderecoEntrega;
@@ -34,7 +35,7 @@ public class PedidoDTO {
 	public PedidoDTO(Pedido pedido) {
 		id = pedido.getId();
 		dataHoraPedidoFinalizado = pedido.getDataHoraPedidoFinalizado();
-		total = pedido.getTotal();
+		total = Converter.doubleParaStringComDuasCasasDecimais(pedido.getTotal());
 		statusPedido = pedido.getStatusPedido();
 		cliente = pedido.getCliente();
 		enderecoEntrega = pedido.getEnderecoEntrega();
@@ -50,7 +51,7 @@ public class PedidoDTO {
 		return dataHoraPedidoFinalizado;
 	}
 
-	public Double getTotal() {
+	public String getTotal() {
 		return total;
 	}
 

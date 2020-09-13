@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.compra.itemPedido.form.ItemPedidoFORM;
@@ -47,18 +46,29 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por listar Pedidos conforme o {@link PerfilCliente}
+	 * Método responsável por listar {@link Pedido}s de todos os {@link Cliente}s ou somente um
+	 * Cliente específico
 	 * @return ResponseEntity - List {@link PedidoDTO}
 	 */
-	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
-		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
-		
-		if (usuario.hasRole(PerfilCliente.ADMIN)) {
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(Long idCliente) {		
+		if (idCliente == null) {
 			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findAll()));
 		}
 	
+		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(idCliente)));
+	}
+	
+	
+	/**
+	 * Método responsável por listar todos os {@link Pedido}s de um {@link Cliente}
+	 * @return ResponseEntity - List {@link PedidoDTO}
+	 */
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
+		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
+		
 		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(usuario.getId())));
 	}
+	
 	
 	/**
 	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} <br>
@@ -99,7 +109,7 @@ public class PedidoService {
 	private void adicionarProdutoAoNovoPedido(Cliente cliente, Produto produto, ItemPedidoFORM itemPedidoFORM) {
 		Pedido pedido = new Pedido(cliente);
 		pedidoRepository.save(pedido);
-		
+
 		adicionarProdutoAoPedidoExistente(pedido, produto, itemPedidoFORM);
 	}
 	
@@ -162,10 +172,10 @@ public class PedidoService {
 	 */
 	private void pedidoContemItemPedido(Pedido pedido, Produto produto) {
 		Optional<ItemPedido> itemPedido = pedido
-				.getItens()
-				.stream()
-				.findAny()
-				.filter(item -> item.getProduto().equals(produto)); 
+			.getItens()
+			.stream()
+			.findAny()
+			.filter(item -> item.getProduto().equals(produto));
 		
 		if (itemPedido.isEmpty()) {
 			throw new ObjectNotFoundException("Produto informado não existe no Pedido!");
@@ -214,7 +224,7 @@ public class PedidoService {
 			throw new ObjectNotFoundException("Pedido não encontrado!");
 		}
 		
-		if (!pedido.get().getCliente().equals(cliente)) {
+		if (!pedido.get().getCliente().getId().equals(cliente.getId())) {
 			throw new IllegalArgumentException("Acesso Negado!");
 		}
 		

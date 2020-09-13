@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romano.Supermercado.cliente.enums.PerfilCliente;
+import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.compra.itemPedido.form.ItemPedidoFORM;
 import com.romano.Supermercado.compra.pedido.dto.PedidoDTO;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
@@ -37,13 +38,26 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar Pedidos conforme {@link PerfilCliente}
+	 * Método responsável por chamar o serviço de listar {@link Pedido}s de todos os {@link Cliente}s ou somente um
+	 * Cliente específico
 	 * @return ResponseEntity - List {@link PedidoDTO} Retorna a resposta da requisição
 	 */
-	@GetMapping("/listar-todos{id}")
-	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos() {
-		return pedidoService.listarTodosPedidos();
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@GetMapping("/listar-todos/{idCliente}")
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(@PathVariable Long idCliente) {
+		return pedidoService.listarTodosPedidos(idCliente);
 	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de listar todos os {@link Pedido}s de um {@link Cliente}
+	 * @return ResponseEntity - List {@link PedidoDTO} Retorna a resposta da requisição
+	 */
+	@GetMapping("/cliente-listar-todos")
+	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
+		return pedidoService.listarTodosPedidosDoCliente();
+	}
+	
 	
 	/**
 	 * Método responsável por chamar o serviço de adicionar um {@link Produto} ao {@link Pedido}

@@ -55,7 +55,7 @@ public class Pedido {
 	private Endereco enderecoEntrega;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="id.pedido", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="id.pedido", cascade = CascadeType.MERGE)
 	private Set<ItemPedido> itens = new HashSet<>();
 
 	
