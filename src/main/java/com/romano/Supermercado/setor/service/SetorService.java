@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
-import com.romano.Supermercado.produto.model.Produto;
-import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.setor.dto.SetorDTO;
 import com.romano.Supermercado.setor.form.SetorFORM;
 import com.romano.Supermercado.setor.model.Setor;
@@ -28,9 +26,6 @@ public class SetorService {
 
 	@Autowired
 	private SetorRepository setorRepository;
-	
-	@Autowired
-	private ProdutoRepository produtoRepository;
 	
 	
 	/**
@@ -81,31 +76,17 @@ public class SetorService {
 	public ResponseEntity<Void> removerSetor(@PathVariable Integer id) {
 		Optional<Setor> setor = setorRepository.findById(id);
 		
-		if (setor.isPresent()) {			
-			if (verificaSeSetorPossuiLigacoesComOutrasEntidades(id)) {
-				throw new DataIntegrityException("Não foi possível remover. O Setor possui Produto(s) cadastrado(s)!");
-			}
-			
-			setorRepository.delete(setor.get());
-			
-			return ResponseEntity.ok().build();
-		}
-		else {
+		if (!setor.isPresent()) {	
 			throw new ObjectNotFoundException("Setor não encontrado!");
 		}
-	}
-	
-	
-	/**
-	 * Método responsável por verificar se o ID do setor a ser removido possui ligações
-	 * com outras Entidades
-	 * @param id : Integer
-	 * @return Boolean - Retorna True se o Setor possuir relacionamentos com outras Entidades. False
-	 * se não existir relacionamento
-	 */
-	private Boolean verificaSeSetorPossuiLigacoesComOutrasEntidades(Integer id) {
-		Optional<Produto> produto = produtoRepository.findFirstBySetor_Id(id);
 		
-		return (produto.isPresent()) ? true : false;
+		try {
+			setorRepository.delete(setor.get());
+		}
+		catch (RuntimeException e) {
+			throw new DataIntegrityException("Não foi possível remover! O Setor possui Produto(s) cadastrado(s).");
+		}
+		
+		return ResponseEntity.ok().build();
 	}
 }

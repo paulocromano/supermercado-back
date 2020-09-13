@@ -1,5 +1,6 @@
 package com.romano.Supermercado.produto.resource;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -71,26 +72,14 @@ public class ProdutoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar os Produtos que estão com estoque baixo
+	 * Método responsável por chamar o serviço de listar os Produtos que estão dentro da data até a validade do Produto
+	 * @param data : String
 	 * @return ResponseEntity<List<ProdutoDTO>>
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@GetMapping("/listar-estoque-baixo")
-	public ResponseEntity<List<ProdutoDTO>> listarProdutosComEstoqueBaixo() {
-		return produtoService.listarProdutosComEstoqueBaixo();
-	}
-	
-	
-	/**
-	 * Método responsável por chamar o serviço de listar os Produtos que estão dentro do período
-	 * de dias até a validade do Produto
-	 * @param dias : Integer
-	 * @return ResponseEntity<List<ProdutoDTO>>
-	 */
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@GetMapping("/listar-dias-validade={dias}")
-	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelosDiasRestantesDaValidade(@PathVariable Integer dias) {
-		return produtoService.listarProdutosPelosDiasRestantesDaValidade(dias);
+	@GetMapping("/listar-data-validade={data}")
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelaDataDaValidade(@PathVariable String data) {
+		return produtoService.listarProdutosPelaDataDaValidade(data);
 	}
 	
 	
@@ -124,6 +113,7 @@ public class ProdutoResource {
 	 * Método responsável por chamar o serviço de remoção de Produto
 	 * @param id : Integer
 	 * @return ResponseEntity<Void> - Retorna a resposta da requisição
+	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
@@ -134,7 +124,6 @@ public class ProdutoResource {
 	
 	/**
 	 * Método responosável por chamar o serviço de aumentar ou diminuir o estoque do Produto informado com base na quantidade
-	 * @param idCliente
 	 * @param idProduto
 	 * @param aumentarEstoque
 	 * @param quantidade
@@ -142,10 +131,10 @@ public class ProdutoResource {
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Transactional
-	@PutMapping("/{idCliente}/{idProduto}/{aumentarEstoque}/{quantidade}")
-	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(@PathVariable Long idCliente, @PathVariable Integer idProduto, @PathVariable Boolean aumentarEstoque, 
+	@PutMapping("/{idProduto}/{aumentarEstoque}/{quantidade}")
+	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(@PathVariable Integer idProduto, @PathVariable Boolean aumentarEstoque, 
 			@PathVariable Integer quantidade) {
 		
-		return produtoService.aumentarOuDiminuirEstoqueProduto(idCliente, idProduto, aumentarEstoque, quantidade);
+		return produtoService.aumentarOuDiminuirEstoqueProduto(idProduto, aumentarEstoque, quantidade);
 	}
 }

@@ -24,10 +24,6 @@ public class AtualizarProdutoFORM {
 	@NumberFormat(pattern = "#.##")
 	private Double desconto;
 	
-	@NotNull(message = "Estoque não informado!")
-	@Digits(integer = 6, fraction = 0, message = "Tamanho do Estoque excedeu o limite! ({integer} digitos)")
-	private Integer estoque;
-	
 	@NotNull(message = "Estoque Mínimo não informado!")
 	@Digits(integer = 4, fraction = 0, message = "Tamanho do Estoque Mínimo excedeu o limite! ({integer} digitos)")
 	private Integer estoqueMinimo;
@@ -50,14 +46,6 @@ public class AtualizarProdutoFORM {
 
 	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
-	}
-
-	public Integer getEstoque() {
-		return estoque;
-	}
-
-	public void setEstoque(Integer estoque) {
-		this.estoque = estoque;
 	}
 
 	public Integer getEstoqueMinimo() {
@@ -84,7 +72,6 @@ public class AtualizarProdutoFORM {
 	public void atualizarProduto(Produto produto) {
 		produto.setPreco(preco);
 		produto.setDesconto(desconto);
-		produto.setEstoque(estoque);
 		produto.setEstoqueMinimo(estoqueMinimo);
 		produto.atualizarStatusProduto();
 		produto.setObservacoes(observacoes);		

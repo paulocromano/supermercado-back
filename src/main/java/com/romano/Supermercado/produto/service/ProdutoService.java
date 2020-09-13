@@ -1,5 +1,6 @@
 package com.romano.Supermercado.produto.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -17,7 +19,7 @@ import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.setor.model.Setor;
 import com.romano.Supermercado.setor.repository.SetorRepository;
-import com.romano.Supermercado.utils.PermissaoCliente;
+import com.romano.Supermercado.utils.Converter;
 
 
 /**
@@ -73,55 +75,50 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar os Produtos com estoque baixo
-	 * @return ResponseEntity<List<ProdutoDTO>>
-	 */
-	public ResponseEntity<List<ProdutoDTO>> listarProdutosComEstoqueBaixo() {
-		List<Produto> produtos = produtoRepository.findAll();
-		produtos.removeIf(produto -> produto.getStatusProduto() != StatusProduto.ESTOQUE_BAIXO);
-		
-		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtos));
-	}
-	
-	
-	/**
 	 * Método responsável por listar os Produtos com os dias até a validade dentro do valor específicado. Caso
 	 * não seja específicado o dia, será verificado a partir do valor padrão 10.
 	 * @param dias : Integer - Dias restantes até a validade do Produto
 	 * @return ResponseEntity<List<ProdutoDTO>>
 	 */
-	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelosDiasRestantesDaValidade(Integer dias) {
-		if (dias == null) {
-			throw new NullPointerException("A quantidade de dias não pode estar vazia!");
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelaDataDaValidade(String data) {
+		if (data == null) {
+			throw new NullPointerException("A Data não pode estar vazia!");
 		}
 		
-		LocalDate dataAtual = LocalDate.now();
+		LocalDate dataInformada = Converter.stringParaLocalDate(data);
+		verificarSeDataInformadaEValida(dataInformada);
+		
 		List<Produto> produtos = produtoRepository.findAll();
-		produtos.removeIf(produto -> verificaDataValidadePelosDiasRestantes(dataAtual, produto.getDataValidade(), dias));
+		produtos.removeIf(produto -> verificarDataValidadePelaDataInformada(produto.getDataValidade(), dataInformada));
 		
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtos));
 	}
 	
 	
 	/**
-	 * Método responsável por verificar se a data de validade do Produto está dentro da
-	 * quantidade de dias informado
-	 * @param dataAtual : LocalDate
-	 * @param dataValidade : LocalDate
-	 * @param dias : Integer
-	 * @return Boolean - True se o Produto estiver dentro do período de dias informado até
-	 * a validade do Produto. False se estiver fora.
+	 * Método responsável por verificar se a data atual é depois da data informada
+	 * @param dataInformada : LocalDate
 	 */
-	private Boolean verificaDataValidadePelosDiasRestantes(LocalDate dataAtual, LocalDate dataValidade, Integer dias) {
-		if (dataValidade.getYear() == dataAtual.getYear()) {
-			if (dataValidade.getMonthValue() == dataAtual.getMonthValue()) {
-				if ((dataValidade.getDayOfMonth() - dataAtual.getDayOfMonth()) <= dias) {
-					return true;
-				}
-			}
-		}
+	private void verificarSeDataInformadaEValida(LocalDate dataInformada) {
+		LocalDate dataAtual = LocalDate.now();
 		
-		return false;
+		if (dataAtual.isAfter(dataInformada)) {
+			System.out.println("Chegou");
+			throw new IllegalArgumentException("Informe uma Data a partir da Data atual!");
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se a data de validade do Produto é depois da
+	 * data informada
+	 * @param dataValidade : LocalDate
+	 * @param dataInformada : LocalDate
+	 * @return Boolean - True se o Produto estiver fora da data informada até
+	 * a validade do Produto. False se estiver dentro.
+	 */
+	private Boolean verificarDataValidadePelaDataInformada(LocalDate dataValidade, LocalDate dataInformada) {
+		return (dataInformada.isAfter(dataValidade)) ? true : false;
 	}
 	
 	
@@ -164,17 +161,21 @@ public class ProdutoService {
 	 * Método responsável por remover um Produto
 	 * @param id : Integer
 	 * @return ResponseEntity<Void>
+	 * @throws SQLIntegrityConstraintViolationException 
 	 */
 	public ResponseEntity<Void> removerProduto(Integer id) {
 		Optional<Produto> produto = produtoRepository.findById(id);
-		
-		//TODO - Implementar os teste se algum cliente comprou o produto
 		
 		if (produto.isEmpty()) {
 			throw new ObjectNotFoundException("Produto informado não existe!");
 		}
 		
-		produtoRepository.deleteById(id);
+		try {
+			produtoRepository.deleteById(id);
+		}
+		catch (RuntimeException e) {
+			throw new DataIntegrityException("Não foi possível remover! Clientes compraram este Produto.");
+		}
 		
 		return ResponseEntity.ok().build();
 	}
@@ -182,14 +183,12 @@ public class ProdutoService {
 	
 	/**
 	 * Método responsável por aumentar ou diminuir o estoque do Produto informado com base na quantidade
-	 * @param idCliente : Long
 	 * @param idProduto : Integer
 	 * @param aumentarEstoque : Boolean
 	 * @param quantidade : Integer
 	 * @return ResponseEntity<Void>
 	 */
-	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Long idCliente, Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
-		PermissaoCliente.usuarioTemPermissao(idCliente);
+	public ResponseEntity<Void> aumentarOuDiminuirEstoqueProduto(Integer idProduto, Boolean aumentarEstoque, Integer quantidade) {
 		
 		if (quantidade == null) {
 			throw new NullPointerException("Informe uma quantidade válida!");

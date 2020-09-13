@@ -23,8 +23,8 @@ public class ValidationError extends StandardError {
 	 * @param error : String
 	 * @param path : String
 	 */
-	public ValidationError(Long timestamp, Integer status, String error, String path) {
-		super(timestamp, status, error, path);
+	public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
+		super(timestamp, status, error, message, path);
 	
 	}
 

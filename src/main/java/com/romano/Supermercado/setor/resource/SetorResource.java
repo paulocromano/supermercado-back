@@ -37,6 +37,7 @@ public class SetorResource {
 	 * Método responsável por chamar o serviço de listagem de todos os Setores
 	 * @return ResponseEntity<List<SetorDTO>> - Retorna a resposta da requisição
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos")
 	public ResponseEntity<List<SetorDTO>> listarTodosSetores() {
 		return setorService.listarTodosSetores();

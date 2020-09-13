@@ -38,7 +38,7 @@ public class PedidoResource {
 	 * @param id : Long
 	 * @return ResponseEntity<List<PedidoDTO>> - Retorna a resposta da requisição
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/listar-todos{id}")
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(@PathVariable Long id) {
 		return pedidoService.listarTodosPedidos(id);
 	}

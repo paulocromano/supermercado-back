@@ -81,11 +81,11 @@ public final class Converter {
 	}
 	
 	/**
-	 * Método responsável por formatar um Double para duas casas decimais e converter em String
+	 * Método responsável por converter um Double para String com duas casas decimais
 	 * @param valor : Double
 	 * @return String - Valor convertido com duas casas decimais
 	 */
-	public static final String doubleParaDuasCasasDecimaisEmString(Double valor) {		
-		return new DecimalFormat("#.00").format(valor).replace(',', '.');
+	public static final String doubleParaStringComDuasCasasDecimais(Double valor) {		
+		return new DecimalFormat("0.00").format(valor).replace(',', '.');
 	}
 }

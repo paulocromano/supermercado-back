@@ -58,13 +58,14 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> validation(MethodArgumentNotValidException error, HttpServletRequest request) {
 		
-		ValidationError validationError = new ValidationError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Erro de validação", request.getRequestURI());
+		ValidationError validationError = new ValidationError(System.currentTimeMillis(), HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de validação", 
+				error.getMessage(), request.getRequestURI());
 		
 		for (FieldError fieldError : error.getBindingResult().getFieldErrors()) {
 			validationError.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(validationError);
 	}
 	
 	
@@ -130,6 +131,8 @@ public class ResourceExceptionHandler {
 	 * @return ResponseEntity<StandardError> - Reposta da requisição com o erro tratado
 	 */
 	private ResponseEntity<StandardError> erroPersonalizado(Exception error, HttpStatus httpStatus, String messageError, HttpServletRequest request) {
-		return ResponseEntity.status(httpStatus).body(new StandardError(System.currentTimeMillis(), httpStatus.value(), messageError, request.getRequestURI()));
+		
+		return ResponseEntity.status(httpStatus).body(new StandardError(System.currentTimeMillis(), httpStatus.value(), 
+				messageError, error.getMessage(), request.getRequestURI()));
 	}
 }
