@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
-import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.utils.Converter;
@@ -22,21 +21,21 @@ public class PedidoDTO {
 	private Long id;
 	private String dataHoraPedidoFinalizado;
 	private String total;
-	private StatusPedido statusPedido;
+	private String statusPedido;
 	private Cliente cliente;
 	private Endereco enderecoEntrega;
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	
 	/**
-	 * Construtor
+	 * Construtor de {@link PedidoDTO}
 	 * @param pedido : {@link Pedido}
 	 */
 	public PedidoDTO(Pedido pedido) {
 		id = pedido.getId();
 		dataHoraPedidoFinalizado = pedido.getDataHoraPedidoFinalizado();
 		total = Converter.doubleParaStringComDuasCasasDecimais(pedido.getTotal());
-		statusPedido = pedido.getStatusPedido();
+		statusPedido = pedido.getStatusPedido().getDescricao();
 		cliente = pedido.getCliente();
 		enderecoEntrega = pedido.getEnderecoEntrega();
 		itens = pedido.getItens();
@@ -55,7 +54,7 @@ public class PedidoDTO {
 		return total;
 	}
 
-	public StatusPedido getStatusPedido() {
+	public String getStatusPedido() {
 		return statusPedido;
 	}
 

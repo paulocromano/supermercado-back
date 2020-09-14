@@ -22,7 +22,6 @@ public class ClienteDTO {
 	private String nome;
 	private String email;
 	private Set<PerfilCliente> perfis;
-	private String senha;
 	private String dataNascimento;
 	private String sexo;
 	private String telefone;
@@ -39,7 +38,6 @@ public class ClienteDTO {
 		nome = cliente.getNome();
 		email = cliente.getEmail();
 		perfis = cliente.getPerfis();
-		senha = cliente.getSenha();
 		
 		if (cliente.getDataNascimento() != null) {
 			dataNascimento = Converter.localDateParaString(cliente.getDataNascimento());
@@ -68,10 +66,6 @@ public class ClienteDTO {
 		return perfis;
 	}
 	
-	public String getSenha() {
-		return senha;
-	}
-
 	public String getDataNascimento() {
 		return dataNascimento;
 	}

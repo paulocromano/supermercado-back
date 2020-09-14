@@ -57,10 +57,11 @@ public class PedidoService {
 	 */
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(Long idCliente) {		
 		if (idCliente == null) {
-			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findAll()));
+			return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByStatusPedido(StatusPedido.COMPRA_REALIZADA.getCodigo())));
 		}
 	
-		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(idCliente)));
+		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_IdAndStatusPedido(
+				idCliente, StatusPedido.COMPRA_REALIZADA.getCodigo())));
 	}
 	
 	
@@ -70,6 +71,8 @@ public class PedidoService {
 	 */
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
 		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
+
+		//TODO atualizar o preço do Produto que pertence a um pedido na classe de Produto
 		
 		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(usuario.getId())));
 	}
@@ -300,19 +303,38 @@ public class PedidoService {
 		Pedido pedido = pedidoExiste(idPedido);
 		
 		verificarSePedidoPertenceAoClienteLogado(usuario.getId(), pedido);
-		
-		if (!pedido.getStatusPedido().equals(StatusPedido.ABERTO)) {
-			throw new IllegalArgumentException("O Pedido já foi finalizado!");
-		}
-		
-		Endereco endereco = enderecoRepository.getOne(idEndereco);
-		
-		if (!usuario.getId().equals(endereco.getCliente().getId())) {
-			throw new IllegalArgumentException("Acesso negado!");
-		}
+		verificarSeStatusPedidoEstaAberto(pedido.getStatusPedido());
+		Endereco endereco = verificarEnderecoPertenceAoCliente(usuario.getId(), idEndereco);
 		
 		pedido.finalizarPedido(endereco, produtoRepository);
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o {@link StatusPedido} está em Aberto
+	 * @param statusPedido : {@link StatusPedido}
+	 */
+	private void verificarSeStatusPedidoEstaAberto(StatusPedido statusPedido) {
+		if (!statusPedido.equals(StatusPedido.ABERTO)) {
+			throw new IllegalArgumentException("O Pedido já foi finalizado!");
+		}
+	}
+	
+	/**
+	 * Método responsável por verificar se o {@link Endereco} informado pertence ao Usuário logado
+	 * @param idUsuario : Long
+	 * @param idEndereco : Long
+	 * @return {@link Endereco} 
+	 */
+	private Endereco verificarEnderecoPertenceAoCliente(Long idUsuario, Long idEndereco) {
+		Endereco endereco = enderecoRepository.getOne(idEndereco);
+		
+		if (!idUsuario.equals(endereco.getCliente().getId())) {
+			throw new IllegalArgumentException("Acesso negado!");
+		}
+		
+		return endereco;
 	}
 }
