@@ -311,7 +311,7 @@ public class PedidoService {
 			throw new IllegalArgumentException("Acesso negado!");
 		}
 		
-		pedido.compraFinalizada(endereco, produtoRepository);
+		pedido.finalizarPedido(endereco, produtoRepository);
 		
 		return ResponseEntity.ok().build();
 	}

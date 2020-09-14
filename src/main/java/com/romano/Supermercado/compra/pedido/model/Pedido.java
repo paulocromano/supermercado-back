@@ -157,7 +157,7 @@ public class Pedido {
 	 * @param endereco : {@link Endereco}
 	 * @param produtoRepository : {@link ProdutoRepository}
 	 */
-	public void compraFinalizada(Endereco endereco, ProdutoRepository produtoRepository) {
+	public void finalizarPedido(Endereco endereco, ProdutoRepository produtoRepository) {
 		dataHoraPedidoFinalizado = Converter.localDateTimeAtualParaString();
 		statusPedido = StatusPedido.COMPRA_REALIZADA.getCodigo();
 		enderecoEntrega = endereco;

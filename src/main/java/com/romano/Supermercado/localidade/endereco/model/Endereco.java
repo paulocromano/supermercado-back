@@ -48,7 +48,7 @@ public class Endereco {
 
 
 	/**
-	 * Construtor
+	 * Construtor de {@link Endereco}
 	 * @param logradouro : String
 	 * @param numero : String
 	 * @param complemento : String
