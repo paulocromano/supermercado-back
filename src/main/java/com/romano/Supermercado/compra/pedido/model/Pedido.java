@@ -21,6 +21,7 @@ import com.romano.Supermercado.compra.itemPedido.repository.ItemPedidoRepository
 import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
 import com.romano.Supermercado.produto.model.Produto;
+import com.romano.Supermercado.produto.repository.ProdutoRepository;
 import com.romano.Supermercado.utils.Converter;
 
 /**
@@ -103,6 +104,10 @@ public class Pedido {
 		return itens;
 	}	
 	
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+	
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
 	}
@@ -146,13 +151,30 @@ public class Pedido {
 		});
 	}
 	
+	
 	/**
 	 * Método responsável por efetuar as operações quando o Usuário efetivar uma compra
+	 * @param endereco : {@link Endereco}
+	 * @param produtoRepository : {@link ProdutoRepository}
 	 */
-	public void compraFinalizada(Endereco endereco) {
+	public void compraFinalizada(Endereco endereco, ProdutoRepository produtoRepository) {
 		dataHoraPedidoFinalizado = Converter.localDateTimeAtualParaString();
 		statusPedido = StatusPedido.COMPRA_REALIZADA.getCodigo();
 		enderecoEntrega = endereco;
+		
+		atualizarEstoqueProdutosComprados(produtoRepository);
+	}
+	
+	
+	/**
+	 * Método responsável por atualizar o estoque do {@link Produto} que foi comprado
+	 * @param produtoRepository : {@link ProdutoRepository}
+	 */
+	private void atualizarEstoqueProdutosComprados(ProdutoRepository produtoRepository) {
+		itens.forEach(item -> {
+			Produto produto = produtoRepository.getOne(item.getProduto().getId());
+			produto.diminuirEstoqueProduto(item.getQuantidade());
+		});
 	}
 
 

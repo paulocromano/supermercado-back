@@ -100,4 +100,17 @@ public class PedidoResource {
 	public ResponseEntity<Void> alterarQuantidadeItemPedido(@PathVariable Long idPedido, @PathVariable Integer idProduto, @PathVariable Integer quantidade) {
 		return pedidoService.alterarQuantidadeItemPedido(idPedido, idProduto, quantidade);
 	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de finalizar um {@link Pedido}
+	 * @param idPedido : Long
+	 * @param idEndereco : Long
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
+	 */
+	@Transactional
+	@PutMapping("finalizar-compra/{idPedido}/{idEndereco}")
+	public ResponseEntity<Void> finalizarCompra(@PathVariable Long idPedido, @PathVariable Long idEndereco) {
+		return pedidoService.finalizarCompra(idPedido, idEndereco);
+	}
 }

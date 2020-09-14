@@ -12,6 +12,6 @@ import com.romano.Supermercado.localidade.endereco.model.Endereco;
  * Interface responsável por acessar os dados de {@link Endereco} no Banco de Dados
  */
 @Repository
-public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
+public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
 }

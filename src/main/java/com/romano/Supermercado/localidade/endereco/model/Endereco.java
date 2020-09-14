@@ -24,7 +24,7 @@ public class Endereco {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	private String logradouro;
 	private String numero;
@@ -68,7 +68,7 @@ public class Endereco {
 	}
 
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 

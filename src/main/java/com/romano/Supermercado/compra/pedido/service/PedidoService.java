@@ -17,6 +17,8 @@ import com.romano.Supermercado.compra.pedido.enums.StatusPedido;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.compra.pedido.repository.PedidoRepository;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
+import com.romano.Supermercado.localidade.endereco.model.Endereco;
+import com.romano.Supermercado.localidade.endereco.repository.EnderecoRepository;
 import com.romano.Supermercado.produto.enums.StatusProduto;
 import com.romano.Supermercado.produto.model.Produto;
 import com.romano.Supermercado.produto.repository.ProdutoRepository;
@@ -43,6 +45,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	
 	/**
@@ -150,10 +155,11 @@ public class PedidoService {
 	 * @return ResponseEntity - Void 
 	 */
 	public ResponseEntity<Void> removerProdutoDePedido(Long idPedido, Integer idProduto) {
-		VerificarUsuario.usuarioEValido();
+		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
 		produtoExisteEstaDisponivel(idProduto);
 		
 		Pedido pedido = pedidoExiste(idPedido);
+		verificarSePedidoPertenceAoClienteLogado(usuario.getId(), pedido);
 		Produto produto = produtoRepository.getOne(idProduto);
 		
 		pedidoContemItemPedido(pedido, produto);
@@ -192,6 +198,20 @@ public class PedidoService {
 	private void removerPedidoSemItens(Pedido pedido) {
 		if (pedido.getItens().size() - 1 == 0) {
 			pedidoRepository.delete(pedido);
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o ID do {@link Pedido} pertence ao {@link Cliente} logado
+	 * @param idCliente : Long
+	 * @param pedido : {@link Pedido}
+	 */
+	private void verificarSePedidoPertenceAoClienteLogado(Long idCliente, Pedido pedido) {
+		Cliente cliente = clienteRepository.getOne(idCliente);
+		
+		if (!cliente.getPedidos().contains(pedido)) {
+			throw new IllegalArgumentException("Acesso Negado!");
 		}
 	}
 
@@ -251,17 +271,47 @@ public class PedidoService {
 	 * @return ResponseEntity - Void 
 	 */
 	public ResponseEntity<Void> alterarQuantidadeItemPedido(Long idPedido, Integer idProduto, Integer quantidade) {
-		VerificarUsuario.usuarioEValido();
+		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
 		
 		if (quantidade == null) {
 			throw new IllegalArgumentException("Quantidade não pode estar nula!");
 		}
 		
 		Pedido pedido = pedidoExiste(idPedido);
+		verificarSePedidoPertenceAoClienteLogado(usuario.getId(), pedido);
+		
 		Produto produto = produtoExiste(produtoRepository, idProduto);
 		ItemPedido itemPedido = pedidoContemItemPedido(pedido, produto);
 		
 		pedido.atualizarPrecoTotalDeProduto(produto, itemPedido, quantidade);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por finalizar um {@link Pedido}
+	 * @param idPedido : Long
+	 * @param idEndereco : Long
+	 * @return ResponseEntity - Void 
+	 */
+	public ResponseEntity<Void> finalizarCompra(Long idPedido, Long idEndereco) {
+		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
+		Pedido pedido = pedidoExiste(idPedido);
+		
+		verificarSePedidoPertenceAoClienteLogado(usuario.getId(), pedido);
+		
+		if (!pedido.getStatusPedido().equals(StatusPedido.ABERTO)) {
+			throw new IllegalArgumentException("O Pedido já foi finalizado!");
+		}
+		
+		Endereco endereco = enderecoRepository.getOne(idEndereco);
+		
+		if (!usuario.getId().equals(endereco.getCliente().getId())) {
+			throw new IllegalArgumentException("Acesso negado!");
+		}
+		
+		pedido.compraFinalizada(endereco, produtoRepository);
 		
 		return ResponseEntity.ok().build();
 	}
