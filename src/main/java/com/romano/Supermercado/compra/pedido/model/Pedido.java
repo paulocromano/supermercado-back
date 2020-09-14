@@ -109,6 +109,20 @@ public class Pedido {
 	
 	
 	/**
+	 * Método responsável por atualizar o {@link Pedido} com a nova quantidade informada de um {@link Produto}
+	 * @param produto : {@link Produto}
+	 * @param itemPedido : {@link ItemPedido}
+	 * @param novaQuantidade : Integer
+	 */
+	public void atualizarPrecoTotalDeProduto(Produto produto, ItemPedido itemPedido, Integer novaQuantidade) {
+		total -= itemPedido.getPreco() * itemPedido.getQuantidade();
+		itemPedido.atualizarItemPedido(produto, novaQuantidade);	
+		
+		total += itemPedido.getPreco() * itemPedido.getQuantidade();
+	}
+	
+	
+	/**
 	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} e atualizar o valor total
 	 * @param itemPedido : {@link ItemPedido}
 	 */

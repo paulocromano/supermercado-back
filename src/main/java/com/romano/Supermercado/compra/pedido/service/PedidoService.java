@@ -79,7 +79,7 @@ public class PedidoService {
 	 */
 	public ResponseEntity<Void> adicionarProdutoAoPedido(Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
 		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
-		produtoExiste(idProduto);
+		produtoExisteEstaDisponivel(idProduto);
 		
 		Cliente cliente = clienteRepository.getOne(usuario.getId());
 		Produto produto = produtoRepository.getOne(idProduto);
@@ -150,11 +150,10 @@ public class PedidoService {
 	 * @return ResponseEntity - Void 
 	 */
 	public ResponseEntity<Void> removerProdutoDePedido(Long idPedido, Integer idProduto) {
-		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
-		produtoExiste(idProduto);
+		VerificarUsuario.usuarioEValido();
+		produtoExisteEstaDisponivel(idProduto);
 		
-		Cliente cliente = clienteRepository.getOne(usuario.getId());
-		Pedido pedido = pedidoExiste(cliente, idPedido);
+		Pedido pedido = pedidoExiste(idPedido);
 		Produto produto = produtoRepository.getOne(idProduto);
 		
 		pedidoContemItemPedido(pedido, produto);
@@ -166,11 +165,12 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Pedido} contém o Item que será removido
+	 * Método responsável por verificar se o {@link Pedido} contém o Produto informado
 	 * @param pedido : {@link Pedido}
 	 * @param produto : {@link Produto}
+	 * @return {@link ItemPedido}
 	 */
-	private void pedidoContemItemPedido(Pedido pedido, Produto produto) {
+	private ItemPedido pedidoContemItemPedido(Pedido pedido, Produto produto) {
 		Optional<ItemPedido> itemPedido = pedido
 			.getItens()
 			.stream()
@@ -180,6 +180,8 @@ public class PedidoService {
 		if (itemPedido.isEmpty()) {
 			throw new ObjectNotFoundException("Produto informado não existe no Pedido!");
 		}
+		
+		return itemPedido.get();
 	}
 	
 	
@@ -198,16 +200,28 @@ public class PedidoService {
 	 * Método responsável por verificar se o {@link Produto} existe e se ele está disponível para compra
 	 * @param idProduto : Integer
 	 */
-	private void produtoExiste(Integer idProduto) {
-		Optional<Produto> produto = produtoRepository.findById(idProduto);
+	private void produtoExisteEstaDisponivel(Integer idProduto) {
+		Produto produto = produtoExiste(produtoRepository, idProduto);
+		
+		if (produto.getStatusProduto().equals(StatusProduto.ESGOTADO) || produto.getStatusProduto().equals(StatusProduto.INATIVO)) {
+			throw new ObjectNotFoundException("Produto Esgotado ou Inativo!");
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o {@link Produto} existe
+	 * @param produtoRepository : {@link ProdutoRepository}
+	 * @param id : Integer
+	 */
+	private Produto produtoExiste(ProdutoRepository produtoRepository, Integer id) {
+		Optional<Produto> produto = produtoRepository.findById(id);
 		
 		if (produto.isEmpty()) {
 			throw new ObjectNotFoundException("Produto não encontrado!");
 		}
 		
-		if (produto.get().getStatusProduto().equals(StatusProduto.ESGOTADO) || produto.get().getStatusProduto().equals(StatusProduto.INATIVO)) {
-			throw new ObjectNotFoundException("Produto Esgotado ou Inativo!");
-		}
+		return produto.get();
 	}
 	
 	
@@ -217,17 +231,38 @@ public class PedidoService {
 	 * @param idPedido : Long
 	 * @return {@link Pedido}
 	 */
-	private Pedido pedidoExiste(Cliente cliente, Long idPedido) {
+	private Pedido pedidoExiste(Long idPedido) {
 		Optional<Pedido> pedido = pedidoRepository.findById(idPedido);
 		
 		if (pedido.isEmpty()) {
 			throw new ObjectNotFoundException("Pedido não encontrado!");
 		}
 		
-		if (!pedido.get().getCliente().getId().equals(cliente.getId())) {
-			throw new IllegalArgumentException("Acesso Negado!");
+		return pedido.get();
+	}
+	
+	
+	/**
+	 * Método responsável por alterar a quantidade de um {@link ItemPedido} em uma compra que ainda 
+	 * não foi finalizada 
+	 * @param idPedido : Long
+	 * @param idProduto : Integer
+	 * @param quantidade : Integer
+	 * @return ResponseEntity - Void 
+	 */
+	public ResponseEntity<Void> alterarQuantidadeItemPedido(Long idPedido, Integer idProduto, Integer quantidade) {
+		VerificarUsuario.usuarioEValido();
+		
+		if (quantidade == null) {
+			throw new IllegalArgumentException("Quantidade não pode estar nula!");
 		}
 		
-		return pedido.get();
+		Pedido pedido = pedidoExiste(idPedido);
+		Produto produto = produtoExiste(produtoRepository, idProduto);
+		ItemPedido itemPedido = pedidoContemItemPedido(pedido, produto);
+		
+		pedido.atualizarPrecoTotalDeProduto(produto, itemPedido, quantidade);
+		
+		return ResponseEntity.ok().build();
 	}
 }

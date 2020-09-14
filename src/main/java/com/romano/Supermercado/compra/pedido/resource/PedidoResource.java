@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.compra.itemPedido.form.ItemPedidoFORM;
+import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.compra.pedido.dto.PedidoDTO;
 import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.compra.pedido.service.PedidoService;
@@ -67,8 +68,7 @@ public class PedidoResource {
 	 */
 	@Transactional
 	@PutMapping("/{idProduto}")
-	public ResponseEntity<Void> adicionarProdutoAoPedido(@PathVariable Integer idProduto, 
-			@RequestBody @Valid ItemPedidoFORM itemPedidoFORM) {
+	public ResponseEntity<Void> adicionarProdutoAoPedido(@PathVariable Integer idProduto, @RequestBody @Valid ItemPedidoFORM itemPedidoFORM) {
 		
 		return pedidoService.adicionarProdutoAoPedido(idProduto, itemPedidoFORM);
 	}
@@ -84,5 +84,20 @@ public class PedidoResource {
 	@DeleteMapping("/{idPedido}/{idProduto}")
 	public ResponseEntity<Void> removerProdutoDePedido(@PathVariable Long idPedido, @PathVariable Integer idProduto) {
 		return pedidoService.removerProdutoDePedido(idPedido, idProduto);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de alterar a quantidade de um {@link ItemPedido} em uma compra que ainda 
+	 * não foi finalizada 
+	 * @param idPedido : Long
+	 * @param idProduto : Integer
+	 * @param quantidade : Integer
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
+	 */
+	@Transactional
+	@PutMapping("/{idPedido}/{idProduto}/alterar-quantidade-item={quantidade}")
+	public ResponseEntity<Void> alterarQuantidadeItemPedido(@PathVariable Long idPedido, @PathVariable Integer idProduto, @PathVariable Integer quantidade) {
+		return pedidoService.alterarQuantidadeItemPedido(idPedido, idProduto, quantidade);
 	}
 }

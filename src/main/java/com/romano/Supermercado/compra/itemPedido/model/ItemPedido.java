@@ -84,6 +84,18 @@ public class ItemPedido implements Serializable {
 	
 	
 	/**
+	 * Método responsável por atualizar as informações de um {@link ItemPedido}
+	 * @param produto : {@link Produto}
+	 * @param quantidade : Integer
+	 */
+	public void atualizarItemPedido(Produto produto, Integer quantidade) {
+		preco = produtoTemDesconto(produto);
+		this.quantidade = quantidade;
+		
+	}
+	
+	
+	/**
 	 * Método para verificar se o Produto tem desconto
 	 * @param produto : {@link Produto}
 	 * @return Double - Preço atualizado caso o {@link Produto} tenha desconto. Preço original
