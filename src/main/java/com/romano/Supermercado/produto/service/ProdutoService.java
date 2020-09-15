@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.romano.Supermercado.exception.service.DataIntegrityException;
+import com.romano.Supermercado.exception.service.FileException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -121,10 +122,18 @@ public class ProdutoService {
 	}
 	
 	
+	/**
+	 * Método responsável por fazer o Upload da imagem do Produto
+	 * @param id : Integer
+	 * @param imagem : MultipartFile
+	 * @return ResponseEntity - Void
+	 */
 	public ResponseEntity<Void> uploadImagemProduto(Integer id, MultipartFile imagem) {
 		Produto produto = produtoRepository.getOne(id);
 		
 		try {
+			verificarSeImagemEValida(imagem);
+			
 			produto.setImagem(imagem.getBytes());
 			System.out.println(imagem.getBytes() + " - " + imagem.getOriginalFilename());
 		} 
@@ -133,6 +142,23 @@ public class ProdutoService {
 		}
 		
 		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se a Imagem é válida
+	 * @param imagem : MultipartFile
+	 */
+	private void verificarSeImagemEValida(MultipartFile imagem) {
+		String extensao = imagem.getOriginalFilename().split(".")[0];
+		
+		if (!extensao.equals("png") && !extensao.equals("jpg")) {
+			throw new FileException("Somente imagens PNG e JPG são permitidas!");
+		}
+		
+		if (imagem.getSize() > 500000L) {
+			throw new FileException("O tamanho da Imagem deve ter no máximo 0.5MB!");
+		}
 	}
 	
 	
