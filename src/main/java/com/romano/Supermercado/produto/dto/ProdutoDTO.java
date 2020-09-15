@@ -26,6 +26,7 @@ public class ProdutoDTO {
 	private String statusProduto;
 	private String observacoes;
 	private Setor setor;
+	private byte[] imagem;
 	
 	
 	/**
@@ -45,6 +46,7 @@ public class ProdutoDTO {
 		statusProduto = produto.getStatusProduto().getDescricao();
 		observacoes = produto.getObservacoes();
 		setor = produto.getSetor();
+		imagem = produto.getImagem();
 	}
 	
 
@@ -94,6 +96,10 @@ public class ProdutoDTO {
 
 	public Setor getSetor() {
 		return setor;
+	}
+	
+	public byte[] getImagem() {
+		return imagem;
 	}
 	
 	

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.romano.Supermercado.produto.dto.ProdutoDTO;
 import com.romano.Supermercado.produto.enums.StatusProduto;
@@ -96,6 +98,13 @@ public class ProdutoResource {
 		return produtoService.cadastrarProduto(produtoFORM);
 	}
 	
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@Transactional
+	@PutMapping("/upload/{id}")
+	public ResponseEntity<Void> uploadImagemProduto(@PathVariable Integer id, @RequestParam("imagem") MultipartFile imagem) {
+		return produtoService.uploadImagemProduto(id, imagem);
+	}
 	
 	/**
 	 * Método responsável por chamar o serviço de atualização de {@link Produto}

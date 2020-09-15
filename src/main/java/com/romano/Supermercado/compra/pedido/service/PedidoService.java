@@ -79,6 +79,10 @@ public class PedidoService {
 	}
 	
 	
+	/**
+	 * Método responsável por atualizar os preço dos Itens do Pedido com status Aberto
+	 * @param pedidos - List de Pedido
+	 */
 	private void atualizarPrecoProdutosDoPedidoAberto(List<Pedido> pedidos) {
 		Optional<Pedido> optionalPedido = pedidos
 				.stream()
@@ -92,14 +96,12 @@ public class PedidoService {
 				Produto produto = item.getProduto();
 				
 				Double precoItem = item.produtoTemDesconto(produto);
-				System.out.println(precoItem);
 				item.setPreco(precoItem);
 				itemPedidoRepository.flush();
 				
 				precoTotalAtualizado += precoItem * item.getQuantidade();
 			}
 			
-			System.out.println(precoTotalAtualizado);
 			optionalPedido.get().setTotal(precoTotalAtualizado);
 			pedidoRepository.flush();
 		}

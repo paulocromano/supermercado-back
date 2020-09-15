@@ -1,5 +1,6 @@
 package com.romano.Supermercado.produto.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.romano.Supermercado.exception.service.DataIntegrityException;
 import com.romano.Supermercado.exception.service.ObjectNotFoundException;
@@ -115,6 +117,21 @@ public class ProdutoService {
 	public ResponseEntity<Void> cadastrarProduto(ProdutoFORM produtoFORM) { 
 		produtoRepository.save(produtoFORM.converterParaProduto());
 
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	public ResponseEntity<Void> uploadImagemProduto(Integer id, MultipartFile imagem) {
+		Produto produto = produtoRepository.getOne(id);
+		
+		try {
+			produto.setImagem(imagem.getBytes());
+			System.out.println(imagem.getBytes() + " - " + imagem.getOriginalFilename());
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return ResponseEntity.ok().build();
 	}
 	
