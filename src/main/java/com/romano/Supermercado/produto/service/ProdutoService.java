@@ -1,9 +1,12 @@
 package com.romano.Supermercado.produto.service;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +30,7 @@ import com.romano.Supermercado.utils.Converter;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe de Serviço responsável pelas regras de negócios do {@link Produto}
+ * Classe de Serviço responsável pelas regras de negócios do Produto
  */
 @Service
 public class ProdutoService {
@@ -40,8 +43,8 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Produto}s
-	 * @return ResponseEntity - List {@link ProdutoDTO}
+	 * Método responsável por listar todos os Produtos
+	 * @return ResponseEntity - List de ProdutoDTO
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarTodosProdutos() {
 		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtoRepository.findAll()));
@@ -49,9 +52,9 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Produto}s a partir do {@link Setor} informado
+	 * Método responsável por listar todos os Produtos a partir do Setor informado
 	 * @param nomeSetor : String
-	 * @return ResponseEntity - List {@link ProdutoDTO}
+	 * @return ResponseEntity - List de ProdutoDTO
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPorNomeSetor(String nomeSetor) {
 		Optional<Setor> setorBuscado = setorRepository.findByNome(nomeSetor);
@@ -65,9 +68,22 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Produto}s a partir do {@link StatusProduto}
+	 * Método responsável por listar os Produtos com desconto
+	 * @return ResponseEntity - List de ProdutoDTO
+	 */
+	public ResponseEntity<List<ProdutoDTO>> listarProdutosComDesconto() {
+		List<Produto> produtosComDesconto = produtoRepository.findAll();
+		
+		produtosComDesconto.removeIf(produto -> produto.getDesconto() == 0);
+				
+		return ResponseEntity.ok().body(ProdutoDTO.converterParaListaProdutoDTO(produtosComDesconto));
+	}
+	
+	
+	/**
+	 * Método responsável por listar todos os Produtos a partir do StatusProduto
 	 * @param codigoStatus : Integer
-	 * @return ResponseEntity - List {@link ProdutoDTO}
+	 * @return ResponseEntity - List de ProdutoDTO
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPeloStatus(Integer codigoStatus) {
 		StatusProduto statusProduto = StatusProduto.converterParaEnum(codigoStatus);
@@ -77,10 +93,10 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por listar os {@link Produto}s com os dias até a validade dentro do valor específicado. Caso
+	 * Método responsável por listar os Produtos com os dias até a validade dentro do valor específicado. Caso
 	 * não seja específicado o dia, será verificado a partir do valor padrão 10.
-	 * @param dias : Integer - Dias restantes até a validade do {@link Produto}
-	 * @return ResponseEntity - List {@link ProdutoDTO}
+	 * @param dias : Integer - Dias restantes até a validade do Produto
+	 * @return ResponseEntity - List de ProdutoDTO
 	 */
 	public ResponseEntity<List<ProdutoDTO>> listarProdutosPelaDataDaValidade(String data) {
 		if (data == null) {
@@ -111,8 +127,8 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por cadastrar um {@link Produto}
-	 * @param produtoFORM : {@link ProdutoFORM}
+	 * Método responsável por cadastrar um Produto
+	 * @param produtoFORM : ProdutoFORM
 	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> cadastrarProduto(ProdutoFORM produtoFORM) { 
@@ -132,10 +148,11 @@ public class ProdutoService {
 		Produto produto = produtoRepository.getOne(id);
 		
 		try {
+			System.out.println(imagem.getBytes() + " - " + imagem.getOriginalFilename());
 			verificarSeImagemEValida(imagem);
 			
 			produto.setImagem(imagem.getBytes());
-			System.out.println(imagem.getBytes() + " - " + imagem.getOriginalFilename());
+			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -150,7 +167,7 @@ public class ProdutoService {
 	 * @param imagem : MultipartFile
 	 */
 	private void verificarSeImagemEValida(MultipartFile imagem) {
-		String extensao = imagem.getOriginalFilename().split(".")[0];
+		String extensao = imagem.getOriginalFilename().split("\\.")[1];
 		
 		if (!extensao.equals("png") && !extensao.equals("jpg")) {
 			throw new FileException("Somente imagens PNG e JPG são permitidas!");
@@ -159,13 +176,33 @@ public class ProdutoService {
 		if (imagem.getSize() > 500000L) {
 			throw new FileException("O tamanho da Imagem deve ter no máximo 0.5MB!");
 		}
+		
+		verificarTamanhoImagem(imagem);
 	}
 	
 	
 	/**
-	 * Método responsável por atualizar as informações de um {@link Produto}
+	 * Método responsável por verificar se a resolução da Imagem está dentro do limite definido
+	 * @param imagem : MultipartFile
+	 */
+	private void verificarTamanhoImagem(MultipartFile imagem) {
+		try {
+			BufferedImage bufferedImage = ImageIO.read(imagem.getInputStream());
+			
+			if (bufferedImage.getHeight() > 300 || bufferedImage.getWidth() > 300) {
+				throw new FileException("A resolução da Imagem deve ser no máximo 300 x 300px!");
+			}
+		} 
+		catch (IOException e) {
+			throw new FileException("Erro ao ler a Imagem!");
+		}
+	}
+	
+	
+	/**
+	 * Método responsável por atualizar as informações de um Produto
 	 * @param id : Integer
-	 * @param atualizarProdutoFORM : {@link AtualizarProdutoFORM}
+	 * @param atualizarProdutoFORM : AtualizarProdutoFORM
 	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> atualizarProduto(Integer id, AtualizarProdutoFORM atualizarProdutoFORM) {
@@ -182,7 +219,7 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Produto}
+	 * Método responsável por remover um Produto
 	 * @param id : Integer
 	 * @return ResponseEntity - Void
 	 */
@@ -205,7 +242,7 @@ public class ProdutoService {
 	
 	
 	/**
-	 * Método responsável por aumentar ou diminuir o estoque do {@link Produto} informado com base na quantidade
+	 * Método responsável por aumentar ou diminuir o estoque do Produto informado com base na quantidade
 	 * @param idProduto : Integer
 	 * @param aumentarEstoque : Boolean
 	 * @param quantidade : Integer
