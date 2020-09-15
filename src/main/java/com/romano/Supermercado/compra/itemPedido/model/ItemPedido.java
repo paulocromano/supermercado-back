@@ -101,7 +101,7 @@ public class ItemPedido implements Serializable {
 	 * @return Double - Preço atualizado caso o {@link Produto} tenha desconto. Preço original
 	 * caso não tenha
 	 */
-	private Double produtoTemDesconto(Produto produto) {
+	public Double produtoTemDesconto(Produto produto) {
 		return (produto.getDesconto() != 0) ? produto.getPreco() - (produto.getPreco() * produto.getDesconto() / 100D) : produto.getPreco();
 	}
 

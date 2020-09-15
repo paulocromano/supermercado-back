@@ -72,9 +72,37 @@ public class PedidoService {
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
 		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
 
-		//TODO atualizar o preço do Produto que pertence a um pedido na classe de Produto
+		List<Pedido> pedidos = pedidoRepository.findByCliente_Id(usuario.getId());
+		atualizarPrecoProdutosDoPedidoAberto(pedidos);
 		
-		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidoRepository.findByCliente_Id(usuario.getId())));
+		return ResponseEntity.ok().body(PedidoDTO.converterParaListaPedidoDTO(pedidos));
+	}
+	
+	
+	private void atualizarPrecoProdutosDoPedidoAberto(List<Pedido> pedidos) {
+		Optional<Pedido> optionalPedido = pedidos
+				.stream()
+				.findAny()
+				.filter(pedido -> pedido.getStatusPedido().equals(StatusPedido.ABERTO));
+		
+		if (optionalPedido.isPresent()) {
+			Double precoTotalAtualizado = 0.0D;
+			
+			for (ItemPedido item : optionalPedido.get().getItens()) {
+				Produto produto = item.getProduto();
+				
+				Double precoItem = item.produtoTemDesconto(produto);
+				System.out.println(precoItem);
+				item.setPreco(precoItem);
+				itemPedidoRepository.flush();
+				
+				precoTotalAtualizado += precoItem * item.getQuantidade();
+			}
+			
+			System.out.println(precoTotalAtualizado);
+			optionalPedido.get().setTotal(precoTotalAtualizado);
+			pedidoRepository.flush();
+		}
 	}
 	
 	
@@ -306,7 +334,7 @@ public class PedidoService {
 		verificarSeStatusPedidoEstaAberto(pedido.getStatusPedido());
 		Endereco endereco = verificarEnderecoPertenceAoCliente(usuario.getId(), idEndereco);
 		
-		pedido.finalizarPedido(endereco, produtoRepository);
+		pedido.finalizarPedido(endereco);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -321,6 +349,7 @@ public class PedidoService {
 			throw new IllegalArgumentException("O Pedido já foi finalizado!");
 		}
 	}
+	
 	
 	/**
 	 * Método responsável por verificar se o {@link Endereco} informado pertence ao Usuário logado
