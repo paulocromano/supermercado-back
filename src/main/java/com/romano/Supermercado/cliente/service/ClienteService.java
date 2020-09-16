@@ -156,9 +156,15 @@ public class ClienteService {
 		Cliente cliente = clienteRepository.getOne(usuario.getId());
 		verificarSeEnderecoPertenceAoCliente(idEndereco, cliente);
 
-		enderecoRepository.deleteById(idEndereco);
-		
-		cliente.getEnderecos().forEach(end -> System.out.println(end.getId()));
+		try {
+			enderecoRepository.deleteById(idEndereco);
+			
+			cliente.getEnderecos().removeIf(endereco -> endereco.getId().equals(idEndereco));
+			clienteRepository.flush();
+		}
+		catch (RuntimeException e) {
+			throw new DataIntegrityException("Não foi possível remover! Endereço pertence a algum pedido.");
+		}
 		
 		return ResponseEntity.ok().build();
 	}
@@ -171,7 +177,7 @@ public class ClienteService {
 	 */
 	private void verificarSeEnderecoPertenceAoCliente(Long idEndereco, Cliente cliente) {
 		for (Endereco endereco : cliente.getEnderecos()) {
-			if (endereco.getId() == idEndereco) {
+			if (endereco.getId().equals(idEndereco)) {
 				return;
 			}
 		}
