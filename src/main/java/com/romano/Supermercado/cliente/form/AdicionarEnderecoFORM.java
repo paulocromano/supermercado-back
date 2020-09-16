@@ -6,6 +6,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.romano.Supermercado.cliente.model.Cliente;
+import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.model.Cidade;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
 import com.romano.Supermercado.localidade.endereco.model.Endereco;
@@ -13,7 +14,7 @@ import com.romano.Supermercado.localidade.endereco.model.Endereco;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
- * Classe responsável por adicionar endereços alternativos do Cliente
+ * Classe responsável por adicionar endereço ao Cliente
  */
 public class AdicionarEnderecoFORM {
 
@@ -116,6 +117,11 @@ public class AdicionarEnderecoFORM {
 	 */
 	public void adicionarEndereco(Cliente cliente, CidadeRepository cidadeRepository) {
 		Cidade cidadeCliente = cidadeRepository.findByNome(cidade);
+		
+		if (cidadeCliente == null) {
+			throw new ObjectNotFoundException("Cidade não encontrada!");
+		}
+		
 		Endereco enderecoCliente = new Endereco(logradouro, numero, complemento, bairro, cep, cliente, cidadeCliente);
 		
 		cliente.adicionarEndereco(enderecoCliente);

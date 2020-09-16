@@ -21,7 +21,7 @@ public final class VerificarUsuario {
 		UsuarioSecurity usuario = UsuarioService.authenticated();
 		
 		if (usuario.getId() == null) {
-			System.out.println("dknldk");
+			throw new AuthorizationException("Acesso negado!");
 		}
 		
 		return usuario;

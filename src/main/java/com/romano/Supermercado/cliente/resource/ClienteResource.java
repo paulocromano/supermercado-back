@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romano.Supermercado.cliente.dto.ClienteDTO;
+import com.romano.Supermercado.cliente.form.AdicionarEnderecoFORM;
 import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.service.ClienteService;
@@ -77,8 +78,21 @@ public class ClienteResource {
 	 */
 	@Transactional
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> atualizarCliente(@PathVariable Long id, @RequestBody AtualizarClienteFORM atualizarClienteFORM) {
+	public ResponseEntity<Void> atualizarCliente(@PathVariable Long id, @RequestBody @Valid AtualizarClienteFORM atualizarClienteFORM) {
 		return clienteService.atualizarCliente(id, atualizarClienteFORM);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de adicionar um Endereço para o Cliente
+	 * @param id : Long
+	 * @param adicionarEnderecoFORM : AdicionarEnderecoFORM
+	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
+	 */
+	@Transactional
+	@PutMapping("/endereco/{id}")
+	public ResponseEntity<Void> adicionarEndereco(@PathVariable Long id, @RequestBody @Valid AdicionarEnderecoFORM adicionarEnderecoFORM) {
+		return clienteService.adicionarEndereco(id, adicionarEnderecoFORM);
 	}
 	
 	
@@ -92,6 +106,18 @@ public class ClienteResource {
 	@PutMapping("/adicionar-permissao={idCliente}")
 	public ResponseEntity<Void> adicionarPermissaoParaCliente(@PathVariable Long idCliente) {
 		return clienteService.adicionarPermissaoParaCliente(idCliente);
+	}
+	
+	
+	/**
+	 * Método responsável por chamar o serviço de remover um Endereço de Cliente
+	 * @param idEndereco
+	 * @return
+	 */
+	@Transactional
+	@DeleteMapping("/endereco/{idEndereco}")
+	public ResponseEntity<Void> removerEndereco(@PathVariable Long idEndereco) {
+		return clienteService.removerEndereco(idEndereco); 
 	}
 	
 	

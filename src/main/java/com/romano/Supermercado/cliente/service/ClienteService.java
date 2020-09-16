@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
 
 import com.romano.Supermercado.cliente.dto.ClienteDTO;
 import com.romano.Supermercado.cliente.enums.PerfilCliente;
+import com.romano.Supermercado.cliente.form.AdicionarEnderecoFORM;
 import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
 import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.repository.ClienteRepository;
 import com.romano.Supermercado.exception.service.DataIntegrityException;
+import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 import com.romano.Supermercado.localidade.cidade.repository.CidadeRepository;
+import com.romano.Supermercado.localidade.endereco.model.Endereco;
+import com.romano.Supermercado.localidade.endereco.repository.EnderecoRepository;
+import com.romano.Supermercado.security.UsuarioSecurity;
 import com.romano.Supermercado.utils.VerificarUsuario;
 
 
@@ -31,6 +36,9 @@ public class ClienteService {
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -86,7 +94,23 @@ public class ClienteService {
 		VerificarUsuario.usuarioEValido();
 		
 		Cliente cliente = clienteRepository.getOne(id);
-		atualizarClienteFORM.atualizarCliente(cliente, cidadeRepository);
+		atualizarClienteFORM.atualizarCliente(cliente);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por adicionar um Endereço para o Cliente
+	 * @param id : Long
+	 * @param adicionarEnderecoFORM : AdicionarEnderecoFORM
+	 * @return ResponseEntity - Void
+	 */
+	public ResponseEntity<Void> adicionarEndereco(Long id, AdicionarEnderecoFORM adicionarEnderecoFORM) {
+		VerificarUsuario.usuarioEValido();
+		
+		Cliente cliente = clienteRepository.getOne(id);
+		adicionarEnderecoFORM.adicionarEndereco(cliente, cidadeRepository);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -118,6 +142,41 @@ public class ClienteService {
 		if (cliente.getPerfis().contains(PerfilCliente.ADMIN)) {
 			throw new IllegalArgumentException("O Cliente informado já possui permissão de Administrador!");
 		}
+	}
+	
+	
+	/**
+	 * Método responsável por remover um Endereço de Cliente
+	 * @param idEndereco : Long
+	 * @return ResponseEntity - Void
+	 */
+	public ResponseEntity<Void> removerEndereco(Long idEndereco) {
+		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
+		
+		Cliente cliente = clienteRepository.getOne(usuario.getId());
+		verificarSeEnderecoPertenceAoCliente(idEndereco, cliente);
+
+		enderecoRepository.deleteById(idEndereco);
+		
+		cliente.getEnderecos().forEach(end -> System.out.println(end.getId()));
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	
+	/**
+	 * Método responsável por verificar se o Endereço pertence ao Cliente logado
+	 * @param idEndereco : Long
+	 * @param cliente : Cliente
+	 */
+	private void verificarSeEnderecoPertenceAoCliente(Long idEndereco, Cliente cliente) {
+		for (Endereco endereco : cliente.getEnderecos()) {
+			if (endereco.getId() == idEndereco) {
+				return;
+			}
+		}
+				
+		throw new ObjectNotFoundException("Endereço não encontrado!");
 	}
 	
 	
