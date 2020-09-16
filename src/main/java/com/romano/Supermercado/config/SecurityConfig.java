@@ -25,7 +25,7 @@ import com.romano.Supermercado.security.JWTUtil;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe de configuração de segurança da aplicação
  */
 @Configuration
@@ -39,14 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
-//	private static final String[] CAMINHOS_LIBERADOS = {
-//			"/produto/**",
-//			"/setor/**"
-//	};
 	
 	private static final String[] CAMINHOS_LIBERADOS_GET = {
-			"/produto/**",
-			"/setor/**"
+			"/produto/**"
 	};
 	
 	private static final String[] CAMINHOS_LIBERADOS_POST = {

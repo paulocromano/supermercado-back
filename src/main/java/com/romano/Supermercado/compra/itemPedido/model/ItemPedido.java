@@ -14,8 +14,8 @@ import com.romano.Supermercado.produto.model.Produto;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável pelo Item de {@link Pedido}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável pelo Item de Pedido
  */
 @Entity
 @Table(name = "item_pedido")
@@ -38,8 +38,8 @@ public class ItemPedido implements Serializable {
 	
 	/**
 	 * Construtor
-	 * @param pedido : {@link Pedido}
-	 * @param produto : {@link Produto}
+	 * @param pedido : Pedido
+	 * @param produto : Produto
 	 */
 	public ItemPedido(Pedido pedido, Produto produto) {
 		id.setPedido(pedido);
@@ -84,8 +84,8 @@ public class ItemPedido implements Serializable {
 	
 	
 	/**
-	 * Método responsável por atualizar as informações de um {@link ItemPedido}
-	 * @param produto : {@link Produto}
+	 * Método responsável por atualizar as informações de um ItemPedido
+	 * @param produto : Produto
 	 * @param quantidade : Integer
 	 */
 	public void atualizarItemPedido(Produto produto, Integer quantidade) {
@@ -97,9 +97,8 @@ public class ItemPedido implements Serializable {
 	
 	/**
 	 * Método para verificar se o Produto tem desconto
-	 * @param produto : {@link Produto}
-	 * @return Double - Preço atualizado caso o {@link Produto} tenha desconto. Preço original
-	 * caso não tenha
+	 * @param produto : Produto
+	 * @return Double - Preço atualizado caso o Produto tenha desconto. Preço original caso não tenha
 	 */
 	public Double produtoTemDesconto(Produto produto) {
 		return (produto.getDesconto() != 0) ? produto.getPreco() - (produto.getPreco() * produto.getDesconto() / 100D) : produto.getPreco();

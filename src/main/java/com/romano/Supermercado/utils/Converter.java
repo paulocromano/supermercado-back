@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável pela conversão de dados
  */
 public final class Converter {

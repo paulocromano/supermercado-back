@@ -20,7 +20,7 @@ import com.romano.Supermercado.utils.VerificarUsuario;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe de Serviço responsável pelas regras de negócios do Cliente
  */
 @Service
@@ -37,8 +37,8 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Cliente}s
-	 * @return ResponseEntity - List {@link ClienteDTO}
+	 * Método responsável por listar todos os Clientes
+	 * @return ResponseEntity - List ClienteDTO
 	 */
 	public ResponseEntity<List<ClienteDTO>> listarTodosClientes() {
 		return ResponseEntity.ok().body(ClienteDTO.converterParaListaClienteDTO(clienteRepository.findAll()));
@@ -46,9 +46,9 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por buscar o {@link Cliente} pelo ID 
+	 * Método responsável por buscar o Cliente pelo ID 
 	 * @param id : Long
-	 * @return ResponseEntity - {@link ClienteDTO}
+	 * @return ResponseEntity - ClienteDTO
 	 */
 	public ResponseEntity<ClienteDTO> buscarClientePorID(Long id) {
 		VerificarUsuario.usuarioTemPermissao(id);
@@ -58,8 +58,8 @@ public class ClienteService {
 	}
 	
 	/**
-	 * Método responsável por cadastrar um novo {@link Cliente}
-	 * @param clienteFORM : {@link ClienteFORM}
+	 * Método responsável por cadastrar um novo Cliente
+	 * @param clienteFORM : ClienteFORM
 	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> cadastrarCliente(ClienteFORM clienteFORM) {
@@ -77,9 +77,9 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por atualizar os dados cadastrais de um {@link Cliente}
+	 * Método responsável por atualizar os dados cadastrais de um Cliente
 	 * @param id : Long
-	 * @param atualizarClienteFORM : {@link AtualizarClienteFORM}
+	 * @param atualizarClienteFORM : AtualizarClienteFORM
 	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> atualizarCliente(Long id, AtualizarClienteFORM atualizarClienteFORM) {
@@ -93,7 +93,7 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por adicionar permissão a um {@link Cliente}
+	 * Método responsável por adicionar permissão a um Cliente
 	 * @param idCliente : Long
 	 * @return ResponseEntity - Void
 	 */
@@ -122,7 +122,7 @@ public class ClienteService {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Cliente}
+	 * Método responsável por remover um Cliente
 	 * @param id : Long
 	 * @return ResponseEntity - Void
 	 */

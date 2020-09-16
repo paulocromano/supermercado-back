@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsáveç por receber o nome do campo e mensagem do erro
  */
 public class FieldMessage implements Serializable {

@@ -7,9 +7,8 @@ import javax.persistence.Table;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade do {@link PerfilCliente} relacionado com as 
- * permissões que o {@link Cliente} tem
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade do PerfilCliente relacionado com as permissões que o Cliente tem
  */
 @Entity
 @Table(name = "perfil")

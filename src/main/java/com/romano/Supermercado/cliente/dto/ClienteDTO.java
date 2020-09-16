@@ -13,7 +13,7 @@ import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe DTO de Cliente
  */
 public class ClienteDTO {
@@ -31,7 +31,7 @@ public class ClienteDTO {
 	
 	/**
 	 * Construtor de ClienteDTO
-	 * @param cliente : {@link Cliente}
+	 * @param cliente : Cliente
 	 */
 	public ClienteDTO(Cliente cliente) {
 		id = cliente.getId();
@@ -88,9 +88,9 @@ public class ClienteDTO {
 
 	
 	/**
-	 * Método responsável por converter um List de {@link Cliente} para List de {@link ClienteDTO}
-	 * @param listaClientes : List<Cliente>
-	 * @return : List<ClienteDTO>
+	 * Método responsável por converter um List de Cliente para List de ClienteDTO
+	 * @param listaClientes : List de Cliente
+	 * @return : List de ClienteDTO
 	 */
 	public static List<ClienteDTO> converterParaListaClienteDTO(List<Cliente> listaClientes) {
 		return listaClientes.stream().map(ClienteDTO::new).collect(Collectors.toList());

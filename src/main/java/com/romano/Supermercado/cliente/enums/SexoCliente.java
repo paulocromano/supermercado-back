@@ -3,8 +3,8 @@ package com.romano.Supermercado.cliente.enums;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Enum responsável por deferir o sexo do {@link Cliente}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Enum responsável por deferir o sexo do Cliente
  */
 public enum SexoCliente {
 	MASCULINO("M", "Masculino"),
@@ -31,10 +31,10 @@ public enum SexoCliente {
 	
 	
 	/**
-	 * Método responsável por converter o sexo abreviado do {@link Cliente} para o Enum de
-	 * {@link SexoCliente}
+	 * Método responsável por converter o sexo abreviado do Cliente para o Enum de
+	 * SexoCliente
 	 * @param sexoAbreviado : String
-	 * @return {@link SexoCliente} - Enum
+	 * @return SexoCliente - Enum
 	 */
 	public static SexoCliente converterParaEnum(String sexoAbreviado) {
 		if (sexoAbreviado == null) {

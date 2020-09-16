@@ -18,17 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romano.Supermercado.cliente.dto.ClienteDTO;
-import com.romano.Supermercado.cliente.enums.PerfilCliente;
 import com.romano.Supermercado.cliente.form.AtualizarClienteFORM;
 import com.romano.Supermercado.cliente.form.ClienteFORM;
-import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.cliente.service.ClienteService;
 
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do {@link ClienteService}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por chamar os métodos do ClienteService
  */
 @RestController
 @RequestMapping("/cliente")
@@ -39,8 +37,8 @@ public class ClienteResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar todos os {@link Cliente}s
-	 * @return ResponseEntity - List {@link ClienteDTO} (Retorna a resposta da requisição)
+	 * Método responsável por chamar o serviço de listar todos os Clientes
+	 * @return ResponseEntity - List de ClienteDTO (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos")
@@ -52,7 +50,7 @@ public class ClienteResource {
 	/**
 	 * Método responsável por chamar o serviço de buscar o Cliente pelo ID
 	 * @param id : Long
-	 * @return ResponseEntity - {@link ClienteDTO} (Retorna a resposta da requisição)
+	 * @return ResponseEntity - ClienteDTO (Retorna a resposta da requisição)
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> buscarClientePorID(@PathVariable Long id) {
@@ -61,8 +59,8 @@ public class ClienteResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de cadastro de {@link Cliente}
-	 * @param clienteFORM : {@link ClienteFORM}
+	 * Método responsável por chamar o serviço de cadastro de Cliente
+	 * @param clienteFORM : ClienteFORM
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PostMapping
@@ -72,9 +70,9 @@ public class ClienteResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de atualizar um {@link Cliente}
+	 * Método responsável por chamar o serviço de atualizar um Cliente
 	 * @param id : Long
-	 * @param atualizarClienteFORM : {@link AtualizarClienteFORM}
+	 * @param atualizarClienteFORM : AtualizarClienteFORM
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@Transactional
@@ -85,7 +83,7 @@ public class ClienteResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de adicionar {@link PerfilCliente} para um {@link Cliente}
+	 * Método responsável por chamar o serviço de adicionar PerfilCliente para um Cliente
 	 * @param idCliente : Long
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
@@ -98,7 +96,7 @@ public class ClienteResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de remoção de {@link Cliente}
+	 * Método responsável por chamar o serviço de remoção de Cliente
 	 * @param id : Long
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */

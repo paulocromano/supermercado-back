@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por receber os dados personalizados dos erros de requisições e regras de negócios
  */
 public class StandardError implements Serializable {

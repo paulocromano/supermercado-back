@@ -7,7 +7,7 @@ import com.romano.Supermercado.usuario.service.UsuarioService;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por verificar se o Usuário tem acesso a uma determinada operação
  */
 public final class VerificarUsuario {
@@ -15,7 +15,7 @@ public final class VerificarUsuario {
 	
 	/**
 	 * Método responsável por verficar se o Usuário está logado
-	 * @return {@link UsuarioSecurity} - Caso o Usuário esteja logado
+	 * @return UsuarioSecurity - Caso o Usuário esteja logado
 	 */
 	public static final UsuarioSecurity usuarioEValido() {
 		UsuarioSecurity usuario = UsuarioService.authenticated();
@@ -29,8 +29,7 @@ public final class VerificarUsuario {
 	
 	
 	/**
-	 * Método responsável por verificar se o Usuário tem permissão
-	 * para efetuar alguma operação de CRUD
+	 * Método responsável por verificar se o Usuário tem permissão para efetuar alguma operação de CRUD
 	 * @param id : Long
 	 */
 	public static final void usuarioTemPermissao(Long id) {

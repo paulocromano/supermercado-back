@@ -19,7 +19,7 @@ import com.romano.Supermercado.exception.service.ObjectNotFoundException;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por tratar os erros das requisições e regras de negócios
  */
 @ControllerAdvice

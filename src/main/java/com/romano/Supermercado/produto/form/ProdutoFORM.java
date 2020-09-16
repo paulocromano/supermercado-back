@@ -14,8 +14,8 @@ import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por receber um novo {@link Produto}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por receber um novo Produto
  */
 public class ProdutoFORM {
 
@@ -130,8 +130,8 @@ public class ProdutoFORM {
 	
 	
 	/**
-	 * Método responsável por converter {@link ProdutoFORM} para {@link Produto}
-	 * @return {@link Produto} - Produto convertido
+	 * Método responsável por converter ProdutoFORM para Produto
+	 * @return Produto - Produto convertido
 	 */
 	public Produto converterParaProduto() {
 		return new Produto(nome, marca, Converter.stringParaLocalDate(dataValidade), preco, desconto, estoque, estoqueMinimo, observacoes, setor);

@@ -13,7 +13,7 @@ import com.romano.Supermercado.security.UsuarioSecurity;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por buscar o nome do Usuário <br>
  * Implementação da classe UserDetails
  */
@@ -23,6 +23,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 
+	
 	/**
 	 * Método responsável por receber um Usuário e retornar o UserDetails
 	 */

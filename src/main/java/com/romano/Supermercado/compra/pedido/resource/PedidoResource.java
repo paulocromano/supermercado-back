@@ -16,19 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romano.Supermercado.cliente.model.Cliente;
 import com.romano.Supermercado.compra.itemPedido.form.ItemPedidoFORM;
-import com.romano.Supermercado.compra.itemPedido.model.ItemPedido;
 import com.romano.Supermercado.compra.pedido.dto.PedidoDTO;
-import com.romano.Supermercado.compra.pedido.model.Pedido;
 import com.romano.Supermercado.compra.pedido.service.PedidoService;
-import com.romano.Supermercado.produto.model.Produto;
 
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do {@link PedidoService}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por chamar os métodos do PedidoService
  */
 @RestController
 @RequestMapping("/pedido")
@@ -39,9 +35,9 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar {@link Pedido}s de todos os {@link Cliente}s ou somente um
+	 * Método responsável por chamar o serviço de listar Pedidos de todos os Clientes ou somente um
 	 * Cliente específico
-	 * @return ResponseEntity - List {@link PedidoDTO} Retorna a resposta da requisição
+	 * @return ResponseEntity - List de PedidoDTO Retorna a resposta da requisição
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos/{idCliente}")
@@ -51,8 +47,8 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listar todos os {@link Pedido}s de um {@link Cliente}
-	 * @return ResponseEntity - List {@link PedidoDTO} Retorna a resposta da requisição
+	 * Método responsável por chamar o serviço de listar todos os Pedidos de um Cliente
+	 * @return ResponseEntity - List de PedidoDTO Retorna a resposta da requisição
 	 */
 	@GetMapping("/cliente-listar-todos")
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
@@ -61,9 +57,9 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de adicionar um {@link Produto} ao {@link Pedido}
+	 * Método responsável por chamar o serviço de adicionar um Produto ao Pedido
 	 * @param idProduto : Integer
-	 * @param itemPedidoFORM : {@link ItemPedidoFORM}
+	 * @param itemPedidoFORM : ItemPedidoFORM
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@Transactional
@@ -75,7 +71,7 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de remoção de {@link Produto} de um {@link Pedido}
+	 * Método responsável por chamar o serviço de remoção de Produto de um Pedido
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
@@ -88,7 +84,7 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de alterar a quantidade de um {@link ItemPedido} em uma compra que ainda 
+	 * Método responsável por chamar o serviço de alterar a quantidade de um ItemPedido em uma compra que ainda 
 	 * não foi finalizada 
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
@@ -103,7 +99,7 @@ public class PedidoResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de finalizar um {@link Pedido}
+	 * Método responsável por chamar o serviço de finalizar um Pedido
 	 * @param idPedido : Long
 	 * @param idEndereco : Long
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)

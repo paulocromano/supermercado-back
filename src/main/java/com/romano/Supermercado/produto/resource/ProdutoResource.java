@@ -27,7 +27,7 @@ import com.romano.Supermercado.produto.service.ProdutoService;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por chamar os métodos do ProdutoService
  */
 @RestController

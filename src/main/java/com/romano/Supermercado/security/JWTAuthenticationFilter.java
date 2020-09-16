@@ -20,7 +20,7 @@ import com.romano.Supermercado.usuario.dto.CredenciasDTO;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável pela Filtragem de Autenticação da requisição
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

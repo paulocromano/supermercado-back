@@ -15,8 +15,8 @@ import com.romano.Supermercado.localidade.cidade.model.Cidade;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de {@link Endereco}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade de Endereco
  */
 @Entity
 @Table(name = "endereco")
@@ -48,7 +48,7 @@ public class Endereco {
 
 
 	/**
-	 * Construtor de {@link Endereco}
+	 * Construtor
 	 * @param logradouro : String
 	 * @param numero : String
 	 * @param complemento : String

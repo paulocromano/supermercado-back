@@ -25,8 +25,8 @@ import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade responsável pelas informações do {@link Pedido}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade responsável pelas informações do Pedido
  */
 @Entity
 @Table(name = "pedido")
@@ -66,7 +66,7 @@ public class Pedido {
 	
 	/**
 	 * Construtor
-	 * @param cliente : {@link Cliente}
+	 * @param cliente : Cliente
 	 */
 	public Pedido(Cliente cliente) {
 		statusPedido = StatusPedido.ABERTO.getCodigo();
@@ -113,9 +113,9 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por atualizar o {@link Pedido} com a nova quantidade informada de um {@link Produto}
-	 * @param produto : {@link Produto}
-	 * @param itemPedido : {@link ItemPedido}
+	 * Método responsável por atualizar o Pedido com a nova quantidade informada de um Produto
+	 * @param produto : Produto
+	 * @param itemPedido : ItemPedido
 	 * @param novaQuantidade : Integer
 	 */
 	public void atualizarPrecoTotalDeProduto(Produto produto, ItemPedido itemPedido, Integer novaQuantidade) {
@@ -127,8 +127,8 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} e atualizar o valor total
-	 * @param itemPedido : {@link ItemPedido}
+	 * Método responsável por adicionar um Produto ao Pedido e atualizar o valor total
+	 * @param itemPedido : ItemPedido
 	 */
 	public void adicionarItemPedido(ItemPedido itemPedido) {
 		itens.add(itemPedido);
@@ -137,9 +137,9 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Produto} do {@link Pedido} e atualizar o valor total
-	 * @param produtoASerRemovido : {@link Produto}
-	 * @param itemPedidoRepository : {@link ItemPedidoRepository}
+	 * Método responsável por remover um Produto do Pedido e atualizar o valor total
+	 * @param produtoASerRemovido : Produto
+	 * @param itemPedidoRepository : ItemPedidoRepository
 	 */
 	public void removerItemPedido(Produto produtoASerRemovido, ItemPedidoRepository itemPedidoRepository) {
 		itens.forEach(item -> {
@@ -153,7 +153,7 @@ public class Pedido {
 	
 	/**
 	 * Método responsável por efetuar as operações quando o Usuário efetivar uma compra
-	 * @param endereco : {@link Endereco}
+	 * @param endereco : Endereco
 	 */
 	public void finalizarPedido(Endereco endereco) {
 		dataHoraPedidoFinalizado = Converter.localDateTimeAtualParaString();
@@ -165,7 +165,7 @@ public class Pedido {
 	
 	
 	/**
-	 * Método responsável por atualizar o estoque do {@link Produto} que foi comprado
+	 * Método responsável por atualizar o estoque do Produto que foi comprado
 	 */
 	private void atualizarEstoqueProdutosComprados() {
 		itens.forEach(item -> {

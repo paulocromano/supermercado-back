@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por receber os erros de Validações
  */
 public class ValidationError extends StandardError {

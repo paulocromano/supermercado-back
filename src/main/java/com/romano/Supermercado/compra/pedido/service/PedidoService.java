@@ -28,8 +28,8 @@ import com.romano.Supermercado.utils.VerificarUsuario;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe de Serviço responsável pelas regras de negócios de {@link Pedido}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe de Serviço responsável pelas regras de negócios de Pedido
  */
 @Service
 public class PedidoService {
@@ -51,9 +51,9 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por listar {@link Pedido}s de todos os {@link Cliente}s ou somente um
+	 * Método responsável por listar Pedidos de todos os Clientes ou somente um
 	 * Cliente específico
-	 * @return ResponseEntity - List {@link PedidoDTO}
+	 * @return ResponseEntity - List de PedidoDTO
 	 */
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(Long idCliente) {		
 		if (idCliente == null) {
@@ -66,8 +66,8 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Pedido}s de um {@link Cliente}
-	 * @return ResponseEntity - List {@link PedidoDTO}
+	 * Método responsável por listar todos os Pedidos de um Cliente
+	 * @return ResponseEntity - List de PedidoDTO
 	 */
 	public ResponseEntity<List<PedidoDTO>> listarTodosPedidosDoCliente() {
 		UsuarioSecurity usuario = VerificarUsuario.usuarioEValido();
@@ -109,10 +109,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} <br>
+	 * Método responsável por adicionar um Produto ao Pedido <br>
 	 * Caso não exista um Pedido em Aberto, será criado um novo
 	 * @param idProduto : Integer
-	 * @param itemPedidoFORM : {@link ItemPedidoFORM}
+	 * @param itemPedidoFORM : ItemPedidoFORM
 	 * @return ResponseEntity - Void 
 	 */
 	public ResponseEntity<Void> adicionarProdutoAoPedido(Integer idProduto, ItemPedidoFORM itemPedidoFORM) {
@@ -139,10 +139,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por criar um novo {@link Pedido} e adicionar um {@link Produto} a ele
-	 * @param cliente : {@link Cliente}
-	 * @param produto : {@link Produto}
-	 * @param itemPedidoFORM : {@link ItemPedidoFORM}
+	 * Método responsável por criar um novo Pedido e adicionar um Produto a ele
+	 * @param cliente : Cliente
+	 * @param produto : Produto
+	 * @param itemPedidoFORM : ItemPedidoFORM
 	 */
 	private void adicionarProdutoAoNovoPedido(Cliente cliente, Produto produto, ItemPedidoFORM itemPedidoFORM) {
 		Pedido pedido = new Pedido(cliente);
@@ -153,10 +153,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por adicionar um {@link Produto} ao {@link Pedido} existente
-	 * @param pedido : {@link Pedido}
-	 * @param produto : {@link Produto}
-	 * @param itemPedidoFORM : {@link ItemPedidoFORM}
+	 * Método responsável por adicionar um Produto ao Pedido existente
+	 * @param pedido : Pedido
+	 * @param produto : Produto
+	 * @param itemPedidoFORM : ItemPedidoFORM
 	 */
 	private void adicionarProdutoAoPedidoExistente(Pedido pedido, Produto produto, ItemPedidoFORM itemPedidoFORM) {
 		ItemPedido itemPedido = new ItemPedido(pedido, produto);
@@ -170,7 +170,7 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por veriicar se a quantidade requisitada tem no estoque do {@link Produto}
+	 * Método responsável por veriicar se a quantidade requisitada tem no estoque do Produto
 	 * @param quantidade : Integer
 	 * @param estoque : Integer
 	 */
@@ -182,7 +182,7 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Produto} de um {@link Pedido}
+	 * Método responsável por remover um Produto de um Pedido
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
 	 * @return ResponseEntity - Void 
@@ -204,10 +204,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Pedido} contém o Produto informado
-	 * @param pedido : {@link Pedido}
-	 * @param produto : {@link Produto}
-	 * @return {@link ItemPedido}
+	 * Método responsável por verificar se o Pedido contém o Produto informado
+	 * @param pedido : Pedido
+	 * @param produto : Produto
+	 * @return ItemPedido
 	 */
 	private ItemPedido pedidoContemItemPedido(Pedido pedido, Produto produto) {
 		Optional<ItemPedido> itemPedido = pedido
@@ -225,8 +225,8 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Pedido} se não possuir Itens
-	 * @param pedido : {@link Pedido}
+	 * Método responsável por remover um Pedido se não possuir Itens
+	 * @param pedido : Pedido
 	 */
 	private void removerPedidoSemItens(Pedido pedido) {
 		if (pedido.getItens().size() - 1 == 0) {
@@ -236,9 +236,9 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o ID do {@link Pedido} pertence ao {@link Cliente} logado
+	 * Método responsável por verificar se o ID do Pedido pertence ao Cliente logado
 	 * @param idCliente : Long
-	 * @param pedido : {@link Pedido}
+	 * @param pedido : Pedido
 	 */
 	private void verificarSePedidoPertenceAoClienteLogado(Long idCliente, Pedido pedido) {
 		Cliente cliente = clienteRepository.getOne(idCliente);
@@ -250,7 +250,7 @@ public class PedidoService {
 
 	
 	/**
-	 * Método responsável por verificar se o {@link Produto} existe e se ele está disponível para compra
+	 * Método responsável por verificar se o Produto existe e se ele está disponível para compra
 	 * @param idProduto : Integer
 	 */
 	private void produtoExisteEstaDisponivel(Integer idProduto) {
@@ -263,8 +263,8 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Produto} existe
-	 * @param produtoRepository : {@link ProdutoRepository}
+	 * Método responsável por verificar se o Produto existe
+	 * @param produtoRepository : ProdutoRepository
 	 * @param id : Integer
 	 */
 	private Produto produtoExiste(ProdutoRepository produtoRepository, Integer id) {
@@ -279,10 +279,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Pedido} existe e se pertence ao mesmo {@link Cliente}
-	 * @param cliente : {@link Cliente}
+	 * Método responsável por verificar se o Pedido existe e se pertence ao mesmo Cliente
+	 * @param cliente : Cliente
 	 * @param idPedido : Long
-	 * @return {@link Pedido}
+	 * @return Pedido
 	 */
 	private Pedido pedidoExiste(Long idPedido) {
 		Optional<Pedido> pedido = pedidoRepository.findById(idPedido);
@@ -296,7 +296,7 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por alterar a quantidade de um {@link ItemPedido} em uma compra que ainda 
+	 * Método responsável por alterar a quantidade de um ItemPedido em uma compra que ainda 
 	 * não foi finalizada 
 	 * @param idPedido : Long
 	 * @param idProduto : Integer
@@ -323,7 +323,7 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por finalizar um {@link Pedido}
+	 * Método responsável por finalizar um Pedido
 	 * @param idPedido : Long
 	 * @param idEndereco : Long
 	 * @return ResponseEntity - Void 
@@ -343,8 +343,8 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link StatusPedido} está em Aberto
-	 * @param statusPedido : {@link StatusPedido}
+	 * Método responsável por verificar se o StatusPedido está em Aberto
+	 * @param statusPedido : StatusPedido
 	 */
 	private void verificarSeStatusPedidoEstaAberto(StatusPedido statusPedido) {
 		if (!statusPedido.equals(StatusPedido.ABERTO)) {
@@ -354,10 +354,10 @@ public class PedidoService {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Endereco} informado pertence ao Usuário logado
+	 * Método responsável por verificar se o Endereco informado pertence ao Usuário logado
 	 * @param idUsuario : Long
 	 * @param idEndereco : Long
-	 * @return {@link Endereco} 
+	 * @return Endereco
 	 */
 	private Endereco verificarEnderecoPertenceAoCliente(Long idUsuario, Long idEndereco) {
 		Endereco endereco = enderecoRepository.getOne(idEndereco);

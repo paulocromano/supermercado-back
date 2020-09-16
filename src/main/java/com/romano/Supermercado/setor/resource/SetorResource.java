@@ -22,8 +22,8 @@ import com.romano.Supermercado.setor.service.SetorService;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por chamar os métodos do {@link SetorService}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por chamar os métodos do SetorService
  */
 @RestController
 @RequestMapping("/setor")
@@ -34,8 +34,8 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de listagem de todos os {@link Setor}es
-	 * @return ResponseEntity - List {@link SetorDTO} (Retorna a resposta da requisição)
+	 * Método responsável por chamar o serviço de listagem de todos os Setores
+	 * @return ResponseEntity - List de SetorDTO (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/listar-todos")
@@ -45,8 +45,8 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por chamar o serviço de cadastro de {@link Setor}
-	 * @param setorFORM : {@link SetorFORM}
+	 * Método responsável por chamar o serviço de cadastro de Setor
+	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -57,7 +57,7 @@ public class SetorResource {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Setor}
+	 * Método responsável por remover um Setor
 	 * @param id : Integer
 	 * @return ResponseEntity - Void (Retorna a resposta da requisição)
 	 */

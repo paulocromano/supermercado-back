@@ -27,8 +27,8 @@ import com.romano.Supermercado.setor.model.Setor;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de {@link Produto}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade de Produto
  */
 @JsonIgnoreProperties(value = {"dataValidade", "preco", "desconto", "estoque", "estoqueMinimo", "statusProduto", "observacoes"})
 @Entity
@@ -71,7 +71,7 @@ public class Produto {
 	}
 
 	/**
-	 * Construtor de Produto
+	 * Construtor
 	 * @param nome : String
 	 * @param marca : String
 	 * @param dataValidade : LocalDate
@@ -79,7 +79,7 @@ public class Produto {
 	 * @param desconto : Double
 	 * @param estoque : Integer
 	 * @param estoqueMinimo : Integer
-	 * @param statusProduto : {@link StatusProduto} (Enum)
+	 * @param statusProduto : StatusProduto (Enum)
 	 * @param observacoes : String
 	 * @param setor : Setor
 	 */
@@ -195,7 +195,7 @@ public class Produto {
 
 	
 	/**
-	 * Método responsável por atualizar o {@link StatusProduto} conforme a quantidade em estoque
+	 * Método responsável por atualizar o StatusProduto conforme a quantidade em estoque
 	 */
 	public void atualizarStatusProduto() {
 		if (estoque == 0) {
@@ -213,7 +213,7 @@ public class Produto {
 	
 	
 	/**
-	 * Método responsável por acrescentar no estoque do {@link Produto} a quantidade informada
+	 * Método responsável por acrescentar no estoque do Produto a quantidade informada
 	 * @param quantidade : Integer
 	 */
 	public void somarEstoqueProduto(Integer quantidade) {
@@ -225,7 +225,7 @@ public class Produto {
 	
 	
 	/**
-	 * Método responsável por diminuir no estoque do {@link Produto}  com base na quantidade informada
+	 * Método responsável por diminuir no estoque do Produto com base na quantidade informada
 	 * @param quantidade : Integer
 	 */
 	public void diminuirEstoqueProduto(Integer quantidade) {

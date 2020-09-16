@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de {@link Setor}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade de Setor
  */
 @Entity
 @Table(name = "setor")

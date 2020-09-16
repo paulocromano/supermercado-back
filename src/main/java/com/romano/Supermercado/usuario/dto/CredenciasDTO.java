@@ -2,12 +2,10 @@ package com.romano.Supermercado.usuario.dto;
 
 import java.io.Serializable;
 
-import com.romano.Supermercado.cliente.model.Cliente;
-
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por receber o email e senha do Usuário({@link Cliente})
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por receber o email e senha do Usuário(Cliente)
  */
 public class CredenciasDTO implements Serializable {
 

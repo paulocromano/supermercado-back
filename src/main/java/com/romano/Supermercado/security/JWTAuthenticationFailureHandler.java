@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por devolver Status 401 quando o Usuário não for autenticado
  */
 public class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

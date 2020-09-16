@@ -29,7 +29,7 @@ import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe de Serviço responsável pelas regras de negócios do Produto
  */
 @Service

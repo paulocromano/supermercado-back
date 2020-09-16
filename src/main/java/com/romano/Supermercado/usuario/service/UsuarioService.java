@@ -7,7 +7,7 @@ import com.romano.Supermercado.security.UsuarioSecurity;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por recuperar as informações do Usuário logado
  */
 public class UsuarioService {

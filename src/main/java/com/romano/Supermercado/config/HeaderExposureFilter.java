@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Classe responsável por ler o cabeçalho Location do Back-End
  */
 @Component

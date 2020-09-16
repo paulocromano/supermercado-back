@@ -13,7 +13,7 @@ import com.romano.Supermercado.cliente.enums.PerfilCliente;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
  * Interface responsável por trabalhar com Usuários
  */
 public class UsuarioSecurity implements UserDetails {
@@ -35,7 +35,7 @@ public class UsuarioSecurity implements UserDetails {
 	 * @param id: Long
 	 * @param email : String
 	 * @param senha : String
-	 * @param autorizacoes : Set de {@link PerfilCliente}
+	 * @param autorizacoes : Set de PerfilCliente
 	 */
 	public UsuarioSecurity(Long id, String email, String senha, Set<PerfilCliente> perfis) {
 		this.id = id;
@@ -51,7 +51,7 @@ public class UsuarioSecurity implements UserDetails {
 	
 	/**
 	 * Método responsável por verificar se o Usuário tem um perfil válido
-	 * @param perfil : {@link PerfilCliente}
+	 * @param perfil : PerfilCliente
 	 * @return Boolean
 	 */
 	public Boolean hasRole(PerfilCliente perfil) {

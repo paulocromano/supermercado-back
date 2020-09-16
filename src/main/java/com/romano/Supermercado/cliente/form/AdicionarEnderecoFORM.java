@@ -12,8 +12,8 @@ import com.romano.Supermercado.localidade.endereco.model.Endereco;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe responsável por adicionar endereços alternativos do {@link Cliente}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe responsável por adicionar endereços alternativos do Cliente
  */
 public class AdicionarEnderecoFORM {
 
@@ -110,9 +110,9 @@ public class AdicionarEnderecoFORM {
 	
 	
 	/**
-	 * Método responsável por atualizar os dados do {@link Cliente} com o novo {@link Endereco}
-	 * @param cliente : {@link Cliente}
-	 * @param cidadeRepository : {@link CidadeRepository}
+	 * Método responsável por atualizar os dados do Cliente com o novo Endereco
+	 * @param cliente : Cliente
+	 * @param cidadeRepository : CidadeRepository
 	 */
 	public void adicionarEndereco(Cliente cliente, CidadeRepository cidadeRepository) {
 		Cidade cidadeCliente = cidadeRepository.findByNome(cidade);

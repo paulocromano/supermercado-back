@@ -7,8 +7,8 @@ import javax.persistence.Table;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de {@link Estado}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade de Estado
  */
 @Entity
 @Table(name = "estado")

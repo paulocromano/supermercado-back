@@ -9,8 +9,8 @@ import com.romano.Supermercado.utils.Converter;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe DTO de {@link Produto}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe DTO de Produto
  */
 public class ProdutoDTO {
 
@@ -31,7 +31,7 @@ public class ProdutoDTO {
 	
 	/**
 	 * Construtor
-	 * @param produto : {@link Produto}
+	 * @param produto : Produto
 	 */
 	public ProdutoDTO(Produto produto) {
 		id = produto.getId();
@@ -104,9 +104,9 @@ public class ProdutoDTO {
 	
 	
 	/**
-	 * Método responsável por converter um List de {@link Produto} para List de {@link ProdutoDTO}
-	 * @param listaProdutos : List de {@link Produto}
-	 * @return List de {@link ProdutoDTO}
+	 * Método responsável por converter um List de Produto para List de ProdutoDTO
+	 * @param listaProdutos : List de Produto
+	 * @return List de ProdutoDTO
 	 */
 	public static List<ProdutoDTO> converterParaListaProdutoDTO(List<Produto> listaProdutos) {
 		return listaProdutos.stream().map(ProdutoDTO::new).collect(Collectors.toList());
@@ -114,7 +114,7 @@ public class ProdutoDTO {
 	
 	
 	/**
-	 * Método para atualizar o preço do {@link Produto} caso ele tenha desconto
+	 * Método para atualizar o preço do Produto caso ele tenha desconto
 	 * @return Double - Preço atualizado caso tenha desconto
 	 */
 	private Double temDesconto(Double preco) {

@@ -8,16 +8,16 @@ import com.romano.Supermercado.localidade.cidade.model.Cidade;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Interface responsável por acessar os dados de {@link Cidade} no Banco de Dados
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Interface responsável por acessar os dados de Cidade no Banco de Dados
  */
 @Repository
 public interface CidadeRepository extends JpaRepository<Cidade, Integer> {
 
 	/**
-	 * Método responsável por buscar uma {@link Cidade} por nome
+	 * Método responsável por buscar uma Cidade por nome
 	 * @param cidade : String
-	 * @return {@link Cidade}
+	 * @return Cidade
 	 */
 	Cidade findByNome(String cidade);
 

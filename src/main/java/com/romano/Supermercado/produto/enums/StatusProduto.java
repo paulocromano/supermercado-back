@@ -3,8 +3,8 @@ package com.romano.Supermercado.produto.enums;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Enum responsável por deferir um status para o {@link Produto}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Enum responsável por deferir um status para o Produto
  */
 public enum StatusProduto {
 	ATIVO(1, "Ativo"),
@@ -32,9 +32,9 @@ public enum StatusProduto {
 	
 	
 	/**
-	 * Método responsável por converter um código para o tipo {@link StatusProduto}
+	 * Método responsável por converter um código para o tipo StatusProduto
 	 * @param codigo : Integer
-	 * @return {@link StatusProduto} - Enum
+	 * @return StatusProduto - Enum
 	 */
 	public static StatusProduto converterParaEnum(Integer codigo) {
 		if (codigo == null) {

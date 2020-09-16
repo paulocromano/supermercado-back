@@ -18,8 +18,8 @@ import com.romano.Supermercado.setor.repository.SetorRepository;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe de serviço responsável pelas regras de negócios do {@link Setor}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe de serviço responsável pelas regras de negócios do Setor
  */
 @Service
 public class SetorService {
@@ -29,8 +29,8 @@ public class SetorService {
 	
 	
 	/**
-	 * Método responsável por listar todos os {@link Setor}es
-	 * @return ResponseEntity - List {@link SetorDTO}
+	 * Método responsável por listar todos os Setores
+	 * @return ResponseEntity - List de SetorDTO
 	 */
 	public ResponseEntity<List<SetorDTO>> listarTodosSetores() {
 		return ResponseEntity.ok().body(SetorDTO.converterParaListaSetorDTO(setorRepository.findAll()));
@@ -38,8 +38,8 @@ public class SetorService {
 	
 	
 	/**
-	 * Método responsável por cadastrar um {@link Setor}
-	 * @param setorFORM : {@link SetorFORM}
+	 * Método responsável por cadastrar um Setor
+	 * @param setorFORM : SetorFORM
 	 * @return ResponseEntity - Void
 	 */
 	public ResponseEntity<Void> cadastrarSetor(SetorFORM setorFORM) {
@@ -56,7 +56,7 @@ public class SetorService {
 	
 	
 	/**
-	 * Método responsável por verificar se o nome do novo {@link Setor} já existe
+	 * Método responsável por verificar se o nome do novo Setor já existe
 	 * @param nomeSetor : String
 	 * @return Boolean - Retorna True se já existir um Setor com o nome informado. False
 	 * se não existir
@@ -69,7 +69,7 @@ public class SetorService {
 	
 	
 	/**
-	 * Método responsável por remover um {@link Setor}
+	 * Método responsável por remover um Setor
 	 * @param id : Integer
 	 * @return ResponseEntity - Void
 	 */

@@ -14,7 +14,7 @@ import com.romano.Supermercado.utils.Converter;
 /**
  * 
  * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe DTO de {@link Pedido}
+ * Classe DTO de Pedido
  */
 public class PedidoDTO {
 
@@ -28,8 +28,8 @@ public class PedidoDTO {
 	
 	
 	/**
-	 * Construtor de {@link PedidoDTO}
-	 * @param pedido : {@link Pedido}
+	 * Construtor de PedidoDTO
+	 * @param pedido : Pedido
 	 */
 	public PedidoDTO(Pedido pedido) {
 		id = pedido.getId();
@@ -72,9 +72,9 @@ public class PedidoDTO {
 	
 	
 	/**
-	 * Método responsável por converter um List de {@link Pedido} para {@link PedidoDTO}
-	 * @param listaPedidos : List de {@link Pedido}
-	 * @return List de {@link PedidoDTO}
+	 * Método responsável por converter um List de Pedido para PedidoDTO
+	 * @param listaPedidos : List de Pedido
+	 * @return List de PedidoDTO
 	 */
 	public static List<PedidoDTO> converterParaListaPedidoDTO(List<Pedido> listaPedidos) {
 		return listaPedidos.stream().map(PedidoDTO::new).collect(Collectors.toList());

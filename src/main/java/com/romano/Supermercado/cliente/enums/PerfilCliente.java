@@ -3,8 +3,8 @@ package com.romano.Supermercado.cliente.enums;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Enum responsável por deferir o Perfil do {@link Cliente}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Enum responsável por deferir o Perfil do Cliente
  */
 public enum PerfilCliente {
 	ADMIN(1, "ROLE_ADMIN"),
@@ -31,10 +31,10 @@ public enum PerfilCliente {
 	
 	
 	/**
-	 * Método responsável por converter o código do {@link PerfilCliente} para o Enum de
-	 * Perfil do {@link Cliente}
+	 * Método responsável por converter o código do PerfilCliente para o Enum de
+	 * Perfil do Cliente
 	 * @param codigo : Integer
-	 * @return {@link PerfilCliente} - Enum
+	 * @return PerfilCliente - Enum
 	 */
 	public static PerfilCliente converterParaEnum(Integer codigo) {
 		if (codigo == null) {

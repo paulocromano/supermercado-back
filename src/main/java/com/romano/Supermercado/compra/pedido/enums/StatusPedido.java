@@ -2,8 +2,8 @@ package com.romano.Supermercado.compra.pedido.enums;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Enum responsável por deferir o Status do {@link Pedido}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Enum responsável por deferir o Status do Pedido
  */
 public enum StatusPedido {
 
@@ -35,10 +35,9 @@ public enum StatusPedido {
 	
 	
 	/**
-	 * Método responsável por converter o código do Status do Pedido para o Enum de
-	 * {@link StatusPedido}
+	 * Método responsável por converter o código do Status do Pedido para o Enum de StatusPedido
 	 * @param codigo : Integer
-	 * @return {@link StatusPedido} - Enum
+	 * @return StatusPedido - Enum
 	 */
 	public static StatusPedido converterParaEnum(Integer codigo) {
 		if (codigo == null) {

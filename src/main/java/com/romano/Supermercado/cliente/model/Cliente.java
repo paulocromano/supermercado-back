@@ -31,8 +31,8 @@ import com.romano.Supermercado.localidade.endereco.model.Endereco;
 
 /**
  * 
- * @author Paulo Romano - [paulo-romano_133@hotmail.com]
- * Classe Entidade de {@link Cliente}
+ * @author Paulo Romano - [paulo-romano_133@hotmail.com] <br>
+ * Classe Entidade de Cliente
  */
 @Entity
 @Table(name = "cliente")
@@ -75,7 +75,7 @@ public class Cliente {
 
 
 	/**
-	 * Construtor de {@link Cliente}
+	 * Construtor de Cliente
 	 * @param nome : String
 	 * @param sexo : String
 	 * @param email : String
@@ -164,10 +164,10 @@ public class Cliente {
 	
 	
 	/**
-	 * Método responsável por verificar se o {@link Cliente} existe
-	 * @param clienteRepository : {@link ClienteRepository}
+	 * Método responsável por verificar se o Cliente existe
+	 * @param clienteRepository : ClienteRepository
 	 * @param id : Long
-	 * @return {@link Cliente} - Caso o cliente exista
+	 * @return Cliente - Caso o cliente exista
 	 */
 	public static final Cliente existeCliente(ClienteRepository clienteRepository, Long id) {
 		Optional<Cliente> cliente = clienteRepository.findById(id);
